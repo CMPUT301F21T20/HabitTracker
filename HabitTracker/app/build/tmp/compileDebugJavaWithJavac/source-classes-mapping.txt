@@ -1,0 +1,19 @@
+com/example/habittracker/MainActivity.java
+ com.example.habittracker.MainActivity
+com/example/habittracker/ui/home/HomeViewModel.java
+ com.example.habittracker.ui.home.HomeViewModel
+com/example/habittracker/ui/notifications/NotificationsViewModel.java
+ com.example.habittracker.ui.notifications.NotificationsViewModel
+com/example/habittracker/ui/dashboard/DashboardFragment.java
+ com.example.habittracker.ui.dashboard.DashboardFragment
+ com.example.habittracker.ui.dashboard.DashboardFragment$1
+com/example/habittracker/ui/notifications/NotificationsFragment.java
+ com.example.habittracker.ui.notifications.NotificationsFragment
+ com.example.habittracker.ui.notifications.NotificationsFragment$1
+com/example/habittracker/ui/dashboard/DashboardViewModel.java
+ com.example.habittracker.ui.dashboard.DashboardViewModel
+com/example/habittracker/BuildConfig.java
+ com.example.habittracker.BuildConfig
+com/example/habittracker/ui/home/HomeFragment.java
+ com.example.habittracker.ui.home.HomeFragment
+ com.example.habittracker.ui.home.HomeFragment$1

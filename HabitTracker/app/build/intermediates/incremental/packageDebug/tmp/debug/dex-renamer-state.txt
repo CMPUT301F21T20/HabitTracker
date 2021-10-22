@@ -1,0 +1,4 @@
+#Fri Oct 22 16:20:44 MDT 2021
+base.0=/Users/vardansaini/Desktop/CMPUT 301/HabitTracker/HabitTracker/app/build/intermediates/dex/debug/mergeDexDebug/classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
