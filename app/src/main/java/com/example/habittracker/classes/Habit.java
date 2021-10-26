@@ -10,8 +10,9 @@ public class Habit {
     private Date dateCreated;
     private int frequency;
     private boolean isDone;
+    private boolean getLocation;
 
-    public Habit(String habitId, String userId, String title, String reason, Date dateCreated, int frequency, boolean isDone) {
+    public Habit(String habitId, String userId, String title, String reason, Date dateCreated, int frequency, boolean isDone, boolean getLocation) {
         this.habitId = habitId;
         this.userId = userId;
         this.title = title;
@@ -19,6 +20,7 @@ public class Habit {
         this.dateCreated = dateCreated;
         this.frequency = frequency;
         this.isDone = isDone;
+        this.getLocation = getLocation;
     }
 
     public String getHabitId() {
@@ -75,5 +77,13 @@ public class Habit {
 
     public void setDone(boolean done) {
         isDone = done;
+    }
+
+    public boolean isGetLocation() {
+        return getLocation;
+    }
+
+    public void setGetLocation(boolean getLocation) {
+        this.getLocation = getLocation;
     }
 }
