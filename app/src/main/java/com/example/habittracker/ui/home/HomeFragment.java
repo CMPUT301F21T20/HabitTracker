@@ -1,9 +1,11 @@
 package com.example.habittracker.ui.home;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,6 +19,7 @@ import com.example.habittracker.R;
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
+    private Button addHabitButton;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -30,6 +33,15 @@ public class HomeFragment extends Fragment {
                 textView.setText(s);
             }
         });
+
+        addHabitButton = root.findViewById(R.id.addHabitButton);
+        addHabitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("Test", "Clicked Button!");
+            }
+        });
+
         return root;
     }
 }
