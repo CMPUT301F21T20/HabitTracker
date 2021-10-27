@@ -1,6 +1,7 @@
 package com.example.habittracker.classes;
 
 import java.util.Date;
+import java.util.HashMap;
 
 public class Habit {
     private String habitId;
@@ -8,11 +9,13 @@ public class Habit {
     private String title;
     private String reason;
     private Date dateCreated;
-    private int frequency;
+    private boolean[] frequency;
     private boolean isDone;
     private boolean getLocation;
+    private boolean canShare;
 
-    public Habit(String habitId, String userId, String title, String reason, Date dateCreated, int frequency, boolean isDone, boolean getLocation) {
+    public Habit(String habitId, String userId, String title, String reason,
+                 Date dateCreated, boolean[] frequency, boolean isDone, boolean getLocation, boolean canShare) {
         this.habitId = habitId;
         this.userId = userId;
         this.title = title;
@@ -21,6 +24,20 @@ public class Habit {
         this.frequency = frequency;
         this.isDone = isDone;
         this.getLocation = getLocation;
+    }
+
+    public HashMap<String, Object> getHabitMap() {
+        HashMap<String, Object> habit = new HashMap<>();
+        habit.put("habitId", this.habitId);
+        habit.put("userId", this.userId);
+        habit.put("title", this.title);
+        habit.put("reason", this.reason);
+        habit.put("dateCreated", this.dateCreated);
+        habit.put("frequency", this.frequency);
+        habit.put("isDone", this.isDone);
+        habit.put("getLocation", this.getLocation);
+        habit.put("canShare", this.canShare);
+        return habit;
     }
 
     public String getHabitId() {
@@ -63,11 +80,11 @@ public class Habit {
         this.dateCreated = dateCreated;
     }
 
-    public int getFrequency() {
+    public boolean[] getFrequency() {
         return frequency;
     }
 
-    public void setFrequency(int frequency) {
+    public void setFrequency(boolean[] frequency) {
         this.frequency = frequency;
     }
 
@@ -85,5 +102,13 @@ public class Habit {
 
     public void setGetLocation(boolean getLocation) {
         this.getLocation = getLocation;
+    }
+
+    public boolean isCanShare() {
+        return canShare;
+    }
+
+    public void setCanShare(boolean canShare) {
+        this.canShare = canShare;
     }
 }

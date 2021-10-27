@@ -5,17 +5,32 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.ToggleButton;
+
+import com.example.habittracker.classes.Habit;
+
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
+//TODO: Add Error Checking and Firestore integration
+
+// This class hold functionality for when creating a New Habit
 public class AddNewHabitActivity extends AppCompatActivity {
+    private Date selectedDate;
 
+    /**
+     * This function is run when the activity is starting
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,11 +54,45 @@ public class AddNewHabitActivity extends AppCompatActivity {
         Switch locationSwitch = findViewById(R.id.addHabitLocation);
         Switch denoteDone = findViewById(R.id.addHabitDenoteDone);
         Switch canShare = findViewById(R.id.addHabitCanShare);
+        Button submitButton = findViewById(R.id.addHabitSubmitButton);
 
         startDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 datePicker(startDateText);
+            }
+        });
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                errorCheck();
+
+                // Create a boolean array that is compatible with Habit Class
+                // This array maps to the days of the week
+                boolean[] frequency = new boolean[7];
+                for (int i = 0; i < 7; i++) {
+                    frequency[i] = selectedDates[i].isChecked();
+                }
+
+                Habit habit = new Habit(
+                    UUID.randomUUID().toString(),
+                    UUID.randomUUID().toString(),
+                    editTitle.getText().toString(),
+                    editReason.getText().toString(),
+                    selectedDate,
+                    frequency,
+                    denoteDone.isChecked(),
+                    locationSwitch.isChecked(),
+                    canShare.isChecked()
+                );
+
+                // Retrieve mapping of habit, we will use this to upload to firestore
+                HashMap<String, Object> mapping = habit.getHabitMap();
+
+                //TODO: Integrate with firestore
+                uploadToFirestore(mapping);
+                finish();
             }
         });
     }
@@ -64,16 +113,28 @@ public class AddNewHabitActivity extends AppCompatActivity {
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int yearSelect, int monthOfYear, int dayOfMonth) {
-                        // Update date
+                        // Update Selected Date
                         newDate.setMonth(monthOfYear);
                         newDate.setYear(yearSelect - 1900);
                         newDate.setDate(dayOfMonth);
-//                        setDate(newDate);
+                        selectedDate = new Date(String.valueOf(newDate));
 
                         // Add 1900 to year, as the getYear function returns year - 1900
-                        startDateText.setText((newDate.getYear() + 1900) + "-" + (newDate.getMonth() + 1) + "-" + newDate.getDate());
+                        startDateText.setText((newDate.getYear() + 1900) + "-" +
+                                (newDate.getMonth() + 1) + "-" + newDate.getDate());
                     }
                 }, year, month, day);
         datePickerDialog.show();
     }
+
+    /**
+     * Uploads the Created Habit to Firestore
+     * @param mapping the habit to upload as a hashMap
+     */
+    public void uploadToFirestore(HashMap<String, Object> mapping) {
+        //TODO: finish after firestore integration
+    }
+
+    // TODO: Error Checking
+    public boolean errorCheck() {return true;}
 }
