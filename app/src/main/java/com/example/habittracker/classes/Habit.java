@@ -3,6 +3,7 @@ package com.example.habittracker.classes;
 import java.util.Date;
 import java.util.HashMap;
 
+// A class that represents a habit
 public class Habit {
     private String habitId;
     private String userId;
@@ -26,6 +27,10 @@ public class Habit {
         this.getLocation = getLocation;
     }
 
+    /**
+     * Return a Map of the habit class, useful for firestore methods
+     * @return a HashMap representation of the Habit
+     */
     public HashMap<String, Object> getHabitMap() {
         HashMap<String, Object> habit = new HashMap<>();
         habit.put("habitId", this.habitId);
