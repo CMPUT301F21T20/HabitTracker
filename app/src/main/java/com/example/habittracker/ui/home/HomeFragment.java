@@ -1,6 +1,7 @@
 package com.example.habittracker.ui.home;
 
 import android.content.Context;
+import static androidx.core.content.ContextCompat.startActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
