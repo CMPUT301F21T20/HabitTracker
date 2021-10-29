@@ -1,5 +1,6 @@
 package com.example.habittracker;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
@@ -14,7 +15,14 @@ import android.widget.Switch;
 import android.widget.ToggleButton;
 
 import com.example.habittracker.classes.Habit;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.protobuf.Any;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -26,6 +34,8 @@ import java.util.UUID;
 // This class hold functionality for when creating a New Habit
 public class AddNewHabitActivity extends AppCompatActivity {
     private Date selectedDate;
+    private FirebaseFirestore db;
+    private String habitId;
 
     /**
      * This function is run when the activity is starting
@@ -37,6 +47,7 @@ public class AddNewHabitActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_new_habit);
 
         Intent intent = getIntent();
+        db = FirebaseFirestore.getInstance();
 
         EditText editTitle = findViewById(R.id.addHabitTitle);
         EditText editReason = findViewById(R.id.addHabitReason);
@@ -66,18 +77,34 @@ public class AddNewHabitActivity extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                errorCheck();
+                HashMap<String, Object> mapping;
+                FirebaseUser user;
+                boolean[] frequency;
+                String uid;
+                habitId = UUID.randomUUID().toString();
+
+                // TODO: display error message
+                //if (errorCheck()) return;
+
+                user = FirebaseAuth.getInstance().getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    uid = user.getUid();
+                } else {
+                    // TODO: display error message
+                    return;
+                }
 
                 // Create a boolean array that is compatible with Habit Class
                 // This array maps to the days of the week
-                boolean[] frequency = new boolean[7];
+                frequency = new boolean[7];
                 for (int i = 0; i < 7; i++) {
                     frequency[i] = selectedDates[i].isChecked();
                 }
 
                 Habit habit = new Habit(
-                    UUID.randomUUID().toString(),
-                    UUID.randomUUID().toString(),
+                    uid,
+                    habitId,
                     editTitle.getText().toString(),
                     editReason.getText().toString(),
                     selectedDate,
@@ -88,7 +115,7 @@ public class AddNewHabitActivity extends AppCompatActivity {
                 );
 
                 // Retrieve mapping of habit, we will use this to upload to firestore
-                HashMap<String, Object> mapping = habit.getHabitMap();
+                mapping = habit.getHabitMap();
 
                 //TODO: Integrate with firestore
                 uploadToFirestore(mapping);
@@ -132,7 +159,22 @@ public class AddNewHabitActivity extends AppCompatActivity {
      * @param mapping the habit to upload as a hashMap
      */
     public void uploadToFirestore(HashMap<String, Object> mapping) {
-        //TODO: finish after firestore integration
+        //String id = mapping["habitId"];
+
+        db.collection("Habits").document(habitId)
+                .set(mapping)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("Firestore", "DocumentSnapshot successfully written!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("Firestore", "Error writing document", e);
+                    }
+                });
     }
 
     // TODO: Error Checking

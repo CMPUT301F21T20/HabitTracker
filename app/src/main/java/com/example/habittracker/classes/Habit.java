@@ -1,5 +1,7 @@
 package com.example.habittracker.classes;
 
+import com.google.protobuf.Any;
+
 import java.util.Date;
 import java.util.HashMap;
 
@@ -38,7 +40,7 @@ public class Habit {
         habit.put("title", this.title);
         habit.put("reason", this.reason);
         habit.put("dateCreated", this.dateCreated);
-        habit.put("frequency", this.frequency);
+        //habit.put("frequency", this.frequency);
         habit.put("isDone", this.isDone);
         habit.put("getLocation", this.getLocation);
         habit.put("canShare", this.canShare);
