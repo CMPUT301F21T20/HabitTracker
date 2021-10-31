@@ -27,6 +27,7 @@ public class Habit {
         this.frequency = frequency;
         this.isDone = isDone;
         this.getLocation = getLocation;
+        this.canShare = canShare;
     }
 
     /**
