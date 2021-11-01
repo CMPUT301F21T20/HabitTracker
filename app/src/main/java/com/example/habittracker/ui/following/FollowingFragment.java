@@ -52,7 +52,7 @@ public class FollowingFragment extends Fragment {
 
     }
 
-    }public void openFollowFragment(String following) {
+    public void openFollowFragment(String following) {
         //TODO: following is used to make sure which user we are looking for later
         Intent intent = new Intent(thiscontext, FollowFragment.class);
         startActivity(intent);
