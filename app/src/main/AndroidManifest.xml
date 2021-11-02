@@ -12,6 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HabitTracker">
         <activity android:name=".AddNewHabitActivity">
+            android:parentActivityName=".MainActivity">
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
