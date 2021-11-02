@@ -14,16 +14,17 @@ public class User {
     private final String uid;
 //    private HabitList habitList;
     private FirebaseFirestore db;
-    private DocumentReference userDocRef;
-    private Map<String, Object> userData;
+    private DocumentReference _userDocRef;
+    private Map<String, Object> _userData;
+    private boolean _dataLoaded;
 
     public User(String uid) {
         this.uid = uid;
         db = FirebaseFirestore.getInstance();
 
         // load user data from the user doc in firestore
-        boolean result = loadUserData();
-        if (!result) {
+        _dataLoaded = loadUserData();
+        if (!_dataLoaded) {
             // TODO: connection to firestore failure
         }
 
@@ -36,6 +37,18 @@ public class User {
         return uid;
     }
 
+    public String getUsername() {
+        return (String) _userData.get("username");
+    }
+
+    public String getInfo() {
+        return (String) _userData.get("info");
+    }
+
+    public boolean isDataLoaded() {
+        return _dataLoaded;
+    }
+
     /**
      * This function loads the user document from firestore. It sets the resulting data to
      * @return
@@ -43,14 +56,14 @@ public class User {
     public boolean loadUserData() {
         // load user data from the user doc in firestore
         AtomicBoolean success = new AtomicBoolean(false);
-        userDocRef = db.collection("Users").document(this.uid);
-        userDocRef.get().addOnCompleteListener(task -> {
+        _userDocRef = db.collection("Users").document(this.uid);
+        _userDocRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
                 assert document != null;
                 if (document.exists()) {
-                    userData = document.getData();
-                    Log.d("Firestore", "DocumentSnapshot data: " + userData);
+                    _userData = document.getData();
+                    Log.d("Firestore", "DocumentSnapshot data: " + _userData);
                     success.set(true);
                 } else {
                     Log.d("Firestore", "No such document");
@@ -76,6 +89,7 @@ public class User {
                     .update("info", newInfo)
                     .addOnSuccessListener(aVoid -> {
                         success.set(true);
+                        _userData.put("info", newInfo);
                         Log.d("Firestore", "DocumentSnapshot successfully written!");
                     })
                     .addOnFailureListener(e -> {
