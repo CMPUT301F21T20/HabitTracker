@@ -24,3 +24,7 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
+      env: 
+        FIREBASE_TEST_ACCOUNT_EMAIL: ${{ secrets.FIREBASE_TEST_ACCOUNT_EMAIL }}
+        FIREBASE_TEST_ACCOUNT_PASSWORD: ${{ secrets.FIREBASE_TEST_ACCOUNT_PASSWORD }}
+      
