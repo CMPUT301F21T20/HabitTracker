@@ -1,9 +1,13 @@
 package com.example.habittracker.ui.dashboard;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,11 +16,14 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.habittracker.AddNewHabitActivity;
 import com.example.habittracker.R;
+import com.example.habittracker.ViewHabitActivity;
 
 public class DashboardFragment extends Fragment {
 
     private DashboardViewModel dashboardViewModel;
+    private Context thisContext;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -30,6 +37,27 @@ public class DashboardFragment extends Fragment {
                 textView.setText(s);
             }
         });
+
+        thisContext = container.getContext();
+        Button testButton = root.findViewById(R.id.viewHabitTestButton);
+        testButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openViewHabitActivity();
+            }
+        });
+
         return root;
+    }
+
+    public void openViewHabitActivity() {
+        Intent intent = new Intent(thisContext, ViewHabitActivity.class);
+
+        Bundle bundle = new Bundle();
+        String habitId = "f4edbeb8-ab6d-43a4-8042-847c8e941482";
+        bundle.putString("habitId", habitId);
+
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }
