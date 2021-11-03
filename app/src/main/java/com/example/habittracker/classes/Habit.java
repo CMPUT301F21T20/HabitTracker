@@ -2,8 +2,12 @@ package com.example.habittracker.classes;
 
 import com.google.protobuf.Any;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 // A class that represents a habit
 public class Habit {
@@ -27,20 +31,29 @@ public class Habit {
         this.frequency = frequency;
         this.isDone = isDone;
         this.getLocation = getLocation;
+        this.canShare = canShare;
     }
 
     /**
      * Return a Map of the habit class, useful for firestore methods
      * @return a HashMap representation of the Habit
      */
-    public HashMap<String, Object> getHabitMap() {
-        HashMap<String, Object> habit = new HashMap<>();
+    public Map<String, Object> getHabitMap() {
+        // firestore won't accept arrays. Therefore convert to a List
+        // of Integers to upload to firestore
+        ArrayList<Integer> frequencyList = new ArrayList<Integer>();
+        for (int i = 0; i < frequency.length; i++) {
+            if (frequency[i]) frequencyList.add(1);
+            else frequencyList.add(0);
+        }
+
+        Map<String, Object> habit = new HashMap<>();
         habit.put("habitId", this.habitId);
         habit.put("userId", this.userId);
         habit.put("title", this.title);
         habit.put("reason", this.reason);
         habit.put("dateCreated", this.dateCreated);
-        //habit.put("frequency", this.frequency);
+        habit.put("frequency", frequencyList);
         habit.put("isDone", this.isDone);
         habit.put("getLocation", this.getLocation);
         habit.put("canShare", this.canShare);
