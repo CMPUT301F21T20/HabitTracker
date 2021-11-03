@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -77,7 +78,7 @@ public class AddNewHabitActivity extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HashMap<String, Object> mapping;
+                Map<String, Object> mapping;
                 FirebaseUser user;
                 boolean[] frequency;
                 String uid;
@@ -158,8 +159,8 @@ public class AddNewHabitActivity extends AppCompatActivity {
      * Uploads the Created Habit to Firestore
      * @param mapping the habit to upload as a hashMap
      */
-    public void uploadToFirestore(HashMap<String, Object> mapping) {
-        //String id = mapping["habitId"];
+    public void uploadToFirestore(Map<String, Object> mapping) {
+        //Log.i("TEST", mapping.get("frequency").toString());
 
         db.collection("Habits").document(habitId)
                 .set(mapping)

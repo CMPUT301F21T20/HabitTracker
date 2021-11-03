@@ -20,25 +20,25 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.habittracker.AddNewHabitActivity;
 import com.example.habittracker.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
-    private Button addHabitButton;
-    private Context thiscontext;
+    private FloatingActionButton addHabitButton;
+    private Context thisContext;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        thiscontext = container.getContext();
+        thisContext = container.getContext();
 
         homeViewModel =
                 new ViewModelProvider(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
         homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                textView.setText(s);
+
             }
         });
 
@@ -55,7 +55,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void openAddHabitActivity() {
-        Intent intent = new Intent(thiscontext, AddNewHabitActivity.class);
+        Intent intent = new Intent(thisContext, AddNewHabitActivity.class);
         startActivity(intent);
     }
 }
