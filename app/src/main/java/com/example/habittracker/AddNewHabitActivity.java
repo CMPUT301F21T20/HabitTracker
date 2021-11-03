@@ -15,6 +15,7 @@ import android.widget.Switch;
 import android.widget.ToggleButton;
 
 import com.example.habittracker.classes.Habit;
+import com.example.habittracker.controllers.HabitController;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -111,15 +112,12 @@ public class AddNewHabitActivity extends AppCompatActivity {
                     selectedDate,
                     frequency,
                     denoteDone.isChecked(),
-                    locationSwitch.isChecked(),
                     canShare.isChecked()
                 );
 
-                // Retrieve mapping of habit, we will use this to upload to firestore
-                mapping = habit.getHabitMap();
+                HabitController controller = new HabitController(uid);
+                controller.saveHabit(habit);
 
-                //TODO: Integrate with firestore
-                uploadToFirestore(mapping);
                 finish();
             }
         });
@@ -153,29 +151,6 @@ public class AddNewHabitActivity extends AppCompatActivity {
                     }
                 }, year, month, day);
         datePickerDialog.show();
-    }
-
-    /**
-     * Uploads the Created Habit to Firestore
-     * @param mapping the habit to upload as a hashMap
-     */
-    public void uploadToFirestore(Map<String, Object> mapping) {
-        //Log.i("TEST", mapping.get("frequency").toString());
-
-        db.collection("Habits").document(habitId)
-                .set(mapping)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("Firestore", "DocumentSnapshot successfully written!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("Firestore", "Error writing document", e);
-                    }
-                });
     }
 
     // TODO: Error Checking
