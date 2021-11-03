@@ -32,11 +32,10 @@ public class FollowingFragment extends Fragment {
         followingViewModel =
                 new ViewModelProvider(this).get(FollowingViewModel.class);
         View root = inflater.inflate(R.layout.fragment_following_list, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
         followingViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                textView.setText(s);
+                return;
             }
         });
 
