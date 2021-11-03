@@ -18,7 +18,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Habit Name" />=
+            android:text="Habit Name" />
         <EditText
             android:id="@+id/addHabitTitle"
             android:layout_width="match_parent"
@@ -26,53 +26,49 @@
             android:hint="My Habit"/>
 
         <TextView
-            android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
             android:text="Reasons" />
         <EditText
             android:id="@+id/addHabitReason"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Descirbe your habit..."/>
+            android:hint="Describe your habit..."/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Start Date" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:weightSum="5">
 
-            <LinearLayout
-                android:layout_width="0dp"
+            <EditText
+                android:id="@+id/addHabitDateText"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Start Date" />
-
-                <EditText
-                    android:id="@+id/addHabitDateText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="yyyy-mm-dd"
-                    android:editable="false"/>
-            </LinearLayout>
+                android:hint="yyyy-mm-dd"
+                android:gravity="center_horizontal"
+                android:layout_weight="2"
+                android:editable="false"/>
 
             <Button
                 android:id="@+id/addHabitDateButton"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:text="PICK DATE" />
-
         </LinearLayout>
 
         <TextView
-            android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
             android:text="Active Days" />
 
         <LinearLayout
@@ -150,19 +146,51 @@
             android:id="@+id/addHabitLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Get Location" />
+            android:text="Get Location"
+            android:layout_marginTop="24dp"
+            android:textSize="18dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="24dp"
+            android:weightSum="4">
+
+            <EditText
+                android:id="@+id/habitLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Location not defined yet ..."
+                android:editable="false"
+                android:gravity="center"
+                android:layout_weight="3">
+            </EditText>
+
+            <Button
+                android:id="@+id/pickHabitLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="LOCATE NOW"
+                android:layout_weight="1">
+            </Button>
+        </LinearLayout>
 
         <Switch
             android:id="@+id/addHabitDenoteDone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Denote Done" />
+            android:layout_marginTop="24dp"
+            android:text="Denote Done"
+            android:textSize="18dp"/>
 
         <Switch
             android:id="@+id/addHabitCanShare"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Decide Sharing" />
+            android:layout_marginTop="24dp"
+            android:text="Decide Sharing"
+            android:textSize="18dp"/>
 
     </LinearLayout>
 
@@ -170,14 +198,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="bottom"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <Button
             android:id="@+id/addHabitSubmitButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:text="Add Habit" />
+            android:text="Save changes"
+            android:textSize="18dp"/>
 
     </LinearLayout>
 
