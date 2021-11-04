@@ -17,18 +17,16 @@ public class Habit {
     private String reason;
     private Date dateCreated;
     private boolean[] frequency;
-    private boolean isDone;
     private boolean canShare;
 
     public Habit(String habitId, String userId, String title, String reason,
-                 Date dateCreated, boolean[] frequency, boolean isDone, boolean canShare) {
+                 Date dateCreated, boolean[] frequency, boolean canShare) {
         this.habitId = habitId;
         this.userId = userId;
         this.title = title;
         this.reason = reason;
         this.dateCreated = dateCreated;
         this.frequency = frequency;
-        this.isDone = isDone;
         this.canShare = canShare;
     }
 
@@ -52,7 +50,6 @@ public class Habit {
         habit.put("reason", this.reason);
         habit.put("dateCreated", this.dateCreated);
         habit.put("frequency", frequencyList);
-        habit.put("isDone", this.isDone);
         habit.put("canShare", this.canShare);
         return habit;
     }
@@ -105,15 +102,7 @@ public class Habit {
         this.frequency = frequency;
     }
 
-    public boolean isDone() {
-        return isDone;
-    }
-
-    public void setDone(boolean done) {
-        isDone = done;
-    }
-
-    public boolean isCanShare() {
+    public boolean getCanShare() {
         return canShare;
     }
 

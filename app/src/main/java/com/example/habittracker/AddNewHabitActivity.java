@@ -65,8 +65,6 @@ public class AddNewHabitActivity extends AppCompatActivity {
                 findViewById(R.id.addHabitSat),
                 findViewById(R.id.addHabitSun)
         };
-        Switch locationSwitch = findViewById(R.id.addHabitLocation);
-        Switch denoteDone = findViewById(R.id.addHabitDenoteDone);
         Switch canShare = findViewById(R.id.addHabitCanShare);
         Button submitButton = findViewById(R.id.addHabitSubmitButton);
 
@@ -112,7 +110,6 @@ public class AddNewHabitActivity extends AppCompatActivity {
                         editReason.getText().toString(),
                         selectedDate,
                         frequency,
-                        denoteDone.isChecked(),
                         canShare.isChecked()
                 );
 
