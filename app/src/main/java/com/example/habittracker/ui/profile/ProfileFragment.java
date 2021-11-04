@@ -1,5 +1,6 @@
 package com.example.habittracker.ui.profile;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +33,7 @@ public class ProfileFragment extends Fragment {
         profileViewModel.getList().observe(getViewLifecycleOwner(), users -> {
             // update UI
         });
+
         return root;
     }
 }

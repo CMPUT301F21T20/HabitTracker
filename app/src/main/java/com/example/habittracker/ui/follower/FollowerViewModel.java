@@ -4,18 +4,20 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.habittracker.classes.User;
+
 import java.util.List;
 
 public class FollowerViewModel extends ViewModel {
 
-    private MutableLiveData<List> followerList;
+    private MutableLiveData<List<User>> followerList;
 
     public FollowerViewModel() {
         followerList = new MutableLiveData<>();
     }
 
 
-    public LiveData<List> getList() {
+    public LiveData<List<User>> getList() {
         return followerList;
     }
 }
