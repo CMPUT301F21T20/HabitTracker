@@ -40,9 +40,12 @@ public class HabitList {
     /**
      * this function will add a habit object into the list
      * @param habit The habit to add to the list
+     * @return True if successful false otherwise
      */
-    public void addHabit(Habit habit) {
-        habitList.add(habit);
+    public Boolean addHabit(Habit habit) {
+        Boolean success = habitController.saveHabit(habit);
+        if (success) habitList.add(habit);
+        return success;
     }
 
     /**
@@ -56,9 +59,12 @@ public class HabitList {
     /**
      * this function deletes a habit from the habitList
      * @param habit The habit to delete from the list
+     * @return True if successful false otherwise
      */
-    public void deleteHabit(Habit habit) {
-        habitList.remove(habit);
+    public Boolean deleteHabit(Habit habit) {
+        Boolean success = habitController.deleteHabit(habit);
+        if (success) habitList.remove(habit);
+        return success;
     }
 
     @Override
