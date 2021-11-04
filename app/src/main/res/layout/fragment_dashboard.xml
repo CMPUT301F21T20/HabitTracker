@@ -21,11 +21,4 @@
         app:layout_constraintTop_toTopOf="parent"
         android:gravity="center_horizontal" />
 
-    <Button
-        android:id="@+id/viewHabitTestButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Test View Habit"
-        tools:layout_editor_absoluteX="156dp"
-        tools:layout_editor_absoluteY="205dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
