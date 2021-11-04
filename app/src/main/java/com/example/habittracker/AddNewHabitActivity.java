@@ -41,6 +41,7 @@ public class AddNewHabitActivity extends AppCompatActivity {
 
     /**
      * This function is run when the activity is starting
+     *
      * @param savedInstanceState
      */
     @Override
@@ -55,7 +56,7 @@ public class AddNewHabitActivity extends AppCompatActivity {
         EditText editReason = findViewById(R.id.addHabitReason);
         EditText startDateText = findViewById(R.id.addHabitDateText);
         Button startDateButton = findViewById(R.id.addHabitDateButton);
-        ToggleButton[] selectedDates = new ToggleButton[] {
+        ToggleButton[] selectedDates = new ToggleButton[]{
                 findViewById(R.id.addHabitMon),
                 findViewById(R.id.addHabitTue),
                 findViewById(R.id.addHabitWed),
@@ -105,18 +106,22 @@ public class AddNewHabitActivity extends AppCompatActivity {
                 }
 
                 Habit habit = new Habit(
-                    uid,
-                    habitId,
-                    editTitle.getText().toString(),
-                    editReason.getText().toString(),
-                    selectedDate,
-                    frequency,
-                    denoteDone.isChecked(),
-                    canShare.isChecked()
+                        habitId,
+                        uid,
+                        editTitle.getText().toString(),
+                        editReason.getText().toString(),
+                        selectedDate,
+                        frequency,
+                        denoteDone.isChecked(),
+                        canShare.isChecked()
                 );
 
-                HabitController controller = new HabitController(uid);
-                controller.saveHabit(habit);
+                HabitController controller = new HabitController();
+                Boolean success = controller.saveHabit(habit);
+
+                if (!success) {
+                    // TODO: alert user to try again later;
+                }
 
                 finish();
             }
@@ -154,5 +159,7 @@ public class AddNewHabitActivity extends AppCompatActivity {
     }
 
     // TODO: Error Checking
-    public boolean errorCheck() {return true;}
+    public boolean errorCheck() {
+        return true;
+    }
 }

@@ -33,7 +33,9 @@ public class Habit {
     }
 
     /**
-     * Return a Map of the habit class, useful for firestore methods
+     * Return a Map of the habit class, useful for firestore methods.
+     * WARNING: Map does not include User ID or Habit ID since User ID is the document name and
+     * Habit ID is the key of the mapping in which the habit data is stored.
      * @return a HashMap representation of the Habit
      */
     public Map<String, Object> getHabitMap() {
@@ -46,8 +48,6 @@ public class Habit {
         }
 
         Map<String, Object> habit = new HashMap<>();
-        habit.put("habitId", this.habitId);
-        habit.put("userId", this.userId);
         habit.put("title", this.title);
         habit.put("reason", this.reason);
         habit.put("dateCreated", this.dateCreated);
