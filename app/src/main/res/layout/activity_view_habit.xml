@@ -18,185 +18,73 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Habit Name" />
-        <EditText
+            android:text="Habit Name"
+            android:textSize = "12dp"
+            android:textColor="@color/black"
+            android:textFontWeight="400"
+            android:fontFamily="sans-serif-black"/>
+        <TextView
             android:id="@+id/viewHabitTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="My Habit"
-            android:editable="false"/>
+            android:text=""
+            android:textSize = "16dp"
+            android:textFontWeight="400"
+            android:fontFamily="sans-serif-black"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Reasons" />
-        <EditText
+            android:layout_marginTop="44dp"
+            android:text="Reasons"
+            android:textSize = "12dp"
+            android:textColor="@color/black"
+            android:textFontWeight="400"
+            android:fontFamily="sans-serif-black"/>
+        <TextView
             android:id="@+id/viewHabitReason"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Describe your habit..."
-            android:editable="false"/>
+            android:text=""
+            android:textSize = "16dp"
+            android:textFontWeight="400"
+            android:fontFamily="sans-serif-black"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Start Date" />
-
-        <LinearLayout
+            android:layout_marginTop="44dp"
+            android:text="Start Date"
+            android:textSize = "12dp"
+            android:textColor="@color/black"
+            android:textFontWeight="400"
+            android:fontFamily="sans-serif-black" />
+        <TextView
+            android:id="@+id/viewHabitDateText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="5">
-
-            <EditText
-                android:id="@+id/viewHabitDateText"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="yyyy-mm-dd"
-                android:gravity="center_horizontal"
-                android:layout_weight="2"
-                android:editable="false"/>
-
-        </LinearLayout>
+            android:text=""
+            android:textSize = "16dp"
+            android:textFontWeight="400"
+            android:fontFamily="sans-serif-black"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Active Days" />
-
-        <LinearLayout
+            android:layout_marginTop="44dp"
+            android:text="Active Days"
+            android:textSize = "12dp"
+            android:textColor="@color/black"
+            android:textFontWeight="400"
+            android:fontFamily="sans-serif-black" />
+        <TextView
+            android:id="@+id/viewActiveDaysText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginStart="-10dp"
-            android:layout_marginEnd="-10dp" >
-
-            <ToggleButton
-                android:id="@+id/viewHabitMon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="ToggleButton"
-                android:textOff="MON"
-                android:textOn="MON"
-                android:editable="false"/>
-
-            <ToggleButton
-                android:id="@+id/viewHabitTue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="ToggleButton"
-                android:textOff="TUE"
-                android:textOn="TUE"
-                android:editable="false"/>
-
-            <ToggleButton
-                android:id="@+id/viewHabitWed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="ToggleButton"
-                android:textOff="WED"
-                android:textOn="WED"
-                android:editable="false"/>
-
-            <ToggleButton
-                android:id="@+id/viewHabitThu"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="ToggleButton"
-                android:textOff="THU"
-                android:textOn="THU"
-                android:editable="false"/>
-
-            <ToggleButton
-                android:id="@+id/viewHabitFri"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="ToggleButton"
-                android:textOff="FRI"
-                android:textOn="FRI"
-                android:editable="false"/>
-
-            <ToggleButton
-                android:id="@+id/viewHabitSat"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="ToggleButton"
-                android:textOff="SAT"
-                android:textOn="SAT"
-                android:editable="false"/>
-
-            <ToggleButton
-                android:id="@+id/viewHabitSun"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="ToggleButton"
-                android:textOff="SUN"
-                android:textOn="SUN"
-                android:editable="false"/>
-        </LinearLayout>
-
-        <Switch
-            android:id="@+id/viewHabitLocation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Get Location"
-            android:layout_marginTop="24dp"
-            android:textSize="18dp"
-            android:editable="false"/>
-
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="horizontal"-->
-<!--            android:layout_marginTop="24dp"-->
-<!--            android:weightSum="4">-->
-
-<!--            <EditText-->
-<!--                android:id="@+id/habitLocation"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:hint="Location not defined yet ..."-->
-<!--                android:editable="false"-->
-<!--                android:gravity="center"-->
-<!--                android:layout_weight="3">-->
-<!--            </EditText>-->
-
-<!--            <Button-->
-<!--                android:id="@+id/pickHabitLocation"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:text="LOCATE NOW"-->
-<!--                android:layout_weight="1">-->
-<!--            </Button>-->
-<!--        </LinearLayout>-->
-
-        <Switch
-            android:id="@+id/viewHabitDenoteDone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Denote Done"
-            android:textSize="18dp"
-            android:editable="false"/>
-
-        <Switch
-            android:id="@+id/viewHabitCanShare"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Decide Sharing"
-            android:textSize="18dp"
-            android:editable="false"/>
+            android:text=""
+            android:textSize = "16dp"
+            android:textFontWeight="400"
+            android:fontFamily="sans-serif-black"/>
 
     </LinearLayout>
 

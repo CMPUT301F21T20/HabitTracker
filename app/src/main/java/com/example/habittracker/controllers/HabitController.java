@@ -5,13 +5,16 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.habittracker.classes.Habit;
+import com.example.habittracker.classes.HabitList;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -77,8 +80,8 @@ public class HabitController {
      * @return
      */
     public Habit getHabit(String userId, String habitId) {
-        Habit habit = new Habit();
-        habit.setTitle("-1");
+        AtomicReference<Habit> habit = new AtomicReference<Habit>();
+
         db.collection("Habits").document(userId).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -87,10 +90,8 @@ public class HabitController {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
                                 Log.d("FIREBASE", "DocumentSnapshot data: " + document.get(habitId));
-                                HashMap<String, Object> data = (HashMap<String, Object>) document.get(habitId);
-                                habit.setTitle((String) data.get("title"));
-                                habit.setReason((String) data.get("reason"));
-                                //TODO set the frequency
+                                Map<String, Object> data = (HashMap<String, Object>) document.get(habitId);
+                                habit.set(convertToHabit(data));
 
                             } else {
                                 Log.d("FIREBASE", "No such document");
@@ -100,7 +101,25 @@ public class HabitController {
                         }
                     }
         });
-        while (habit.getTitle().equals("-1"));
+        return habit.get();
+    }
+
+    /**
+     * This function is used to convert the raw Firestore data into an actual Habit object
+     * @param docData The raw Firestore data from a Habits document
+     * @return An instance of Habit
+     */
+    private Habit convertToHabit(Map<String, Object> docData) {
+        Habit habit = new Habit();
+
+        habit.setTitle((String) docData.get("title"));
+        habit.setReason((String) docData.get("reason"));
+
+        // Convert firestore timestamp to Date object
+        Timestamp timestamp = (Timestamp) docData.get("dateCreated");
+        habit.setDateCreated(timestamp.toDate());
+
+        habit.setFrequency((ArrayList<Integer>) docData.get("frequency"));
         return habit;
     }
 }

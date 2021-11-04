@@ -19,13 +19,23 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.habittracker.AddNewHabitActivity;
 import com.example.habittracker.R;
 import com.example.habittracker.ViewHabitActivity;
+import com.example.habittracker.classes.Habit;
 import com.example.habittracker.controllers.HabitController;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class DashboardFragment extends Fragment {
 
     private DashboardViewModel dashboardViewModel;
-    private Context thisContext;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -40,27 +50,6 @@ public class DashboardFragment extends Fragment {
             }
         });
 
-        thisContext = container.getContext();
-        Button testButton = root.findViewById(R.id.viewHabitTestButton);
-        testButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openViewHabitActivity();
-            }
-        });
-
         return root;
-    }
-
-    public void openViewHabitActivity() {
-        Intent intent = new Intent(thisContext, ViewHabitActivity.class);
-
-        Bundle bundle = new Bundle();
-        String habitId = "ce5df86c-9712-4bfc-8a2e-eebf9270d291";
-        bundle.putString("habitId", habitId);
-        bundle.putString("userId", FirebaseAuth.getInstance().getCurrentUser().getUid());
-
-        intent.putExtras(bundle);
-        startActivity(intent);
     }
 }
