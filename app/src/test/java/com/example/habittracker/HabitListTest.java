@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
@@ -28,32 +29,38 @@ public class HabitListTest {
     @Test
     public void addHabitTest() {
         int listSize = list.getCount();
-        list.addHabit(new Habit(UUID.randomUUID().toString(), uid, "Test Title", "Test reason", new Date(), new boolean[]{true}, false,));
+        ArrayList<Integer> freq = new ArrayList<>(Arrays.asList(0, 1, 0, 0, 0, 0, 1));
+        Habit habit = new Habit("123", "321", "Test Title", "Test Reason", new Date(), freq, false);
+        list.addHabit(habit);
         assertEquals(list.getCount(), listSize+1);
     }
 
     @Test
     public void hasHabitTest() {
-        Habit Habit = new Habit("RandomHabit", "AB");
-        assertFalse(list.hasHabit(Habit));
-        list.addHabit(Habit);
-        assertTrue(list.hasHabit(Habit));
+        ArrayList<Integer> freq = new ArrayList<>(Arrays.asList(0, 1, 0, 0, 0, 0, 1));
+        Habit habit = new Habit("123", "321", "Test Title", "Test Reason", new Date(), freq, false);
+        assertFalse(list.hasHabit(habit));
+        list.addHabit(habit);
+        assertTrue(list.hasHabit(habit));
     }
 
     @Test
     public void deleteHabitTest() {
-        Habit Habit = new Habit("RandomHabit", "AB");
-        list.addHabit(Habit);
-        assertTrue(list.hasHabit(Habit));
-        list.deleteHabit(Habit);
-        assertFalse(list.hasHabit(Habit));
+        ArrayList<Integer> freq = new ArrayList<>(Arrays.asList(0, 1, 0, 0, 0, 0, 1));
+        Habit habit = new Habit("123", "321", "Test Title", "Test Reason", new Date(), freq, false);
+        list.addHabit(habit);
+        assertTrue(list.hasHabit(habit));
+        list.deleteHabit(habit);
+        assertFalse(list.hasHabit(habit));
     }
 
     @Test
     public void countHabitTest() {
         int listSize = list.getCount();
         assertEquals(0, listSize);
-        list.addHabit(new Habit("Halifax", "NS"));
+        ArrayList<Integer> freq = new ArrayList<>(Arrays.asList(0, 1, 0, 0, 0, 0, 1));
+        Habit habit = new Habit("123", "321", "Test Title", "Test Reason", new Date(), freq, false);
+        list.addHabit(habit);
         assertEquals(list.getCount(), 1);
     }
 }
