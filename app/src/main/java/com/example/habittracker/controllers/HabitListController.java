@@ -7,11 +7,8 @@ import com.example.habittracker.classes.HabitList;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class HabitListController {
@@ -21,6 +18,12 @@ public class HabitListController {
         this.db = FirebaseFirestore.getInstance();
     }
 
+    /**
+     * Loads all the habits from a specific Habits document in Firestore and returns an instance
+     * of HabitList
+     * @param uid The uid of the user whose habits to load
+     * @return An instance of HabitList
+     */
     public HabitList loadHabitList(String uid) {
         // load user data from the user doc in firestore
         AtomicReference<HabitList> habitList = new AtomicReference<HabitList>();
@@ -44,6 +47,12 @@ public class HabitListController {
         return habitList.get();
     }
 
+    /**
+     * This function is used to convert the raw Firestore data into an actual HabitList object
+     * @param docData The raw Firestore data from a Habits document
+     * @param uid The uid of the user whose habit data this function is processing
+     * @return An instance of HabitList
+     */
     private HabitList convertToHabitList(Map<String, Object> docData, String uid) {
         HabitList habitList = new HabitList();
         for (Map.Entry<String, Object> entry : docData.entrySet()) {
