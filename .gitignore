@@ -41,3 +41,5 @@ obj/
 .settings/
 
 .cxx
+
+.env
