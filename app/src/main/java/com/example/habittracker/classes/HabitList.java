@@ -12,37 +12,22 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import com.example.habittracker.R;
+import com.example.habittracker.controllers.HabitController;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class HabitList extends ArrayAdapter<Habit> {
+public class HabitList {
 
     private ArrayList<Habit> habitList;
-    private Context context;
+    private HabitController habitController;
 
-    public HabitList(Context context, ArrayList<Habit> habitList) {
-        super(context, 0, habitList);
-        this.context = context;
+    public HabitList(ArrayList<Habit> habitList) {
         this.habitList = habitList;
+        this.habitController = new HabitController();
     }
 
-    @NonNull
-    @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View view = convertView;
-
-//
-//        if(view == null){
-//            view = LayoutInflater.from(context).inflate(R.layout.content, parent, false);
-//        }
-//
-//        Habit habit = habitList.get(position);
-//
-//        // TODO: textview and layout stuff
-
-        return view;
-    }
+    public HabitList() {}
 
     /**
      * this function will get the number of Habits in the habitList

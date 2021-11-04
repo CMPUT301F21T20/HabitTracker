@@ -22,7 +22,7 @@ public class HabitListTest {
 
     @Before
     public void createList() {
-        list = new HabitList(null, new ArrayList<Habit>());
+        list = new HabitList(new ArrayList<Habit>());
     }
 
     @Test
