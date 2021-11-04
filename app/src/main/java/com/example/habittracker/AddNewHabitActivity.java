@@ -80,7 +80,7 @@ public class AddNewHabitActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Map<String, Object> mapping;
                 FirebaseUser user;
-                boolean[] frequency;
+                int[] frequency;
                 String uid;
                 habitId = UUID.randomUUID().toString();
 
@@ -96,11 +96,12 @@ public class AddNewHabitActivity extends AppCompatActivity {
                     return;
                 }
 
-                // Create a boolean array that is compatible with Habit Class
+                // Create a integer array that is compatible with Habit Class
                 // This array maps to the days of the week
-                frequency = new boolean[7];
+                frequency = new int[7];
                 for (int i = 0; i < 7; i++) {
-                    frequency[i] = selectedDates[i].isChecked();
+                    if (selectedDates[i].isChecked()) frequency[i] = 1;
+                    else frequency[i] = 0;
                 }
 
                 Habit habit = new Habit(

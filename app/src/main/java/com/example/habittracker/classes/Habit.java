@@ -16,11 +16,11 @@ public class Habit {
     private String title;
     private String reason;
     private Date dateCreated;
-    private boolean[] frequency;
+    private int[] frequency;
     private boolean canShare;
 
     public Habit(String habitId, String userId, String title, String reason,
-                 Date dateCreated, boolean[] frequency, boolean canShare) {
+                 Date dateCreated, int[] frequency, boolean canShare) {
         this.habitId = habitId;
         this.userId = userId;
         this.title = title;
@@ -41,8 +41,7 @@ public class Habit {
         // of Integers to upload to firestore
         ArrayList<Integer> frequencyList = new ArrayList<Integer>();
         for (int i = 0; i < frequency.length; i++) {
-            if (frequency[i]) frequencyList.add(1);
-            else frequencyList.add(0);
+            frequencyList.add(frequency[i]);
         }
 
         Map<String, Object> habit = new HashMap<>();
@@ -94,11 +93,11 @@ public class Habit {
         this.dateCreated = dateCreated;
     }
 
-    public boolean[] getFrequency() {
+    public int[] getFrequency() {
         return frequency;
     }
 
-    public void setFrequency(boolean[] frequency) {
+    public void setFrequency(int[] frequency) {
         this.frequency = frequency;
     }
 
