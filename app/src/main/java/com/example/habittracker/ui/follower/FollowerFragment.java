@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,11 +25,9 @@ public class FollowerFragment extends Fragment {
         followerViewModel =
                 new ViewModelProvider(this).get(FollowerViewModel.class);
         View root = inflater.inflate(R.layout.fragment_follower, container, false);
-        followerViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                return;
-            }
+        final ListView followerList = root.findViewById(R.id.following_list);
+        followerViewModel.getList().observe(getViewLifecycleOwner(), users -> {
+            // update UI
         });
 
         return root;

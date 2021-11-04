@@ -14,6 +14,9 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.habittracker.R;
+import com.example.habittracker.classes.Habit;
+
+import java.util.List;
 
 
 public class ProfileFragment extends Fragment {
@@ -25,12 +28,9 @@ public class ProfileFragment extends Fragment {
         profileViewModel =
                 new ViewModelProvider(this).get(ProfileViewModel.class);
         View root = inflater.inflate(R.layout.fragment_personal_profile, container, false);
-
-        profileViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                return;
-            }
+        final ListView myHabits = root.findViewById(R.id.habitList);
+        profileViewModel.getList().observe(getViewLifecycleOwner(), users -> {
+            // update UI
         });
         return root;
     }

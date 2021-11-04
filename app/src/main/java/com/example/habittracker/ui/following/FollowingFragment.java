@@ -32,14 +32,11 @@ public class FollowingFragment extends Fragment {
         followingViewModel =
                 new ViewModelProvider(this).get(FollowingViewModel.class);
         View root = inflater.inflate(R.layout.fragment_following_list, container, false);
-        followingViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                return;
-            }
+        final ListView followingList = root.findViewById(R.id.following_list);
+        followingViewModel.getList().observe(getViewLifecycleOwner(), users -> {
+            // update UI
         });
 
-        followingList = root.findViewById(R.id.following_list);
         followingList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {

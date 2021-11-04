@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -26,13 +27,10 @@ public class FollowFragment extends Fragment {
         followViewModel =
                 new ViewModelProvider(this).get(FollowViewModel.class);
         View root = inflater.inflate(R.layout.fragment_follow, container, false);
-        followViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                return;
-            }
+        final ListView userHabits = root.findViewById(R.id.otherHabitList);
+        followViewModel.getList().observe(getViewLifecycleOwner(), users -> {
+            // update UI
         });
-
         followButton = root.findViewById(R.id.followButton);
         followButton.setOnClickListener(new View.OnClickListener() {
             @Override
