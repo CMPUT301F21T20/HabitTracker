@@ -15,6 +15,7 @@ import android.widget.Switch;
 import android.widget.ToggleButton;
 
 import com.example.habittracker.classes.Habit;
+import com.example.habittracker.controllers.HabitController;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,6 +41,7 @@ public class AddNewHabitActivity extends AppCompatActivity {
 
     /**
      * This function is run when the activity is starting
+     *
      * @param savedInstanceState
      */
     @Override
@@ -54,7 +56,7 @@ public class AddNewHabitActivity extends AppCompatActivity {
         EditText editReason = findViewById(R.id.addHabitReason);
         EditText startDateText = findViewById(R.id.addHabitDateText);
         Button startDateButton = findViewById(R.id.addHabitDateButton);
-        ToggleButton[] selectedDates = new ToggleButton[] {
+        ToggleButton[] selectedDates = new ToggleButton[]{
                 findViewById(R.id.addHabitMon),
                 findViewById(R.id.addHabitTue),
                 findViewById(R.id.addHabitWed),
@@ -63,8 +65,6 @@ public class AddNewHabitActivity extends AppCompatActivity {
                 findViewById(R.id.addHabitSat),
                 findViewById(R.id.addHabitSun)
         };
-        Switch locationSwitch = findViewById(R.id.addHabitLocation);
-        Switch denoteDone = findViewById(R.id.addHabitDenoteDone);
         Switch canShare = findViewById(R.id.addHabitCanShare);
         Button submitButton = findViewById(R.id.addHabitSubmitButton);
 
@@ -104,22 +104,22 @@ public class AddNewHabitActivity extends AppCompatActivity {
                 }
 
                 Habit habit = new Habit(
-                    uid,
-                    habitId,
-                    editTitle.getText().toString(),
-                    editReason.getText().toString(),
-                    selectedDate,
-                    frequency,
-                    denoteDone.isChecked(),
-                    locationSwitch.isChecked(),
-                    canShare.isChecked()
+                        habitId,
+                        uid,
+                        editTitle.getText().toString(),
+                        editReason.getText().toString(),
+                        selectedDate,
+                        frequency,
+                        canShare.isChecked()
                 );
 
-                // Retrieve mapping of habit, we will use this to upload to firestore
-                mapping = habit.getHabitMap();
+                HabitController controller = new HabitController();
+                Boolean success = controller.saveHabit(habit);
 
-                //TODO: Integrate with firestore
-                uploadToFirestore(mapping);
+                if (!success) {
+                    // TODO: alert user to try again later;
+                }
+
                 finish();
             }
         });
@@ -155,29 +155,8 @@ public class AddNewHabitActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    /**
-     * Uploads the Created Habit to Firestore
-     * @param mapping the habit to upload as a hashMap
-     */
-    public void uploadToFirestore(Map<String, Object> mapping) {
-        //Log.i("TEST", mapping.get("frequency").toString());
-
-        db.collection("Habits").document(habitId)
-                .set(mapping)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("Firestore", "DocumentSnapshot successfully written!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("Firestore", "Error writing document", e);
-                    }
-                });
-    }
-
     // TODO: Error Checking
-    public boolean errorCheck() {return true;}
+    public boolean errorCheck() {
+        return true;
+    }
 }

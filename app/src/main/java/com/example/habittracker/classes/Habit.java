@@ -17,25 +17,23 @@ public class Habit {
     private String reason;
     private Date dateCreated;
     private boolean[] frequency;
-    private boolean isDone;
-    private boolean getLocation;
     private boolean canShare;
 
     public Habit(String habitId, String userId, String title, String reason,
-                 Date dateCreated, boolean[] frequency, boolean isDone, boolean getLocation, boolean canShare) {
+                 Date dateCreated, boolean[] frequency, boolean canShare) {
         this.habitId = habitId;
         this.userId = userId;
         this.title = title;
         this.reason = reason;
         this.dateCreated = dateCreated;
         this.frequency = frequency;
-        this.isDone = isDone;
-        this.getLocation = getLocation;
         this.canShare = canShare;
     }
 
     /**
-     * Return a Map of the habit class, useful for firestore methods
+     * Return a Map of the habit class, useful for firestore methods.
+     * WARNING: Map does not include User ID or Habit ID since User ID is the document name and
+     * Habit ID is the key of the mapping in which the habit data is stored.
      * @return a HashMap representation of the Habit
      */
     public Map<String, Object> getHabitMap() {
@@ -48,14 +46,10 @@ public class Habit {
         }
 
         Map<String, Object> habit = new HashMap<>();
-        habit.put("habitId", this.habitId);
-        habit.put("userId", this.userId);
         habit.put("title", this.title);
         habit.put("reason", this.reason);
         habit.put("dateCreated", this.dateCreated);
         habit.put("frequency", frequencyList);
-        habit.put("isDone", this.isDone);
-        habit.put("getLocation", this.getLocation);
         habit.put("canShare", this.canShare);
         return habit;
     }
@@ -108,23 +102,7 @@ public class Habit {
         this.frequency = frequency;
     }
 
-    public boolean isDone() {
-        return isDone;
-    }
-
-    public void setDone(boolean done) {
-        isDone = done;
-    }
-
-    public boolean isGetLocation() {
-        return getLocation;
-    }
-
-    public void setGetLocation(boolean getLocation) {
-        this.getLocation = getLocation;
-    }
-
-    public boolean isCanShare() {
+    public boolean getCanShare() {
         return canShare;
     }
 
