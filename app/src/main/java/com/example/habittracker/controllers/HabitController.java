@@ -15,6 +15,7 @@ import com.google.firebase.firestore.SetOptions;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class HabitController {
     private final FirebaseFirestore db;
@@ -26,6 +27,7 @@ public class HabitController {
     /**
      * Saves a habit to the corresponding habit document in Firestore. Will create a new document
      * if it doesn't exist and will always merge the habit (pre-existing document data won't be overwritten)
+     *
      * @param habit The habit to save in Firestore
      * @return True if the operation was successful and false otherwise
      */
@@ -50,6 +52,7 @@ public class HabitController {
 
     /**
      * Deletes a habit from the corresponding habit document in Firestore.
+     *
      * @param habit The habit to delete
      * @return True if the operation was successful and false otherwise
      */
