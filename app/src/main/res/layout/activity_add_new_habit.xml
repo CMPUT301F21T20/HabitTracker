@@ -23,6 +23,7 @@
             android:id="@+id/addHabitTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxLength="20"
             android:hint="My Habit"/>
 
         <TextView
@@ -34,6 +35,7 @@
             android:id="@+id/addHabitReason"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxLength="30"
             android:hint="Describe your habit..."/>
 
         <TextView
@@ -164,7 +166,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:text="Save changes"
-            android:textSize="18dp"/>
+            android:textSize="18dp" />
 
     </LinearLayout>
 
