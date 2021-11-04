@@ -2,12 +2,7 @@ package com.example.habittracker.controllers;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
 import com.example.habittracker.classes.Habit;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
@@ -17,7 +12,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class HabitController {
-    private FirebaseFirestore db;
+    private final FirebaseFirestore db;
 
     public HabitController() {
         this.db = FirebaseFirestore.getInstance();
