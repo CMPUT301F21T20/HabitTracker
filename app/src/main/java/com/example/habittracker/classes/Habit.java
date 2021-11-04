@@ -2,6 +2,7 @@ package com.example.habittracker.classes;
 
 import com.google.protobuf.Any;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -9,8 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-// A class that represents a habit
-public class Habit {
+// A class that represents a habit, implements serilizable to allow to pass into activity thorugh intent
+public class Habit implements Serializable {
     private String habitId;
     private String userId;
     private String title;
@@ -29,6 +30,8 @@ public class Habit {
         this.frequency = frequency;
         this.canShare = canShare;
     }
+
+    public Habit() {}
 
     /**
      * Return a Map of the habit class, useful for firestore methods.
