@@ -166,7 +166,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:text="Save changes"
-            android:textSize="18dp"/>
+            android:textSize="18dp" />
 
     </LinearLayout>
 
