@@ -99,11 +99,11 @@ public class AddNewHabitActivity extends AppCompatActivity {
 
                 // Create a boolean array that is compatible with Habit Class
                 // This array maps to the days of the week
-                frequency = new ArrayList<>();
+                frequency = new ArrayList<>(7);
                 for (int i = 0; i < 7; i++) {
                     int temp = 0;
                     if (selectedDates[i].isChecked()) temp = 1;
-                    frequency.set(i, temp);
+                    frequency.add(i, temp);
                 }
 
                 Habit habit = new Habit(
