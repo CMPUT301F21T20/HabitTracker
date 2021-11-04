@@ -8,6 +8,7 @@ import com.example.habittracker.classes.Habit;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
@@ -47,5 +48,22 @@ public class HabitController {
         return success.get();
     }
 
-    public void deleteHabit() {}
+    /**
+     * Deletes a habit from the corresponding habit document in Firestore.
+     * @param habit The habit to delete
+     * @return True if the operation was successful and false otherwise
+     */
+    public Boolean deleteHabit(Habit habit) {
+        AtomicBoolean success = new AtomicBoolean(false);
+        Map<String, Object> updates = new HashMap<>();
+        updates.put(habit.getHabitId(), FieldValue.delete());
+        db.collection("Habits").document(habit.getUserId())
+                .update(updates)
+                .addOnSuccessListener(aVoid -> {
+                    success.set(true);
+                    Log.d("Firestore", "DocumentSnapshot successfully updated!");
+                })
+                .addOnFailureListener(e -> Log.w("Firestore", "Error updating document", e));
+        return success.get();
+    }
 }
