@@ -9,15 +9,16 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class HabitListController {
     private final FirebaseFirestore db;
+    private final HabitController habitController;
 
     public HabitListController() {
         this.db = FirebaseFirestore.getInstance();
+        this.habitController = new HabitController();
     }
 
     /**
@@ -67,5 +68,27 @@ public class HabitListController {
             habitList.addHabit(habit);
         }
         return habitList;
+    }
+
+    /**
+     * this function will add a habit object into the habitList and save it to Firestore
+     * @param habit The habit to add to the list
+     * @return True if successful false otherwise
+     */
+    public Boolean saveHabit(HabitList habitList, Habit habit) {
+        Boolean success = habitController.saveHabit(habit);
+        if (success) habitList.addHabit(habit);
+        return success;
+    }
+
+    /**
+     * this function deletes a habit from the habitList and from Firestore
+     * @param habit The habit to delete from the list
+     * @return True if successful false otherwise
+     */
+    public Boolean deleteHabit(HabitList habitList, Habit habit) {
+        Boolean success = habitController.deleteHabit(habit);
+        if (success) habitList.deleteHabit(habit);
+        return success;
     }
 }

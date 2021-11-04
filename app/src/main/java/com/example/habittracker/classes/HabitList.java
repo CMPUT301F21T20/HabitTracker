@@ -11,14 +11,14 @@ import java.util.Objects;
 public class HabitList {
 
     private ArrayList<Habit> habitList;
-    private HabitController habitController;
 
     public HabitList(ArrayList<Habit> habitList) {
         this.habitList = habitList;
-        this.habitController = new HabitController();
     }
 
-    public HabitList() {}
+    public HabitList() {
+        this.habitList = new ArrayList<>();
+    }
 
     /**
      * this function will get the number of Habits in the habitList
@@ -28,15 +28,12 @@ public class HabitList {
         return habitList.size();
     }
 
-    /**
-     * this function will add a habit object into the list
-     * @param habit The habit to add to the list
-     * @return True if successful false otherwise
-     */
-    public Boolean addHabit(Habit habit) {
-        Boolean success = habitController.saveHabit(habit);
-        if (success) habitList.add(habit);
-        return success;
+    public void addHabit(Habit habit) {
+        habitList.add(habit);
+    }
+
+    public void deleteHabit(Habit habit) {
+        habitList.remove(habit);
     }
 
     /**
@@ -47,16 +44,7 @@ public class HabitList {
         return habitList.contains(habit);
     }
 
-    /**
-     * this function deletes a habit from the habitList
-     * @param habit The habit to delete from the list
-     * @return True if successful false otherwise
-     */
-    public Boolean deleteHabit(Habit habit) {
-        Boolean success = habitController.deleteHabit(habit);
-        if (success) habitList.remove(habit);
-        return success;
-    }
+
 
     @Override
     public boolean equals(Object o) {
