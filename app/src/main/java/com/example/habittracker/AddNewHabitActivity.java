@@ -15,6 +15,7 @@ import android.widget.Switch;
 import android.widget.ToggleButton;
 
 import com.example.habittracker.classes.Habit;
+import com.example.habittracker.controllers.HabitController;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,6 +23,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.protobuf.Any;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -40,6 +42,7 @@ public class AddNewHabitActivity extends AppCompatActivity {
 
     /**
      * This function is run when the activity is starting
+     *
      * @param savedInstanceState
      */
     @Override
@@ -54,7 +57,7 @@ public class AddNewHabitActivity extends AppCompatActivity {
         EditText editReason = findViewById(R.id.addHabitReason);
         EditText startDateText = findViewById(R.id.addHabitDateText);
         Button startDateButton = findViewById(R.id.addHabitDateButton);
-        ToggleButton[] selectedDates = new ToggleButton[] {
+        ToggleButton[] selectedDates = new ToggleButton[]{
                 findViewById(R.id.addHabitMon),
                 findViewById(R.id.addHabitTue),
                 findViewById(R.id.addHabitWed),
@@ -63,8 +66,6 @@ public class AddNewHabitActivity extends AppCompatActivity {
                 findViewById(R.id.addHabitSat),
                 findViewById(R.id.addHabitSun)
         };
-        Switch locationSwitch = findViewById(R.id.addHabitLocation);
-        Switch denoteDone = findViewById(R.id.addHabitDenoteDone);
         Switch canShare = findViewById(R.id.addHabitCanShare);
         Button submitButton = findViewById(R.id.addHabitSubmitButton);
 
@@ -80,7 +81,7 @@ public class AddNewHabitActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Map<String, Object> mapping;
                 FirebaseUser user;
-                boolean[] frequency;
+                ArrayList<Integer> frequency;
                 String uid;
                 habitId = UUID.randomUUID().toString();
 
@@ -98,28 +99,30 @@ public class AddNewHabitActivity extends AppCompatActivity {
 
                 // Create a boolean array that is compatible with Habit Class
                 // This array maps to the days of the week
-                frequency = new boolean[7];
+                frequency = new ArrayList<>(7);
                 for (int i = 0; i < 7; i++) {
-                    frequency[i] = selectedDates[i].isChecked();
+                    int temp = 0;
+                    if (selectedDates[i].isChecked()) temp = 1;
+                    frequency.add(i, temp);
                 }
 
                 Habit habit = new Habit(
-                    uid,
-                    habitId,
-                    editTitle.getText().toString(),
-                    editReason.getText().toString(),
-                    selectedDate,
-                    frequency,
-                    denoteDone.isChecked(),
-                    locationSwitch.isChecked(),
-                    canShare.isChecked()
+                        habitId,
+                        uid,
+                        editTitle.getText().toString(),
+                        editReason.getText().toString(),
+                        selectedDate,
+                        frequency,
+                        canShare.isChecked()
                 );
 
-                // Retrieve mapping of habit, we will use this to upload to firestore
-                mapping = habit.getHabitMap();
+                HabitController controller = new HabitController();
+                Boolean success = controller.saveHabit(habit);
 
-                //TODO: Integrate with firestore
-                uploadToFirestore(mapping);
+                if (!success) {
+                    // TODO: alert user to try again later;
+                }
+
                 finish();
             }
         });
@@ -155,29 +158,8 @@ public class AddNewHabitActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    /**
-     * Uploads the Created Habit to Firestore
-     * @param mapping the habit to upload as a hashMap
-     */
-    public void uploadToFirestore(Map<String, Object> mapping) {
-        //Log.i("TEST", mapping.get("frequency").toString());
-
-        db.collection("Habits").document(habitId)
-                .set(mapping)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("Firestore", "DocumentSnapshot successfully written!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("Firestore", "Error writing document", e);
-                    }
-                });
-    }
-
     // TODO: Error Checking
-    public boolean errorCheck() {return true;}
+    public boolean errorCheck() {
+        return true;
+    }
 }

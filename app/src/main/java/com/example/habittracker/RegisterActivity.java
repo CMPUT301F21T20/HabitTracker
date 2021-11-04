@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,10 +14,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
     EditText FullName, Email, Password;
@@ -38,7 +45,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         fAuth = FirebaseAuth.getInstance();
 
-        if(fAuth.getCurrentUser() != null){
+        if (fAuth.getCurrentUser() != null) {
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
             finish();
         }
@@ -46,32 +53,54 @@ public class RegisterActivity extends AppCompatActivity {
         RegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String fullName = FullName.getText().toString().trim();
                 String email = Email.getText().toString().trim();
                 String password = Password.getText().toString().trim();
 
-                if(TextUtils.isEmpty(email)){
+                if (TextUtils.isEmpty(email)) {
                     Email.setError("Email is Required");
                     return;
                 }
-                if(TextUtils.isEmpty(password)){
+                if (TextUtils.isEmpty(password)) {
                     Password.setError("Password is required");
                     return;
                 }
 
-                if(password.length() < 6){
+                if (password.length() < 6) {
                     Password.setError("Password must be at least 6 characters");
                 }
                 // Add Progress Bar
 
                 // Register the user
-                fAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
+                        if (task.isSuccessful()) {
+                            Map<String, Object> newUser = new HashMap<>();
+                            newUser.put("username", fullName);
+                            newUser.put("info", "");
+                            // TODO: create following/follower objects
+
+                            try {
+                                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                String uid = fAuth.getCurrentUser().getUid();
+                                db.collection("Users").document(uid)
+                                        .set(newUser)
+                                        .addOnSuccessListener(aVoid -> Log.d("Firestore", "DocumentSnapshot successfully written!"))
+                                        .addOnFailureListener(e -> {
+                                            // TODO: throw error - user auth successful but user doc creation failed
+                                            Log.w("Firestore", "Error writing document", e);
+                                        });
+                            } catch (Exception error) {
+                                // TODO: retry?
+                                Log.w("Firestore", error);
+                            }
+
+
                             Toast.makeText(RegisterActivity.this, "Account Registered", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                        }else{
-                            Toast.makeText(RegisterActivity.this, "Error occoured!" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(RegisterActivity.this, "Error occurred!" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
