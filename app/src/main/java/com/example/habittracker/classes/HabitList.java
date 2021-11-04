@@ -1,17 +1,8 @@
 package com.example.habittracker.classes;
 
-import android.content.Context;
 import android.os.Build;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
-import com.example.habittracker.R;
 import com.example.habittracker.controllers.HabitController;
 
 import java.util.ArrayList;

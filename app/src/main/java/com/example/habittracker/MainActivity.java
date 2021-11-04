@@ -4,7 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.habittracker.classes.HabitList;
 import com.example.habittracker.classes.User;
+import com.example.habittracker.controllers.HabitController;
+import com.example.habittracker.controllers.HabitListController;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -43,9 +46,10 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
-
-
-
+        HabitListController habitListController = new HabitListController();
+        HabitList habitList = habitListController.loadHabitList(user.getUid());
+        // TODO: connect habitList with AddNewHabitActivity so that creating a new habit reloads the list
+        // TODO: OR use the habitList directly (return the habit and add it to habit list from here)
     }
 
     public void logout(View view) {
