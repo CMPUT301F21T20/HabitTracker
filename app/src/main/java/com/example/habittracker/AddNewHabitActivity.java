@@ -130,6 +130,7 @@ public class AddNewHabitActivity extends AppCompatActivity {
 
     /**
      * Opens date picker dialog, when date button is clicked
+     * @param startDateText The text view to update
      */
     public void datePicker(EditText startDateText) {
         final Calendar c = Calendar.getInstance();

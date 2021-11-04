@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+// This activity is for viewing a habit
 public class ViewHabitActivity extends AppCompatActivity {
     private Habit habit;
 
@@ -42,7 +43,6 @@ public class ViewHabitActivity extends AppCompatActivity {
         TextView reasonText = findViewById(R.id.viewHabitReason);
         TextView startDateText = findViewById(R.id.viewHabitDateText);
         TextView activeDaysText = findViewById(R.id.viewActiveDaysText);
-
 
         titleText.setText(habit.getTitle());
         reasonText.setText(habit.getReason());
