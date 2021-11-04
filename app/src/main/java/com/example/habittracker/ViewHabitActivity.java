@@ -10,14 +10,21 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.ToggleButton;
 
+import com.example.habittracker.classes.Habit;
+import com.example.habittracker.controllers.HabitController;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.concurrent.TimeUnit;
+
 public class ViewHabitActivity extends AppCompatActivity {
     private String habitId;
+    private String userId;
     private FirebaseFirestore db;
+    private Habit habit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +33,13 @@ public class ViewHabitActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         habitId = bundle.getString("habitId");
+        userId = bundle.getString("userId");
+
+        HabitController controller = new HabitController();
+        habit = controller.getHabit(userId, habitId);
+
+        HabitController c = new HabitController();
+        c.getHabit(FirebaseAuth.getInstance().getCurrentUser().getUid(), "ce5df86c-9712-4bfc-8a2e-eebf9270d291");
 
         EditText editTitle = findViewById(R.id.viewHabitTitle);
         EditText editReason = findViewById(R.id.viewHabitReason);
@@ -43,23 +57,7 @@ public class ViewHabitActivity extends AppCompatActivity {
         Switch denoteDone = findViewById(R.id.viewHabitDenoteDone);
         Switch canShare = findViewById(R.id.viewHabitCanShare);
 
-
-        db = FirebaseFirestore.getInstance();
-        db.collection("Habits").document(habitId).get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d("FIREBASE", "DocumentSnapshot data: " + document.getData());
-                    } else {
-                        Log.d("FIREBASE", "No such document");
-                    }
-                } else {
-                    Log.d("FIREBASE", "get failed with ", task.getException());
-                }
-            }
-        });
+        editTitle.setText(habit.getTitle());
+        editReason.setText(habit.getReason());
     }
 }

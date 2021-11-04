@@ -19,6 +19,8 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.habittracker.AddNewHabitActivity;
 import com.example.habittracker.R;
 import com.example.habittracker.ViewHabitActivity;
+import com.example.habittracker.controllers.HabitController;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class DashboardFragment extends Fragment {
 
@@ -54,8 +56,9 @@ public class DashboardFragment extends Fragment {
         Intent intent = new Intent(thisContext, ViewHabitActivity.class);
 
         Bundle bundle = new Bundle();
-        String habitId = "f4edbeb8-ab6d-43a4-8042-847c8e941482";
+        String habitId = "ce5df86c-9712-4bfc-8a2e-eebf9270d291";
         bundle.putString("habitId", habitId);
+        bundle.putString("userId", FirebaseAuth.getInstance().getCurrentUser().getUid());
 
         intent.putExtras(bundle);
         startActivity(intent);

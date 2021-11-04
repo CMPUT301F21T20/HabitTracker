@@ -30,6 +30,8 @@ public class Habit {
         this.canShare = canShare;
     }
 
+    public Habit() {}
+
     /**
      * Return a Map of the habit class, useful for firestore methods.
      * WARNING: Map does not include User ID or Habit ID since User ID is the document name and
