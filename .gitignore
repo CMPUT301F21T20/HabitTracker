@@ -44,3 +44,4 @@ obj/
 
 .env
 .project
+.classpath
