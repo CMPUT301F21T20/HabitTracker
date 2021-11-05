@@ -82,7 +82,7 @@ public class HabitController {
     public Habit getHabit(String userId, String habitId) {
         AtomicReference<Habit> habit = new AtomicReference<Habit>();
 
-        db.collection("Habits").document(userId).get()
+        DB.collection("Habits").document(userId).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
