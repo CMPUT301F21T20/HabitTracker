@@ -119,6 +119,11 @@ public class HomeFragment extends Fragment {
             }
         }
 
+        // If the user has no habits
+        if (newHabitList == null) {
+            return;
+        }
+
         habitList.clear();
         for (int i = 0; i < newHabitList.getCount(); i++) {
             Log.d("HANDLER", i + " -> " + newHabitList.get(i).getTitle());
