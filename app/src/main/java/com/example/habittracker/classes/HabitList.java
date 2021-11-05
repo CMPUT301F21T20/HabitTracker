@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class HabitList {
-
     private ArrayList<Habit> habitList;
 
     public HabitList(ArrayList<Habit> habitList) {
@@ -37,6 +36,15 @@ public class HabitList {
     }
 
     /**
+     * This function will return the specific Habit at the specified index
+     * @param index the index of the Habit
+     * @return the habit at the certain index
+     */
+    public Habit get(int index) {
+        return habitList.get(index);
+    }
+
+    /**
      * this function will return true if the habit is in the list and false otherwise
      * @param habit The habit to search for in the list
      */
@@ -44,6 +52,12 @@ public class HabitList {
         return habitList.contains(habit);
     }
 
+    /**
+     * Clears the habit list
+     */
+    public void clear() {
+        habitList.clear();
+    }
 
 
     @Override
@@ -58,5 +72,13 @@ public class HabitList {
     @Override
     public int hashCode() {
         return Objects.hash(habitList);
+    }
+
+    public ArrayList<Habit> getHabitList() {
+        return habitList;
+    }
+
+    public void setHabitList(ArrayList<Habit> habitList) {
+        this.habitList = habitList;
     }
 }
