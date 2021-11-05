@@ -23,6 +23,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.protobuf.Any;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -80,7 +81,7 @@ public class AddNewHabitActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Map<String, Object> mapping;
                 FirebaseUser user;
-                boolean[] frequency;
+                ArrayList<Integer> frequency;
                 String uid;
                 habitId = UUID.randomUUID().toString();
 
@@ -98,9 +99,11 @@ public class AddNewHabitActivity extends AppCompatActivity {
 
                 // Create a boolean array that is compatible with Habit Class
                 // This array maps to the days of the week
-                frequency = new boolean[7];
+                frequency = new ArrayList<>(7);
                 for (int i = 0; i < 7; i++) {
-                    frequency[i] = selectedDates[i].isChecked();
+                    int temp = 0;
+                    if (selectedDates[i].isChecked()) temp = 1;
+                    frequency.add(i, temp);
                 }
 
                 Habit habit = new Habit(
@@ -127,6 +130,7 @@ public class AddNewHabitActivity extends AppCompatActivity {
 
     /**
      * Opens date picker dialog, when date button is clicked
+     * @param startDateText The text view to update
      */
     public void datePicker(EditText startDateText) {
         final Calendar c = Calendar.getInstance();
