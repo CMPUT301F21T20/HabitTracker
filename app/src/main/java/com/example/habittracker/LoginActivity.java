@@ -17,6 +17,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+
+/**
+ * This class if for log in and get authorized from firestore
+ */
 public class LoginActivity extends AppCompatActivity {
     EditText Email, Password;
     Button LoginButton;
@@ -36,6 +40,10 @@ public class LoginActivity extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
 
         LoginButton.setOnClickListener(new View.OnClickListener() {
+
+            /**
+             * Log in a registered user, send credentials to firestore to get authorized
+             */
             @Override
             public void onClick(View view) {
                 String email = Email.getText().toString().trim();

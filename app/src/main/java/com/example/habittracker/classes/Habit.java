@@ -10,16 +10,28 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-// A class that represents a habit, implements serilizable to allow to pass into activity thorugh intent
+/**
+ * A class that represents a habit, implements serilizable to allow to pass into activity thorugh intent
+ */
 public class Habit implements Serializable {
     private String habitId;
     private String userId;
     private String title;
     private String reason;
     private Date dateCreated;
-    private ArrayList<Integer> frequency;
-    private boolean canShare;
+    private ArrayList<Integer> frequency;  // Frequency represent which day of a week is required to do the habit
+    private boolean canShare;  // Accessibility for other users
 
+    /**
+     *
+     * @param habitId       Habit ID
+     * @param userId        User UUID
+     * @param title         Habit name
+     * @param reason        The reason for keeping this habit
+     * @param dateCreated   Creation date
+     * @param frequency     Which day of a week should execute this habit plan
+     * @param canShare      Accessibility for other users
+     */
     public Habit(String habitId, String userId, String title, String reason,
                  Date dateCreated, ArrayList<Integer> frequency, boolean canShare) {
         this.habitId = habitId;
@@ -48,6 +60,11 @@ public class Habit implements Serializable {
         habit.put("canShare", this.canShare);
         return habit;
     }
+
+
+    /**
+     * Getters and Setters
+     */
 
     public String getHabitId() {
         return habitId;
