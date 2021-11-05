@@ -5,4 +5,5 @@
     <string name="title_notifications">Notifications</string>
     <string name="title_habits_today">Habits Today</string>
     <string name="title_habits_unbroken">Habits Unbroken</string>
+    <string name="title_habits">Habits</string>
 </resources>

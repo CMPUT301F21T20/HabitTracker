@@ -18,8 +18,8 @@ import java.util.UUID;
 
 public class HabitListTest {
     private HabitList list;
-    private final String uid = Objects.requireNonNull(System.getenv("FIREBASE_TEST_ACCOUNT_ID"),
-            "FIREBASE_TEST_ACCOUNT_EMAIL env var cannot be null");
+    //private final String uid = Objects.requireNonNull(System.getenv("FIREBASE_TEST_ACCOUNT_ID"),
+    //"FIREBASE_TEST_ACCOUNT_EMAIL env var cannot be null");
 
     @Before
     public void createList() {

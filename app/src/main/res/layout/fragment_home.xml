@@ -21,23 +21,21 @@
         <Button
             android:id="@+id/habits_today_text"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/title_habits_today"
-            android:textStyle="bold"
-            android:textSize="24dp"
-            android:gravity="center_vertical|center_horizontal"
+            android:layout_height="76dp"
+            android:layout_weight="3"
             android:clickable="false"
-            android:layout_weight="3">
-        </Button>
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/title_habits"
+            android:textSize="16sp"
+            android:textStyle="bold"></Button>
 
         <com.baoyz.swipemenulistview.SwipeMenuListView
             android:id="@+id/habits_today_listview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="2">
-        </com.baoyz.swipemenulistview.SwipeMenuListView>
+            android:layout_weight="2"></com.baoyz.swipemenulistview.SwipeMenuListView>
 
-        <Button
+        <!--Button
             android:id="@+id/habits_unbroken_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -54,7 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="2">
-        </com.baoyz.swipemenulistview.SwipeMenuListView>
+        </com.baoyz.swipemenulistview.SwipeMenuListView-->
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
