@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -32,9 +33,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-//TODO: Add Error Checking and Firestore integration
-
-// This class hold functionality for when creating a New Habit
+/**
+ * This class hold functionality for when creating a New Habit
+  */
 public class AddNewHabitActivity extends AppCompatActivity {
     private Date selectedDate;
     private FirebaseFirestore db;
@@ -85,15 +86,16 @@ public class AddNewHabitActivity extends AppCompatActivity {
                 String uid;
                 habitId = UUID.randomUUID().toString();
 
-                // TODO: display error message
-                //if (errorCheck()) return;
+                // Error message checking
+                if (errorCheck(editTitle, editReason, startDateText)) {
+                    return;
+                }
 
                 user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user != null) {
                     // User is signed in
                     uid = user.getUid();
                 } else {
-                    // TODO: display error message
                     return;
                 }
 
@@ -159,8 +161,43 @@ public class AddNewHabitActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    // TODO: Error Checking
-    public boolean errorCheck() {
-        return true;
+    /**
+     * Checks for any input errors when adding a new habit
+     * @param editTitle The title input
+     * @param editReason The reason input
+     * @param startDateText the start date input
+     * @return true if there was an error, false if not
+     */
+    public boolean errorCheck(EditText editTitle, EditText editReason, EditText startDateText) {
+        boolean titleError = false;
+        boolean reasonError = false;
+        boolean startDateError = false;
+
+        if(editTitle.getText().toString().length() == 0){
+            editTitle.setError("Title is Required");
+            titleError = true;
+        }
+
+        if(editTitle.getText().toString().length() > 20){
+            editTitle.setError("Title exceeds 20 characters");
+            titleError = true;
+        }
+
+        if(editReason.getText().toString().length() == 0){
+            editReason.setError("Reason is required");
+            reasonError = true;
+        }
+
+        if(editReason.getText().toString().length() > 30){
+            editTitle.setError("Reason exceeds 30 characters");
+            reasonError = true;
+        }
+
+        if (selectedDate == null) {
+            startDateText.setError("No data was selected");
+            startDateError = true;
+        }
+
+        return titleError || reasonError || startDateError;
     }
 }
