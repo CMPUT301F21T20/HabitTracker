@@ -7,6 +7,9 @@ import androidx.annotation.NonNull;
 
 import com.example.habittracker.classes.Habit;
 
+/**
+ * Adapter for HabitList, provide access to HabitList data
+ */
 public class HabitListAdapter extends ArrayAdapter<Habit> {
     public HabitListAdapter(@NonNull Context context, int resource) {
         super(context, resource);

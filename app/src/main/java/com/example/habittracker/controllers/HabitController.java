@@ -20,6 +20,9 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * Habit Controller is for creating, deleting and modifying habit
+ */
 public class HabitController {
     private final FirebaseFirestore DB;
 

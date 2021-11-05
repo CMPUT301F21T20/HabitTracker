@@ -8,8 +8,12 @@ import com.example.habittracker.controllers.HabitController;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * List of all habits for a selected user
+ */
 public class HabitList {
 
+    // Use ArrayList to match up the required uploading type of firestone
     private ArrayList<Habit> habitList;
 
     public HabitList(ArrayList<Habit> habitList) {
@@ -45,7 +49,9 @@ public class HabitList {
     }
 
 
-
+    /**
+     * Override the equal operation for better comparison
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -54,6 +60,9 @@ public class HabitList {
         return habitList.equals(that.habitList);
     }
 
+    /**
+     * Generate a unique number identifier
+     */
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public int hashCode() {

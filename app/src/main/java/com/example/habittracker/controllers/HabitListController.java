@@ -12,7 +12,12 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * HabitListController is for sync local habit with data in firestore
+ */
 public class HabitListController {
+
+    //Firestore instant
     private final FirebaseFirestore db;
     private final HabitController habitController;
 
