@@ -18,6 +18,9 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+/**
+ * Main activity, shows the main page which contains the habit list and todos for today
+ */
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth fAuth;
     private User user;

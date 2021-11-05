@@ -18,7 +18,9 @@ import com.example.habittracker.R;
 import com.example.habittracker.classes.HabitList;
 import com.example.habittracker.controllers.HabitController;
 
-// This class creates an adapter that shows a list of habits
+/**
+ * Adapter for HabitList, provide access to HabitList data, shows a list of habits
+ */
 public class HabitListAdapter extends ArrayAdapter<Habit> {
     private Context context;
     private HabitList habitList;

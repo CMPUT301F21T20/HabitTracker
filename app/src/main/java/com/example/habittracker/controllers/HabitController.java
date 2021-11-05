@@ -20,11 +20,14 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * Habit Controller is for creating, deleting and modifying habit
+ */
 public class HabitController {
-    private final FirebaseFirestore db;
+    private final FirebaseFirestore DB;
 
     public HabitController() {
-        this.db = FirebaseFirestore.getInstance();
+        this.DB = FirebaseFirestore.getInstance();
     }
 
     /**
@@ -43,7 +46,7 @@ public class HabitController {
         mapping.put(habit.getHabitId(), habitMap);
 
         // save the new habit and create doc if it doesn't already exists
-        db.collection("Habits").document(habit.getUserId())
+        DB.collection("Habits").document(habit.getUserId())
                 .set(mapping, SetOptions.merge())
                 .addOnSuccessListener(aVoid -> {
                     success.set(true);
@@ -63,7 +66,7 @@ public class HabitController {
         AtomicBoolean success = new AtomicBoolean(false);
         Map<String, Object> updates = new HashMap<>();
         updates.put(habit.getHabitId(), FieldValue.delete());
-        db.collection("Habits").document(habit.getUserId())
+        DB.collection("Habits").document(habit.getUserId())
                 .update(updates)
                 .addOnSuccessListener(aVoid -> {
                     success.set(true);
@@ -82,7 +85,7 @@ public class HabitController {
     public Habit getHabit(String userId, String habitId) {
         AtomicReference<Habit> habit = new AtomicReference<Habit>();
 
-        db.collection("Habits").document(userId).get()
+        DB.collection("Habits").document(userId).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {

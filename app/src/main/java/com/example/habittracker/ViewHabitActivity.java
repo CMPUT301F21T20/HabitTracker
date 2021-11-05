@@ -25,7 +25,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-// This activity is for viewing a habit
+/**
+ * This activity is for viewing a habit
+ */
 public class ViewHabitActivity extends AppCompatActivity {
     private Habit habit;
 
