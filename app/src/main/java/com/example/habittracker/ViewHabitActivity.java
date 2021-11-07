@@ -24,10 +24,11 @@ public class ViewHabitActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_habit);
 
+        Intent intent = getIntent();
         // Must pass the Habit through the intent!
         // reference the following link if unsure on how to do this:
         // https://stackoverflow.com/questions/2736389/how-to-pass-an-object-from-one-activity-to-another-on-android
-        habit = (Habit) getIntent().getSerializableExtra("Habit");
+        habit = (Habit) intent.getSerializableExtra("Habit");
 
         TextView titleText = findViewById(R.id.viewHabitTitle);
         TextView reasonText = findViewById(R.id.viewHabitReason);
