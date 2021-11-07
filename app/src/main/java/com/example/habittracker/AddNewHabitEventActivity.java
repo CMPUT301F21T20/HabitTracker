@@ -2,6 +2,7 @@ package com.example.habittracker;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -14,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -56,6 +58,8 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_habit_event);
+
+//         this.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         Intent intent = getIntent();
 
@@ -114,19 +118,20 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
                     return;
                 }
 
-                BitmapDrawable bitmapDrawable;
+                BitmapDrawable bitmapDrawable = null;
+                Bitmap bitmap = null;
                 try {
                     bitmapDrawable = (BitmapDrawable) photoAdded.getDrawable();
+                    bitmap = bitmapDrawable.getBitmap();
                 }
                 catch (ClassCastException e){
-                    return;
                 }
 
                 HabitEvent habitEvent = new HabitEvent(
                         habitEventId,
                         uid,
                         isCompleted.isChecked(),
-                        bitmapDrawable.getBitmap(),
+                        bitmap,
                         addLocationText.getText().toString(),
                         addComment.getText().toString()
                 );
@@ -303,5 +308,10 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }
