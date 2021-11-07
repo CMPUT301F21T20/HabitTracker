@@ -198,4 +198,14 @@ public class AddNewHabitActivity extends AppCompatActivity {
 
         return titleError || reasonError || startDateError;
     }
+
+    /**
+     * rewrite the back button on the action bar to make its functionality works better
+     * @return false to return to the activity before
+     */
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return false;
+    }
 }

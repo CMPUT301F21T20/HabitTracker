@@ -310,8 +310,13 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * rewrite the back button on the action bar to make its functionality works better
+     * @return false to return to the activity before
+     */
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return false;
     }
 }

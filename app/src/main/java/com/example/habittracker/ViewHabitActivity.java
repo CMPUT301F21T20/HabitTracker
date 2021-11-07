@@ -92,4 +92,14 @@ public class ViewHabitActivity extends AppCompatActivity {
         intent.putExtra("Habit", habit);
         this.startActivity(intent);
     }
+
+    /**
+     * rewrite the back button on the action bar to make its functionality works better
+     * @return false to return to the activity before
+     */
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return false;
+    }
 }
