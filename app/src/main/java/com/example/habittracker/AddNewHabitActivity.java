@@ -38,7 +38,6 @@ import java.util.UUID;
   */
 public class AddNewHabitActivity extends AppCompatActivity {
     private Date selectedDate;
-    private FirebaseFirestore db;
     private String habitId;
 
     /**
@@ -52,7 +51,6 @@ public class AddNewHabitActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_new_habit);
 
         Intent intent = getIntent();
-        db = FirebaseFirestore.getInstance();
 
         EditText editTitle = findViewById(R.id.addHabitTitle);
         EditText editReason = findViewById(R.id.addHabitReason);

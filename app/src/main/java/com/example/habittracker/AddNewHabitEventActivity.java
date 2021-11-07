@@ -1,41 +1,37 @@
 package com.example.habittracker;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.habittracker.classes.Habit;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-/**
- * This activity is for viewing a habit
- */
-public class ViewHabitActivity extends AppCompatActivity {
+public class AddNewHabitEventActivity extends AppCompatActivity {
     private Habit habit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_habit);
+        setContentView(R.layout.activity_add_new_habit_event);
 
         // Must pass the Habit through the intent!
         // reference the following link if unsure on how to do this:
         // https://stackoverflow.com/questions/2736389/how-to-pass-an-object-from-one-activity-to-another-on-android
         habit = (Habit) getIntent().getSerializableExtra("Habit");
 
-        TextView titleText = findViewById(R.id.viewHabitTitle);
-        TextView reasonText = findViewById(R.id.viewHabitReason);
-        TextView startDateText = findViewById(R.id.viewHabitDateText);
-        TextView activeDaysText = findViewById(R.id.viewActiveDaysText);
+        TextView titleText = findViewById(R.id.viewHabitTitle_habitEvent);
+        TextView reasonText = findViewById(R.id.viewHabitReason_habitEvent);
+        TextView startDateText = findViewById(R.id.viewHabitDateText_habitEvent);
+        TextView activeDaysText = findViewById(R.id.viewActiveDaysText_habitEvent);
 
         titleText.setText(habit.getTitle());
         reasonText.setText(habit.getReason());
         startDateText.setText(getDateText(habit.getDateCreated()));
         activeDaysText.setText(getDaysText(habit.getFrequency()));
-
     }
 
     /**
