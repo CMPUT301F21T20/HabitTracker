@@ -12,6 +12,7 @@ import java.util.Date;
 
 public class AddNewHabitEventActivity extends AppCompatActivity {
     private Habit habit;
+    private String habitEventId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
