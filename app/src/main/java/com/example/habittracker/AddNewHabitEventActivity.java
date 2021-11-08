@@ -15,6 +15,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -51,6 +52,7 @@ import java.util.UUID;
 
 public class AddNewHabitEventActivity extends AppCompatActivity {
     private Habit habit;
+    private String filterAddress;
     private String habitEventId;
     private ImageButton addPhotoBtn_camera;
     private ImageButton addPhotoBtn_album;
@@ -59,6 +61,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
     public static final int PICK_PHOTO = 102;
     private Uri imageUri;
     private ImageButton addLocationBtn;
+    private EditText addLocation_editText;
 
 
     @Override
@@ -74,6 +77,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         // reference the following link if unsure on how to do this:
         // https://stackoverflow.com/questions/2736389/how-to-pass-an-object-from-one-activity-to-another-on-android
         habit = (Habit) intent.getSerializableExtra("Habit");
+        filterAddress = (String) intent.getSerializableExtra("Location");
 
         TextView titleText = findViewById(R.id.viewHabitTitle_habitEvent);
         TextView reasonText = findViewById(R.id.viewHabitReason_habitEvent);
@@ -91,7 +95,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         addPhotoBtn_album = findViewById(R.id.addPhotoBtn_fromAlbum);
         photoAdded = findViewById(R.id.HabitImageView1);
         addLocationBtn = findViewById(R.id.addLocationBtn);
-        EditText addLocationText = findViewById(R.id.addLocation_editText);
+        addLocation_editText = findViewById(R.id.addLocation_editText);
         EditText addComment = findViewById(R.id.addComment_editText);
         Button submitBtn = findViewById(R.id.addHabitEventSubmitBtn);
 
@@ -146,7 +150,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
                         uid,
                         isCompleted.isChecked(),
                         bitmap,
-                        addLocationText.getText().toString(),
+                        addLocation_editText.getText().toString(),
                         addComment.getText().toString()
                 );
 
@@ -294,8 +298,10 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
     }
 
     public void locationBtnOnClick(){
-        Intent intent = new Intent(AddNewHabitEventActivity.this, MapsActivity.class);
-        AddNewHabitEventActivity.this.startActivity(intent);
+        MapsFragment mapsFragment = new MapsFragment();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.FL1_addHabitEventL1, mapsFragment).addToBackStack(null);
+        transaction.commit();
     }
 
     @Override

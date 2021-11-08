@@ -184,7 +184,8 @@
             android:layout_height="wrap_content"
             android:editable="false"
             android:hint="No location added yet..."
-            android:maxLength="20" />
+            android:inputType="text"
+            android:maxLines="1" />
 
         <TextView
             android:layout_width="match_parent"
@@ -198,7 +199,8 @@
             android:id="@+id/addComment_editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="No comment added yet..." />
+            android:hint="No comment added yet..."
+            android:maxLength="20"/>
     </LinearLayout>
 
     <LinearLayout
@@ -216,4 +218,16 @@
             android:textSize="18dp" />
 
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/FL1_addHabitEventL1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginBottom="0dp"></FrameLayout>
+
 </RelativeLayout>

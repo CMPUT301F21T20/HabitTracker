@@ -1,6 +1,10 @@
+/**
+ * this activity is not used now, but preserved for potential use later
+ */
 package com.example.habittracker;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Criteria;
@@ -39,7 +43,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Button locationUpdateBtn;
     private TextView updatedLocation_textView;
 
-    // TODO: dynamically set the Latitude and Longitude
     private double userLat;
     private double userLong;
 
@@ -69,7 +72,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View view) {
                 if (!updatedLocation_textView.getText().toString().equals("Location not updated yet...")){
-                    finish();
+                    confirmLocation();
                 }else{
                     finish();
                 }
@@ -159,5 +162,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void setLocationTextView(){
         formatLocation();
         updatedLocation_textView.setText(filterAddress);
+    }
+
+    public void confirmLocation(){
     }
 }
