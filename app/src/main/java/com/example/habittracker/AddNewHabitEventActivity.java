@@ -1,6 +1,7 @@
 package com.example.habittracker;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.content.ContentUris;
@@ -9,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.MaskFilter;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -30,9 +32,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.habittracker.classes.Habit;
 import com.example.habittracker.classes.HabitEvent;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -40,6 +46,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
 
 public class AddNewHabitEventActivity extends AppCompatActivity {
@@ -100,6 +107,13 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 albumBtnOnClick();
+            }
+        });
+
+        addLocationBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                locationBtnOnClick();
             }
         });
 
@@ -203,7 +217,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         // start the camera program
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-        startActivityForResult(intent, TAKE_CAMERA);
+        AddNewHabitEventActivity.this.startActivityForResult(intent, TAKE_CAMERA);
     }
 
     public void albumBtnOnClick(){
@@ -216,7 +230,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             // Intent.ACTION_GET_CONTENT = "android.intent.action.GET_CONTENT"
             intent.setType("image/*");
-            startActivityForResult(intent, PICK_PHOTO); // 打开相册
+            AddNewHabitEventActivity.this.startActivityForResult(intent, PICK_PHOTO); // 打开相册
         }
     }
 
@@ -277,6 +291,11 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Failed to obtain image from album", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void locationBtnOnClick(){
+        Intent intent = new Intent(AddNewHabitEventActivity.this, MapsActivity.class);
+        AddNewHabitEventActivity.this.startActivity(intent);
     }
 
     @Override

@@ -90,7 +90,7 @@ public class ViewHabitActivity extends AppCompatActivity {
     public void openAddHabitEventActivity(){
         Intent intent = new Intent(this, AddNewHabitEventActivity.class);
         intent.putExtra("Habit", habit);
-        this.startActivity(intent);
+        ViewHabitActivity.this.startActivity(intent);
     }
 
     /**
