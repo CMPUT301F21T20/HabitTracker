@@ -1,49 +1,41 @@
 package com.example.habittracker;
 
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.FragmentActivity;
-
-
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Looper;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentActivity;
+
+import com.example.habittracker.databinding.ActivityMapsBinding;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.example.habittracker.databinding.ActivityMapsBinding;
-import com.google.common.collect.Maps;
 
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Locale;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private ActivityMapsBinding binding;
+    private com.example.habittracker.databinding.ActivityMapsBinding binding;
     private String filterAddress = "";
     private Location currentLocation;
+    private Button locationConfirmBtn;
     private Button locationUpdateBtn;
     private TextView updatedLocation_textView;
 
@@ -63,11 +55,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         updatedLocation_textView = findViewById(R.id.updatedLocation_textView);
         locationUpdateBtn = findViewById(R.id.locationUpdateBtn);
+        locationConfirmBtn = findViewById(R.id.locationConfirmBtn);
+
         locationUpdateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getLocation();
                 setLocationTextView();
+            }
+        });
+
+        locationConfirmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!updatedLocation_textView.getText().toString().equals("Location not updated yet...")){
+                    finish();
+                }else{
+                    finish();
+                }
             }
         });
     }
@@ -79,10 +84,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     geocoder.getFromLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), 1);
 
             if (addresses.size() > 0) {
-                for (int i = 0; i < addresses.get(0).getMaxAddressLineIndex(); i++)
-                    filterAddress += addresses.get(0).getAddressLine(i) + " ";
+                filterAddress = addresses.get(0).getAddressLine(0);
+
             }
-            Toast.makeText(this, filterAddress, Toast.LENGTH_LONG).show();
         } catch (IOException ex) {
             ex.printStackTrace();
         } catch (Exception e2) {
