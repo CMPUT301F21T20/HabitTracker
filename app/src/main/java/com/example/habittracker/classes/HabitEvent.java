@@ -1,6 +1,7 @@
 package com.example.habittracker.classes;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -10,16 +11,16 @@ public class HabitEvent implements Serializable {
     private String habitEventId;
     private String userId;
     private boolean isCompleted;
-    private Bitmap bitmap;
+    private String imageUri;
     private String location;
     private String comment;
 
     public HabitEvent(String habitEventId, String userId, boolean isCompleted,
-                      Bitmap bitmap, String location, String comment) {
+                      String imageUri, String location, String comment) {
         this.habitEventId = habitEventId;
         this.userId = userId;
         this.isCompleted = isCompleted;
-        this.bitmap = bitmap;
+        this.imageUri = imageUri;
         this.location = location;
         this.comment = comment;
     }
@@ -29,7 +30,7 @@ public class HabitEvent implements Serializable {
     public Map<String, Object> getHabitEventMap() {
         Map<String, Object> habitEvent = new HashMap<>();
         habitEvent.put("isCompleted", this.isCompleted);
-        habitEvent.put("bitmap", this.bitmap);
+        habitEvent.put("imageUri", this.imageUri);
         habitEvent.put("location", this.location);
         habitEvent.put("comment", this.comment);
         return habitEvent;
@@ -59,12 +60,12 @@ public class HabitEvent implements Serializable {
         isCompleted = completed;
     }
 
-    public Bitmap getBitmap() {
-        return bitmap;
+    public String getImageUri() {
+        return imageUri;
     }
 
-    public void setBitmap(Bitmap bitmap) {
-        this.bitmap = bitmap;
+    public void setBitmap(String imageUri) {
+        this.imageUri = imageUri;
     }
 
     public String getLocation() {

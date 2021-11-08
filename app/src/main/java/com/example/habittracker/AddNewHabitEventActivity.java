@@ -39,6 +39,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.habittracker.classes.Habit;
 import com.example.habittracker.classes.HabitEvent;
+import com.example.habittracker.controllers.HabitEventController;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -136,23 +137,17 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
                     return;
                 }
 
-                BitmapDrawable bitmapDrawable = null;
-                Bitmap bitmap = null;
-                try {
-                    bitmapDrawable = (BitmapDrawable) photoAdded.getDrawable();
-                    bitmap = bitmapDrawable.getBitmap();
-                }
-                catch (ClassCastException e){
-                }
-
                 HabitEvent habitEvent = new HabitEvent(
                         habitEventId,
                         uid,
                         isCompleted.isChecked(),
-                        bitmap,
+                        imageUri.toString(),
                         addLocation_editText.getText().toString(),
                         addComment.getText().toString()
                 );
+
+                HabitEventController habitEventController = new HabitEventController();
+                habitEventController.saveHabitEvent(habitEvent);
 
                 finish();
             }
@@ -293,7 +288,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
             Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
             photoAdded.setImageBitmap(bitmap);
         } else {
-            Toast.makeText(this, "Failed to obtain image from album", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Failed to add image", Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -28,7 +28,7 @@
 
     <Button
         android:id="@+id/locationUpdateBtn"
-        android:layout_width="96dp"
+        android:layout_width="108dp"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginBottom="120dp"
@@ -37,7 +37,7 @@
 
     <Button
         android:id="@+id/locationConfirmBtn"
-        android:layout_width="96dp"
+        android:layout_width="108dp"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginBottom="72dp"
