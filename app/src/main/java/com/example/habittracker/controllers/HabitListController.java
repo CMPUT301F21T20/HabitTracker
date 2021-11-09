@@ -52,7 +52,7 @@ public class HabitListController {
 
     /**
      * This function is used to convert the raw Firestore data into an actual HabitList object
-     * @param docData The raw Firestore data from a Habits document
+     * @param docData The raw Firestore data from a users Habit document
      * @param uid The uid of the user whose habit data this function is processing
      * @return An instance of HabitList
      */

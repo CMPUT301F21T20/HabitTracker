@@ -46,7 +46,6 @@ public class HomeFragment extends Fragment {
         addHabitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("Test", "Clicked Button!");
                 openAddHabitActivity();
             }
         });
@@ -54,6 +53,9 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
+    /**
+     * This function will handle opening the add new habit activity
+     */
     public void openAddHabitActivity() {
         Intent intent = new Intent(thisContext, AddNewHabitActivity.class);
         startActivity(intent);
