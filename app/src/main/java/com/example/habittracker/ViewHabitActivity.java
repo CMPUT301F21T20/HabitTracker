@@ -1,12 +1,12 @@
 package com.example.habittracker;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.habittracker.classes.Habit;
 
@@ -34,12 +34,20 @@ public class ViewHabitActivity extends AppCompatActivity {
         TextView reasonText = findViewById(R.id.viewHabitReason);
         TextView startDateText = findViewById(R.id.viewHabitDateText);
         TextView activeDaysText = findViewById(R.id.viewActiveDaysText);
+        Button editHabitBtn = findViewById(R.id.editHabitBtn);
         Button addHabitEventBtn = findViewById(R.id.addHabitEventBtn);
 
         titleText.setText(habit.getTitle());
         reasonText.setText(habit.getReason());
         startDateText.setText(getDateText(habit.getDateCreated()));
         activeDaysText.setText(getDaysText(habit.getFrequency()));
+
+        editHabitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openEditHabitActivity();
+            }
+        });
 
         addHabitEventBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,6 +97,12 @@ public class ViewHabitActivity extends AppCompatActivity {
 
     public void openAddHabitEventActivity(){
         Intent intent = new Intent(this, AddNewHabitEventActivity.class);
+        intent.putExtra("Habit", habit);
+        ViewHabitActivity.this.startActivity(intent);
+    }
+
+    public void openEditHabitActivity(){
+        Intent intent = new Intent(this, AddNewHabitActivity.class);
         intent.putExtra("Habit", habit);
         ViewHabitActivity.this.startActivity(intent);
     }
