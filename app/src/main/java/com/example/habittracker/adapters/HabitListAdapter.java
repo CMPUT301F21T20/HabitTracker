@@ -37,7 +37,7 @@ public class HabitListAdapter extends ArrayAdapter<Habit> {
         View view = convertView;
 
         if (view == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.habit_list_content, parent, false);
+            view = LayoutInflater.from(context).inflate(R.layout.content_habit_list, parent, false);
         }
 
         Habit habit = habitList.get(position);

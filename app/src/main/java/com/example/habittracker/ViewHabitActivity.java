@@ -1,29 +1,17 @@
 package com.example.habittracker;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.example.habittracker.classes.Habit;
-import com.example.habittracker.controllers.HabitController;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 /**
  * This activity is for viewing a habit
@@ -36,21 +24,29 @@ public class ViewHabitActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_habit);
 
+        Intent intent = getIntent();
         // Must pass the Habit through the intent!
         // reference the following link if unsure on how to do this:
         // https://stackoverflow.com/questions/2736389/how-to-pass-an-object-from-one-activity-to-another-on-android
-        habit = (Habit) getIntent().getSerializableExtra("Habit");
+        habit = (Habit) intent.getSerializableExtra("Habit");
 
         TextView titleText = findViewById(R.id.viewHabitTitle);
         TextView reasonText = findViewById(R.id.viewHabitReason);
         TextView startDateText = findViewById(R.id.viewHabitDateText);
         TextView activeDaysText = findViewById(R.id.viewActiveDaysText);
+        Button addHabitEventBtn = findViewById(R.id.addHabitEventBtn);
 
         titleText.setText(habit.getTitle());
         reasonText.setText(habit.getReason());
         startDateText.setText(getDateText(habit.getDateCreated()));
         activeDaysText.setText(getDaysText(habit.getFrequency()));
 
+        addHabitEventBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openAddHabitEventActivity();
+            }
+        });
     }
 
     /**
@@ -89,5 +85,21 @@ public class ViewHabitActivity extends AppCompatActivity {
         }
 
         return out.length() == 0 ? "No active days selected" : out;
+    }
+
+    public void openAddHabitEventActivity(){
+        Intent intent = new Intent(this, AddNewHabitEventActivity.class);
+        intent.putExtra("Habit", habit);
+        ViewHabitActivity.this.startActivity(intent);
+    }
+
+    /**
+     * rewrite the back button on the action bar to make its functionality works better
+     * @return false to return to the activity before
+     */
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return false;
     }
 }

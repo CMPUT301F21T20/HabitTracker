@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".AddNewHabitEventActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/updatedLocation_textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="24dp"
+        android:text="Location not updated yet..."
+        android:gravity="center"
+        android:textSize="24dp"
+        android:typeface="serif"
+        android:textStyle=""
+        android:layout_gravity="top|start"/>
+
+    <Button
+        android:id="@+id/locationUpdateBtn"
+        android:layout_width="108dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="120dp"
+        android:text="Update">
+    </Button>
+
+    <Button
+        android:id="@+id/locationConfirmBtn"
+        android:layout_width="108dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="72dp"
+        android:text="Confirm">
+    </Button>
+
+</FrameLayout>
