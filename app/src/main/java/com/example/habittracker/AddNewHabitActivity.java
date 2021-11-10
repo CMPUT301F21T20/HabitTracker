@@ -1,13 +1,8 @@
 package com.example.habittracker;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -15,21 +10,16 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.ToggleButton;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.habittracker.classes.Habit;
 import com.example.habittracker.controllers.HabitController;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.protobuf.Any;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -39,6 +29,15 @@ import java.util.UUID;
 public class AddNewHabitActivity extends AppCompatActivity {
     private Date selectedDate;
     private String habitId;
+    private Habit habit = null;
+    private EditText editTitle;
+    private EditText editReason;
+    private EditText startDateText;
+    private Button startDateButton;
+    private ToggleButton[] selectedDates;
+    private Switch canShare;
+    private Button submitButton;
+
 
     /**
      * This function is run when the activity is starting
@@ -52,11 +51,11 @@ public class AddNewHabitActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        EditText editTitle = findViewById(R.id.addHabitTitle);
-        EditText editReason = findViewById(R.id.addHabitReason);
-        EditText startDateText = findViewById(R.id.addHabitDateText);
-        Button startDateButton = findViewById(R.id.addHabitDateButton);
-        ToggleButton[] selectedDates = new ToggleButton[]{
+        editTitle = findViewById(R.id.addHabitTitle);
+        editReason = findViewById(R.id.addHabitReason);
+        startDateText = findViewById(R.id.addHabitDateText);
+        startDateButton = findViewById(R.id.addHabitDateButton);
+        selectedDates = new ToggleButton[]{
                 findViewById(R.id.addHabitMon),
                 findViewById(R.id.addHabitTue),
                 findViewById(R.id.addHabitWed),
@@ -65,8 +64,17 @@ public class AddNewHabitActivity extends AppCompatActivity {
                 findViewById(R.id.addHabitSat),
                 findViewById(R.id.addHabitSun)
         };
-        Switch canShare = findViewById(R.id.addHabitCanShare);
-        Button submitButton = findViewById(R.id.addHabitSubmitButton);
+        canShare = findViewById(R.id.addHabitCanShare);
+        submitButton = findViewById(R.id.addHabitSubmitButton);
+
+        // if success on get habit, means ViewHabitActivity send the intent for editing, then set the attributes ready for editing
+        // Otherwise, HomeFragment send the intent for adding
+        try {
+            habit = (Habit) intent.getSerializableExtra("Habit");
+            setAttributes();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         startDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -198,6 +206,27 @@ public class AddNewHabitActivity extends AppCompatActivity {
 
         return titleError || reasonError || startDateError;
     }
+
+    /**
+     * set the attributes for editing existing habits
+     */
+    public void setAttributes(){
+        editTitle.setText(habit.getTitle());
+        editReason.setText(habit.getReason());
+        selectedDate = habit.getDateCreated();
+        startDateText.setText((selectedDate.getYear() + 1900) + "-" +
+                (selectedDate.getMonth() + 1) + "-" + selectedDate.getDate());
+        ArrayList<Integer> frequency = habit.getFrequency();
+        ArrayList<Integer> temp = new ArrayList<>(7);
+        for (int i = 0; i < 7; i++) {
+            temp.add(1);
+        }
+        for (int i = 0; i < 7; i++){
+            selectedDates[i].setChecked(frequency.get(i) != temp.get(i));
+        }
+        canShare.setChecked(habit.getCanShare());
+    }
+
 
     /**
      * rewrite the back button on the action bar to make its functionality works better

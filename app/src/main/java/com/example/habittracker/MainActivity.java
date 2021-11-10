@@ -4,19 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.habittracker.classes.HabitList;
-import com.example.habittracker.classes.User;
-import com.example.habittracker.controllers.HabitController;
-import com.example.habittracker.controllers.HabitListController;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
+import com.example.habittracker.classes.User;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 /**
  * Main activity, shows the main page which contains the habit list and todos for today
@@ -46,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
                 R.id.navigation_following, R.id.navigation_follower, R.id.navigation_profile)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 

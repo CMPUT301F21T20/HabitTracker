@@ -1,7 +1,6 @@
 package com.example.habittracker.ui.home;
 
 import android.content.Context;
-import static androidx.core.content.ContextCompat.startActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,9 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,9 +22,7 @@ import com.example.habittracker.adapters.HabitListAdapter;
 import com.example.habittracker.classes.Habit;
 import com.example.habittracker.classes.HabitList;
 import com.example.habittracker.controllers.HabitListController;
-import com.example.habittracker.interfaces.OnHabitListRetrieved;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
@@ -36,7 +31,6 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 public class HomeFragment extends Fragment {
@@ -45,7 +39,7 @@ public class HomeFragment extends Fragment {
     private Context thisContext;
     private HabitList habitList;
     private ArrayAdapter<Habit> habitListAdapter;
-    private ListView habitsTodayListView;
+    private ListView habitsListView;
     private FirebaseFirestore db;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -59,11 +53,11 @@ public class HomeFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
         addHabitButton = root.findViewById(R.id.addHabitButton);
-        habitsTodayListView = root.findViewById(R.id.habits_today_listview);
+        habitsListView = root.findViewById(R.id.habits_listview);
 
         habitList = new HabitList();
         habitListAdapter = new HabitListAdapter(thisContext, habitList);
-        habitsTodayListView.setAdapter(habitListAdapter);
+        habitsListView.setAdapter(habitListAdapter);
 
         final CollectionReference collectionReference = db.collection("Habits");
 

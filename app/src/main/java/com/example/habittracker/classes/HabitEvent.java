@@ -1,8 +1,5 @@
 package com.example.habittracker.classes;
 
-import android.graphics.Bitmap;
-import android.net.Uri;
-
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
