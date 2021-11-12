@@ -43,3 +43,5 @@ obj/
 .cxx
 
 .env
+.project
+.classpath

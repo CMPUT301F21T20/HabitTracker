@@ -25,6 +25,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class is for register a new user, record user credentials to firestore
+ */
 public class RegisterActivity extends AppCompatActivity {
     EditText FullName, Email, Password;
     Button RegisterButton;
@@ -51,6 +54,10 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
         RegisterButton.setOnClickListener(new View.OnClickListener() {
+
+            /**
+             * Get user credentials and send to firestore
+             */
             @Override
             public void onClick(View view) {
                 String fullName = FullName.getText().toString().trim();

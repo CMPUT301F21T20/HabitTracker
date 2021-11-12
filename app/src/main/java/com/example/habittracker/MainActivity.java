@@ -18,6 +18,9 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+/**
+ * Main activity, shows the main page which contains the habit list and todos for today
+ */
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth fAuth;
     private User user;
@@ -46,8 +49,8 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
-        HabitListController habitListController = new HabitListController();
-        HabitList habitList = habitListController.loadHabitList(user.getUid());
+        //HabitListController habitListController = new HabitListController();
+        //HabitList habitList = habitListController.loadHabitList(user.getUid());
         // TODO: connect habitList with AddNewHabitActivity so that creating a new habit reloads the list
         // TODO: OR use the habitList directly (return the habit and add it to habit list from here)
         // TODO: i.e. adding new Habit right now does not refresh habit list locally here (add listener?)

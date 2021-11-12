@@ -8,8 +8,12 @@ import com.example.habittracker.controllers.HabitController;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * List of all habits for a selected user
+ */
 public class HabitList {
 
+    // Use ArrayList to match up the required uploading type of firestone
     private ArrayList<Habit> habitList;
 
     public HabitList(ArrayList<Habit> habitList) {
@@ -37,6 +41,15 @@ public class HabitList {
     }
 
     /**
+     * This function will return the specific Habit at the specified index
+     * @param index the index of the Habit
+     * @return the habit at the certain index
+     */
+    public Habit get(int index) {
+        return habitList.get(index);
+    }
+
+    /**
      * this function will return true if the habit is in the list and false otherwise
      * @param habit The habit to search for in the list
      */
@@ -44,8 +57,16 @@ public class HabitList {
         return habitList.contains(habit);
     }
 
+    /**
+     * Clears the habit list
+     */
+    public void clear() {
+        habitList.clear();
+    }
 
-
+    /**
+     * Override the equal operation for better comparison
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -54,9 +75,20 @@ public class HabitList {
         return habitList.equals(that.habitList);
     }
 
+    /**
+     * Generate a unique number identifier
+     */
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public int hashCode() {
         return Objects.hash(habitList);
+    }
+
+    public ArrayList<Habit> getHabitList() {
+        return habitList;
+    }
+
+    public void setHabitList(ArrayList<Habit> habitList) {
+        this.habitList = habitList;
     }
 }
