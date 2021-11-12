@@ -9,4 +9,5 @@
     <string name="title_habits_today">Habits Today</string>
     <string name="title_habits_unbroken">Habits Unbroken</string>
     <string name="title_habits">Habits</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>
