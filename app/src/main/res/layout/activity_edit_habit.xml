@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp"
+    android:clipToPadding="false"
+    tools:context=".EditHabitActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:text="Habit Name" />
+        <EditText
+            android:id="@+id/editHabitTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLength="20"
+            android:hint="My Habit"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:textSize="16dp"
+            android:text="Reasons" />
+        <EditText
+            android:id="@+id/editHabitReason"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLength="30"
+            android:hint="Describe your habit..."/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:textSize="16dp"
+            android:text="Start Date" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="5">
+
+            <EditText
+                android:id="@+id/editHabitDateText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="yyyy-mm-dd"
+                android:gravity="center_horizontal"
+                android:layout_weight="2"
+                android:editable="false"/>
+
+            <Button
+                android:id="@+id/editHabitDateButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:text="PICK DATE" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:textSize="16dp"
+            android:text="Active Days" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp" >
+
+            <ToggleButton
+                android:id="@+id/editHabitMon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="ToggleButton"
+                android:padding="0dp"
+                android:textOff="MON"
+                android:textOn="MON" />
+
+            <ToggleButton
+                android:id="@+id/editHabitTue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="ToggleButton"
+                android:padding="0dp"
+                android:textOff="TUE"
+                android:textOn="TUE" />
+
+            <ToggleButton
+                android:id="@+id/editHabitWed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="ToggleButton"
+                android:padding="0dp"
+                android:textOff="WED"
+                android:textOn="WED" />
+
+            <ToggleButton
+                android:id="@+id/editHabitThu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="ToggleButton"
+                android:padding="0dp"
+                android:textOff="THU"
+                android:textOn="THU" />
+
+            <ToggleButton
+                android:id="@+id/editHabitFri"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="ToggleButton"
+                android:padding="0dp"
+                android:textOff="FRI"
+                android:textOn="FRI" />
+
+            <ToggleButton
+                android:id="@+id/editHabitSat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="ToggleButton"
+                android:padding="0dp"
+                android:textOff="SAT"
+                android:textOn="SAT" />
+
+            <ToggleButton
+                android:id="@+id/editHabitSun"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="ToggleButton"
+                android:padding="0dp"
+                android:textOff="SUN"
+                android:textOn="SUN" />
+        </LinearLayout>
+
+        <Switch
+            android:id="@+id/editHabitCanShare"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Decide Sharing"
+            android:textSize="16dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/editHabitSubmitButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="SAVE CHANGES"
+            android:textSize="18dp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

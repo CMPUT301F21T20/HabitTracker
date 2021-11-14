@@ -76,9 +76,28 @@ public class HabitController {
         return success.get();
     }
 
+    public Boolean editHabit(Habit habit) {
+        AtomicBoolean success = new AtomicBoolean(false);
+        Map<String, Object> habitMap = habit.getHabitMap();
+
+        // create a mapping within a mapping so merging is possible
+        Map<String, Object> updates = new HashMap<>();
+        updates.put(habit.getHabitId(), habitMap);
+
+        DB.collection("Habits").document(habit.getUserId())
+                .update(updates)
+                .addOnSuccessListener(aVoid -> {
+                    success.set(true);
+                    Log.d("Firestore", "DocumentSnapshot successfully updated!");
+                })
+                .addOnFailureListener(e -> Log.w("Firestore", "Error updating document", e));
+
+        return success.get();
+    }
+
     /**
      * Provided a userId and HabitId, retrieve a habit
-     * @param userId the userId to which the hjabti belongs
+     * @param userId the userId to which the habit belongs
      * @param habitId the is of the habit
      * @return
      */

@@ -24,9 +24,9 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * This class hold functionality for when creating a New Habit
-  */
-public class AddNewHabitActivity extends AppCompatActivity {
+ * This class hold functionality for when editing a Habit
+ */
+public class EditHabitActivity extends AppCompatActivity {
     private Date selectedDate;
     private String habitId;
     private Habit habit = null;
@@ -47,25 +47,29 @@ public class AddNewHabitActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_new_habit);
+        setContentView(R.layout.activity_edit_habit);
 
         Intent intent = getIntent();
 
-        editTitle = findViewById(R.id.addHabitTitle);
-        editReason = findViewById(R.id.addHabitReason);
-        startDateText = findViewById(R.id.addHabitDateText);
-        startDateButton = findViewById(R.id.addHabitDateButton);
+        editTitle = findViewById(R.id.editHabitTitle);
+        editReason = findViewById(R.id.editHabitReason);
+        startDateText = findViewById(R.id.editHabitDateText);
+        startDateButton = findViewById(R.id.editHabitDateButton);
         selectedDates = new ToggleButton[]{
-                findViewById(R.id.addHabitMon),
-                findViewById(R.id.addHabitTue),
-                findViewById(R.id.addHabitWed),
-                findViewById(R.id.addHabitThu),
-                findViewById(R.id.addHabitFri),
-                findViewById(R.id.addHabitSat),
-                findViewById(R.id.addHabitSun)
+                findViewById(R.id.editHabitMon),
+                findViewById(R.id.editHabitTue),
+                findViewById(R.id.editHabitWed),
+                findViewById(R.id.editHabitThu),
+                findViewById(R.id.editHabitFri),
+                findViewById(R.id.editHabitSat),
+                findViewById(R.id.editHabitSun)
         };
-        canShare = findViewById(R.id.addHabitCanShare);
-        submitButton = findViewById(R.id.addHabitSubmitButton);
+        canShare = findViewById(R.id.editHabitCanShare);
+        submitButton = findViewById(R.id.editHabitSubmitButton);
+
+        // Need to pass habit through intent
+        habit = (Habit) intent.getSerializableExtra("Habit");
+        setAttributes();
 
         startDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,7 +85,7 @@ public class AddNewHabitActivity extends AppCompatActivity {
                 FirebaseUser user;
                 ArrayList<Integer> frequency;
                 String uid;
-                habitId = UUID.randomUUID().toString();
+                habitId = habit.getHabitId();
 
                 // Error message checking
                 if (errorCheck(editTitle, editReason, startDateText)) {
@@ -116,7 +120,7 @@ public class AddNewHabitActivity extends AppCompatActivity {
                 );
 
                 HabitController controller = new HabitController();
-                Boolean success = controller.saveHabit(habit);
+                Boolean success = controller.editHabit(habit);
 
                 if (!success) {
                     // TODO: alert user to try again later;
@@ -197,6 +201,28 @@ public class AddNewHabitActivity extends AppCompatActivity {
 
         return titleError || reasonError || startDateError;
     }
+
+    /**
+     * set the attributes for editing existing habits
+     */
+    public void setAttributes(){
+        editTitle.setText(habit.getTitle());
+        editReason.setText(habit.getReason());
+        selectedDate = habit.getDateCreated();
+        startDateText.setText((selectedDate.getYear() + 1900) + "-" +
+                (selectedDate.getMonth() + 1) + "-" + selectedDate.getDate());
+        ArrayList<Integer> frequency = habit.getFrequency();
+        ArrayList<Integer> temp = new ArrayList<>(7);
+        for (int i = 0; i < 7; i++) {
+            temp.add(1);
+        }
+        for (int i = 0; i < 7; i++){
+            String check = "" + frequency.get(i);
+            selectedDates[i].setChecked(check.equals("1"));
+        }
+        canShare.setChecked(habit.getCanShare());
+    }
+
 
     /**
      * rewrite the back button on the action bar to make its functionality works better
