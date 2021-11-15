@@ -2,27 +2,47 @@ package com.example.habittracker;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.habittracker.classes.Habit;
+import com.example.habittracker.classes.HabitList;
+import com.example.habittracker.controllers.HabitListController;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * This activity is for viewing a habit
  */
 public class ViewHabitActivity extends AppCompatActivity {
     private Habit habit;
+    private FirebaseFirestore db;
+    private TextView titleText;
+    private TextView reasonText;
+    private TextView startDateText;
+    private TextView activeDaysText;
+    private Button editHabitBtn;
+    private Button addHabitEventBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_habit);
+        db = FirebaseFirestore.getInstance();
 
         Intent intent = getIntent();
         // Must pass the Habit through the intent!
@@ -30,17 +50,19 @@ public class ViewHabitActivity extends AppCompatActivity {
         // https://stackoverflow.com/questions/2736389/how-to-pass-an-object-from-one-activity-to-another-on-android
         habit = (Habit) intent.getSerializableExtra("Habit");
 
-        TextView titleText = findViewById(R.id.viewHabitTitle);
-        TextView reasonText = findViewById(R.id.viewHabitReason);
-        TextView startDateText = findViewById(R.id.viewHabitDateText);
-        TextView activeDaysText = findViewById(R.id.viewActiveDaysText);
-        Button editHabitBtn = findViewById(R.id.editHabitBtn);
-        Button addHabitEventBtn = findViewById(R.id.addHabitEventBtn);
+        titleText = findViewById(R.id.viewHabitTitle);
+        reasonText = findViewById(R.id.viewHabitReason);
+        startDateText = findViewById(R.id.viewHabitDateText);
+        activeDaysText = findViewById(R.id.viewActiveDaysText);
+        editHabitBtn = findViewById(R.id.editHabitBtn);
+        addHabitEventBtn = findViewById(R.id.addHabitEventBtn);
 
         titleText.setText(habit.getTitle());
         reasonText.setText(habit.getReason());
         startDateText.setText(getDateText(habit.getDateCreated()));
         activeDaysText.setText(getDaysText(habit.getFrequency()));
+
+        final CollectionReference collectionReference = db.collection("Habits");
 
         editHabitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,6 +75,13 @@ public class ViewHabitActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 openAddHabitEventActivity();
+            }
+        });
+
+        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                handleCollectionUpdate(queryDocumentSnapshots, e);
             }
         });
     }
@@ -95,14 +124,20 @@ public class ViewHabitActivity extends AppCompatActivity {
         return out.length() == 0 ? "No active days selected" : out;
     }
 
+    /**
+     * Handles openinng of addNewHabitEventActivtity
+     */
     public void openAddHabitEventActivity(){
         Intent intent = new Intent(this, AddNewHabitEventActivity.class);
         intent.putExtra("Habit", habit);
         ViewHabitActivity.this.startActivity(intent);
     }
 
+    /**
+     * Handles openinng of editHabitActivtity
+     */
     public void openEditHabitActivity(){
-        Intent intent = new Intent(this, AddNewHabitActivity.class);
+        Intent intent = new Intent(this, EditHabitActivity.class);
         intent.putExtra("Habit", habit);
         ViewHabitActivity.this.startActivity(intent);
     }
@@ -115,5 +150,52 @@ public class ViewHabitActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return false;
+    }
+
+    /**
+     * handles an update to the list of habits and updates text of current habit
+     * @param queryDocumentSnapshots snapshots of the affected documents
+     * @param e an exception if raised
+     */
+    public void handleCollectionUpdate(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String habitId = habit.getHabitId();
+        HabitList habitList = null;
+        HabitListController hc = new HabitListController();
+
+        for(QueryDocumentSnapshot doc: queryDocumentSnapshots)
+        {
+            // get the document that lists all habits for the user currently signed in
+            if (doc.getId().equals(uid)) {
+                Log.d("HANDLER", String.valueOf(doc.getData()));
+                Map<String, Object> docData = (Map<String, Object>) doc.getData();
+                habitList = hc.convertToHabitList(docData, uid);
+            }
+        }
+
+        // If the user has no habits
+        if (habitList == null) {
+            return;
+        }
+
+        // Update texts for current habit if found
+        for (int i = 0; i < habitList.getCount(); i++) {
+            if (habitList.get(i).getHabitId().equals(habitId)) {
+                updateAttributes(habitList.get(i));
+                return;
+            }
+        }
+    }
+
+    /**
+     * Update all attributes for the view and update habit attribute
+     * @param newHabit the habit to update attributes to
+     */
+    public void updateAttributes(Habit newHabit) {
+        habit = newHabit;
+        titleText.setText(habit.getTitle());
+        reasonText.setText(habit.getReason());
+        startDateText.setText(getDateText(habit.getDateCreated()));
+        activeDaysText.setText(getDaysText(habit.getFrequency()));
     }
 }
