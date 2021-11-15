@@ -57,7 +57,7 @@
         </activity>
         <activity
             android:name=".AddNewHabitActivity"
-            android:label="Add / Edit Habit">
+            android:label="Add New Habit">
 
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
@@ -66,7 +66,7 @@
         </activity>
         <activity
             android:name=".AddNewHabitEventActivity"
-            android:label="Add / Edit Habit Event">
+            android:label="Add New Habit Event">
 
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
