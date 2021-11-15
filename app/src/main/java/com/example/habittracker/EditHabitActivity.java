@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * This class hold functionality for when editing a Habit
@@ -212,10 +211,6 @@ public class EditHabitActivity extends AppCompatActivity {
         startDateText.setText((selectedDate.getYear() + 1900) + "-" +
                 (selectedDate.getMonth() + 1) + "-" + selectedDate.getDate());
         ArrayList<Integer> frequency = habit.getFrequency();
-        ArrayList<Integer> temp = new ArrayList<>(7);
-        for (int i = 0; i < 7; i++) {
-            temp.add(1);
-        }
         for (int i = 0; i < 7; i++){
             String check = "" + frequency.get(i);
             selectedDates[i].setChecked(check.equals("1"));
