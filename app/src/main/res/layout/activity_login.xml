@@ -106,7 +106,10 @@
         android:shadowColor="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password" />
+        app:layout_constraintTop_toBottomOf="@+id/password"
+        android:background="@drawable/button_gradient"
+        app:backgroundTint="@null"
+        android:textColor="#ffffff" />
 
     <TextView
         android:id="@+id/registerPageBtn"
