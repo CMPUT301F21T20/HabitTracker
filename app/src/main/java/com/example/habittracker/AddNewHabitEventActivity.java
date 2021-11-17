@@ -62,6 +62,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
     public static final int PICK_PHOTO = 102;
     private Uri uri;
     private Uri imageUri = null;
+    private Bitmap imageBitmap;
     private ImageButton addLocationBtn;
     private EditText addLocation_editText;
 
@@ -302,8 +303,8 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
 
     private void displayImage(String imagePath) {
         if (imagePath != null) {
-            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-            photoAdded.setImageBitmap(bitmap);
+            imageBitmap = BitmapFactory.decodeFile(imagePath);
+            photoAdded.setImageBitmap(imageBitmap);
         } else {
             Toast.makeText(this, "Failed to add image", Toast.LENGTH_SHORT).show();
         }
@@ -324,8 +325,8 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
                 if (resultCode == RESULT_OK) {
                     try {
                         // display the photo
-                        Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
-                        photoAdded.setImageBitmap(bitmap);
+                        imageBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
+                        photoAdded.setImageBitmap(imageBitmap);
                         if (data != null) {
                             imageUri = data.getData();
                         }
