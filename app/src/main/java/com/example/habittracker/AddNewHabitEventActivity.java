@@ -9,6 +9,8 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -55,9 +57,13 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
     private Habit habit;
     private String filterAddress;
     private String habitEventId;
+    private Switch isCompleted;
+    private ImageButton deletePhotoBtn;
     private ImageButton addPhotoBtn_camera;
     private ImageButton addPhotoBtn_album;
     private ImageView photoAdded;
+    private EditText addComment;
+    private Button submitBtn;
     public static final int TAKE_CAMERA = 101;
     public static final int PICK_PHOTO = 102;
     private Uri uri;
@@ -98,14 +104,15 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         }
 
 
-        Switch isCompleted = findViewById(R.id.isHabitCompleted);
+        isCompleted = findViewById(R.id.isHabitCompleted);
+        deletePhotoBtn = findViewById(R.id.deletePhotoBtn);
         addPhotoBtn_camera = findViewById(R.id.addPhotoBtn_fromCamera);
         addPhotoBtn_album = findViewById(R.id.addPhotoBtn_fromAlbum);
         photoAdded = findViewById(R.id.HabitImageView1);
         addLocationBtn = findViewById(R.id.addLocationBtn);
         addLocation_editText = findViewById(R.id.addLocation_editText);
-        EditText addComment = findViewById(R.id.addComment_editText);
-        Button submitBtn = findViewById(R.id.addHabitEventSubmitBtn);
+        addComment = findViewById(R.id.addComment_editText);
+        submitBtn = findViewById(R.id.addHabitEventSubmitBtn);
 
         // use photo through the camera
         addPhotoBtn_camera.setOnClickListener(new View.OnClickListener() {
@@ -122,10 +129,24 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
             }
         });
 
+        deletePhotoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deletePhoto();
+            }
+        });
+
         addLocationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 locationBtnOnClick();
+            }
+        });
+
+        photoAdded.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
 
@@ -308,6 +329,13 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Failed to add image", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void deletePhoto(){
+        Drawable d = getResources().getDrawable(R.drawable.ic_baseline_photo_filter_24);
+        d.setColorFilter(0x89000000, PorterDuff.Mode.MULTIPLY);
+        photoAdded.setImageDrawable(d);
+        imageUri = null;
     }
 
     public void locationBtnOnClick(){

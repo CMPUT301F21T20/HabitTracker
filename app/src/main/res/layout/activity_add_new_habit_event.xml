@@ -158,6 +158,15 @@
                 </TextView>
 
                 <ImageButton
+                    android:id="@+id/deletePhotoBtn"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="end"
+                    android:layout_marginRight="68dp"
+                    android:src="@drawable/ic_baseline_delete_24">
+                </ImageButton>
+
+                <ImageButton
                     android:id="@+id/addPhotoBtn_fromCamera"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
