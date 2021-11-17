@@ -30,7 +30,9 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
@@ -45,6 +47,7 @@ public class MapsFragment extends Fragment {
     private Button locationConfirmBtn;
     private Button locationUpdateBtn;
     private TextView updatedLocation_textView;
+    private UiSettings mUiSettings;
 
     private double userLat;
     private double userLong;
@@ -68,18 +71,31 @@ public class MapsFragment extends Fragment {
             // set default camera at CANADA
             mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(56.130366, -106.346771)));
 
+            mUiSettings = mMap.getUiSettings();
+            mUiSettings.setZoomControlsEnabled(true);
+
             getLocation();
 
             // Add a marker in Sydney and move the camera
             LatLng latLng = new LatLng(userLat, userLong);
             setMapMarker(latLng);
 
-            googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                 @Override
                 public void onMapClick(LatLng latLng) {
+
                     setMapMarker(latLng);
                     Toast.makeText(getContext(), "Latitude\t\t: " + (String.format("%+13.7f", latLng.latitude)) + "\n" +
                             "Longitude\t: " + (String.format("%+13.7f", latLng.longitude)),Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+                    marker.showInfoWindow();
+                    mMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
+                    return true;
                 }
             });
         }
@@ -224,7 +240,6 @@ public class MapsFragment extends Fragment {
         markerOptions.title(latLng.latitude + " : " + latLng.longitude);
         // clear markers on the map
         mMap.clear();
-        Toast.makeText(getContext(),"LOADING...",Toast.LENGTH_SHORT).show();
         // move and zoom the camera of the marker
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16), new GoogleMap.CancelableCallback() {
             @Override
