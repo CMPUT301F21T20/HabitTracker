@@ -69,7 +69,7 @@ public class MapsFragment extends Fragment {
 
             // Add a marker in Sydney and move the camera
             LatLng latLng = new LatLng(userLat, userLong);
-            mMap.addMarker(new MarkerOptions().position(latLng).title(String.valueOf(userLat) + ',' + userLong));
+            mMap.addMarker(new MarkerOptions().position(latLng).title(String.valueOf(userLat) + " : " + userLong).draggable(true));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 5));
         }
@@ -89,7 +89,22 @@ public class MapsFragment extends Fragment {
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         if (mapFragment != null) {
-            mapFragment.getMapAsync(callback);
+            mapFragment.getMapAsync(new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(GoogleMap googleMap) {
+                    googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                        @Override
+                        public void onMapClick(LatLng latLng) {
+                            MarkerOptions markerOptions = new MarkerOptions();
+                            markerOptions.position(latLng);
+                            markerOptions.title(latLng.latitude + " : " + latLng.longitude);
+                            googleMap.clear();
+                            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+                            googleMap.addMarker(markerOptions);
+                        }
+                    });
+                }
+            });
         }
 
         updatedLocation_textView = view.findViewById(R.id.updatedLocation_textView);
