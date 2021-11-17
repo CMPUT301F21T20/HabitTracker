@@ -56,6 +56,7 @@
                 android:id="@+id/addHabitDateText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginRight="24dp"
                 android:hint="yyyy-mm-dd"
                 android:gravity="center_horizontal"
                 android:layout_weight="2"
@@ -66,7 +67,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="3"
-                android:text="PICK DATE" />
+                android:text="PICK DATE"
+                android:background="@drawable/button_gradient"
+                app:backgroundTint="@null"
+                android:textColor="#ffffff"/>
         </LinearLayout>
 
         <TextView
@@ -74,6 +78,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:textSize="16dp"
+            android:layout_marginBottom="5dp"
             android:text="Active Days" />
 
         <LinearLayout
@@ -91,7 +96,10 @@
                 android:text="ToggleButton"
                 android:padding="0dp"
                 android:textOff="MON"
-                android:textOn="MON" />
+                android:textOn="MON"
+                android:layout_marginHorizontal="1dp"
+                android:background="@drawable/toggle_selector"
+                android:textColor="#ffffff"/>
 
             <ToggleButton
                 android:id="@+id/addHabitTue"
@@ -101,7 +109,10 @@
                 android:text="ToggleButton"
                 android:padding="0dp"
                 android:textOff="TUE"
-                android:textOn="TUE" />
+                android:textOn="TUE"
+                android:layout_marginHorizontal="1dp"
+                android:background="@drawable/toggle_selector"
+                android:textColor="#ffffff"/>
 
             <ToggleButton
                 android:id="@+id/addHabitWed"
@@ -111,7 +122,10 @@
                 android:text="ToggleButton"
                 android:padding="0dp"
                 android:textOff="WED"
-                android:textOn="WED" />
+                android:textOn="WED"
+                android:layout_marginHorizontal="1dp"
+                android:background="@drawable/toggle_selector"
+                android:textColor="#ffffff"/>
 
             <ToggleButton
                 android:id="@+id/addHabitThu"
@@ -121,7 +135,10 @@
                 android:text="ToggleButton"
                 android:padding="0dp"
                 android:textOff="THU"
-                android:textOn="THU" />
+                android:textOn="THU"
+                android:layout_marginHorizontal="1dp"
+                android:background="@drawable/toggle_selector"
+                android:textColor="#ffffff"/>
 
             <ToggleButton
                 android:id="@+id/addHabitFri"
@@ -131,7 +148,10 @@
                 android:text="ToggleButton"
                 android:padding="0dp"
                 android:textOff="FRI"
-                android:textOn="FRI" />
+                android:textOn="FRI"
+                android:layout_marginHorizontal="1dp"
+                android:background="@drawable/toggle_selector"
+                android:textColor="#ffffff"/>
 
             <ToggleButton
                 android:id="@+id/addHabitSat"
@@ -141,7 +161,10 @@
                 android:text="ToggleButton"
                 android:padding="0dp"
                 android:textOff="SAT"
-                android:textOn="SAT" />
+                android:textOn="SAT"
+                android:layout_marginHorizontal="1dp"
+                android:background="@drawable/toggle_selector"
+                android:textColor="#ffffff"/>
 
             <ToggleButton
                 android:id="@+id/addHabitSun"
@@ -151,7 +174,10 @@
                 android:text="ToggleButton"
                 android:padding="0dp"
                 android:textOff="SUN"
-                android:textOn="SUN" />
+                android:textOn="SUN"
+                android:layout_marginHorizontal="1dp"
+                android:background="@drawable/toggle_selector"
+                android:textColor="#ffffff"/>
         </LinearLayout>
 
         <Switch
@@ -176,7 +202,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:text="SAVE CHANGES"
-            android:textSize="18dp" />
+            android:textSize="18dp"
+            android:background="@drawable/button_gradient"
+            app:backgroundTint="@null"
+            android:textColor="#ffffff"/>
 
     </LinearLayout>
 

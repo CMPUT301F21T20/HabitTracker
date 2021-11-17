@@ -9,15 +9,18 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +41,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class MapsFragment extends Fragment {
-
+    private Context thiscontext;
     private GoogleMap mMap;
     private String filterAddress = "";
     private Location currentLocation;
@@ -92,6 +95,8 @@ public class MapsFragment extends Fragment {
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }
+
+        thiscontext = getContext();
 
         updatedLocation_textView = view.findViewById(R.id.updatedLocation_textView);
         locationUpdateBtn = view.findViewById(R.id.locationUpdateBtn);
@@ -158,6 +163,7 @@ public class MapsFragment extends Fragment {
                 provider = providers.get(0);
             }
         }
+
         // if no one is supported, return
         if (TextUtils.isEmpty(provider)) {
             return;
@@ -169,10 +175,25 @@ public class MapsFragment extends Fragment {
             return;
         }
         currentLocation = locationManager.getLastKnownLocation(provider);
-        userLat = currentLocation.getLatitude();
-        userLong = currentLocation.getLongitude();
-        Toast.makeText(getContext(), "Latitude\t\t: " + (String.format("%+10.2f", userLat)) + "\n" +
-                "Longitude\t: " + (String.format("%+10.2f", userLong)),Toast.LENGTH_SHORT).show();
+        if (currentLocation == null) {
+            Log.i("TEST", "Current Location is NULL!");
+            locationManager.requestLocationUpdates(provider, 1000, 0, new LocationListener() {
+                @Override
+                public void onLocationChanged(@NonNull Location location) {
+                    currentLocation = location;
+                    userLat = currentLocation.getLatitude();
+                    userLong = currentLocation.getLongitude();
+                    Toast.makeText(thiscontext, "Latitude\t\t: " + (String.format("%+10.2f", userLat)) + "\n" +
+                            "Longitude\t: " + (String.format("%+10.2f", userLong)),Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            userLat = currentLocation.getLatitude();
+            userLong = currentLocation.getLongitude();
+            Toast.makeText(getContext(), "Latitude\t\t: " + (String.format("%+10.2f", userLat)) + "\n" +
+                    "Longitude\t: " + (String.format("%+10.2f", userLong)),Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     public void setLocationTextView(){

@@ -27,6 +27,7 @@
             android:id="@+id/viewHabitTitle_habitEvent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="7dp"
             android:fontFamily="sans-serif-black"
             android:text="Not implemented yet..."
             android:textFontWeight="400"
@@ -45,6 +46,7 @@
             android:id="@+id/viewHabitReason_habitEvent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="7dp"
             android:fontFamily="sans-serif-black"
             android:text="Not implemented yet..."
             android:textFontWeight="400"
@@ -81,6 +83,7 @@
             android:id="@+id/viewActiveDaysText_habitEvent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
             android:fontFamily="sans-serif-black"
             android:text="Not implemented yet..."
             android:textFontWeight="400"
@@ -215,7 +218,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:text="SAVE CHANGES"
-            android:textSize="18dp" />
+            android:textSize="18dp"
+            android:background="@drawable/button_gradient"
+            app:backgroundTint="@null"
+            android:textColor="#ffffff" />
 
     </LinearLayout>
 
