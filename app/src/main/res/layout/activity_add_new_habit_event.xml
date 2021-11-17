@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
     android:padding="16dp"
-    tools:context=".AddNewHabitEventActivity">
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    tools:context=".AddNewHabitEventActivity"
     android:clipToPadding="false">
 
 
@@ -111,117 +107,129 @@
         </TableRow>
     </LinearLayout>
 
+    <ScrollView
+        android:id="@+id/SV1_addHabitEvent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/LL2_addHabitEvent"
+        android:layout_marginBottom="60dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Switch
+                android:id="@+id/isHabitCompleted"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Denote Completed"
+                android:textSize="16dp" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Photo (Optional)"
+                    android:textColor="@color/black"
+                    android:textSize="16dp">
+                </TextView>
+
+                <ImageButton
+                    android:id="@+id/addPhotoBtn_fromCamera"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="end"
+                    android:layout_marginRight="34dp"
+                    android:src="@drawable/ic_baseline_photo_camera_24">
+                </ImageButton>
+
+                <ImageButton
+                    android:id="@+id/addPhotoBtn_fromAlbum"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="end"
+                    android:src="@drawable/ic_baseline_photo_24">
+                </ImageButton>
+            </FrameLayout>
+
+            <ImageView
+                android:id="@+id/HabitImageView1"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginTop="12dp"
+                android:background="#A9A9A9"
+                android:scaleType="center"
+                android:src="@drawable/ic_baseline_photo_filter_24">
+            </ImageView>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Location (Optional)"
+                    android:textColor="@color/black"
+                    android:textSize="16dp">
+                </TextView>
+
+                <ImageButton
+                    android:id="@+id/addLocationBtn"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="end"
+                    android:src="@drawable/ic_baseline_location_on_24">
+                </ImageButton>
+            </FrameLayout>
+
+            <EditText
+                android:id="@+id/addLocation_editText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:editable="false"
+                android:hint="No location added yet..."
+                android:inputType="text"
+                android:maxLines="1" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Comment (Optional)"
+                android:textColor="@color/black"
+                android:textSize="16dp" />
+
+            <EditText
+                android:id="@+id/addComment_editText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="No comment added yet..."
+                android:maxLength="20"/>
+        </LinearLayout>
+    </ScrollView>
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/LL2_addHabitEvent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
         android:orientation="vertical">
-
-        <Switch
-            android:id="@+id/isHabitCompleted"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Denote Completed"
-            android:textSize="16dp" />
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Photo (Optional)"
-                android:textColor="@color/black"
-                android:textSize="16dp">
-            </TextView>
-
-            <ImageButton
-                android:id="@+id/addPhotoBtn_fromCamera"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="end"
-                android:layout_marginRight="34dp"
-                android:src="@drawable/ic_baseline_photo_camera_24">
-            </ImageButton>
-
-            <ImageButton
-                android:id="@+id/addPhotoBtn_fromAlbum"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="end"
-                android:src="@drawable/ic_baseline_photo_24">
-            </ImageButton>
-        </FrameLayout>
-
-        <ImageView
-            android:id="@+id/HabitImageView1"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginTop="12dp"
-            android:background="#A9A9A9"
-            android:scaleType="center"
-            android:src="@drawable/ic_baseline_photo_filter_24">
-        </ImageView>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Location (Optional)"
-                android:textColor="@color/black"
-                android:textSize="16dp">
-            </TextView>
-
-            <ImageButton
-                android:id="@+id/addLocationBtn"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="end"
-                android:src="@drawable/ic_baseline_location_on_24">
-            </ImageButton>
-        </FrameLayout>
-
-        <EditText
-            android:id="@+id/addLocation_editText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:editable="false"
-            android:hint="No location added yet..."
-            android:inputType="text"
-            android:maxLines="1" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Comment (Optional)"
-            android:textColor="@color/black"
-            android:textSize="16dp" />
-
-        <EditText
-            android:id="@+id/addComment_editText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="No comment added yet..."
-            android:maxLength="20"/>
-
         <Button
             android:id="@+id/addHabitEventSubmitBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
             android:text="SAVE CHANGES"
             android:textSize="18dp"
             android:background="@drawable/button_gradient"
             app:backgroundTint="@null"
             android:textColor="#ffffff" />
     </LinearLayout>
+
 
     <FrameLayout
         android:id="@+id/FL1_addHabitEventL1"
@@ -236,4 +244,3 @@
     </FrameLayout>
 
 </RelativeLayout>
-    </ScrollView>

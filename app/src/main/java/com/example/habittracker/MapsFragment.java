@@ -2,14 +2,7 @@ package com.example.habittracker;
 
 import static android.content.Context.LOCATION_SERVICE;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Criteria;
@@ -19,8 +12,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +19,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -41,7 +38,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class MapsFragment extends Fragment {
-    private Context thiscontext;
+
     private GoogleMap mMap;
     private String filterAddress = "";
     private Location currentLocation;
@@ -68,14 +65,23 @@ public class MapsFragment extends Fragment {
         public void onMapReady(GoogleMap googleMap) {
             mMap = googleMap;
 
+            // set default camera at CANADA
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(56.130366, -106.346771)));
+
             getLocation();
-            setLocationTextView();
 
             // Add a marker in Sydney and move the camera
             LatLng latLng = new LatLng(userLat, userLong);
-            mMap.addMarker(new MarkerOptions().position(latLng).title("Current Location"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 5));
+            setMapMarker(latLng);
+
+            googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                @Override
+                public void onMapClick(LatLng latLng) {
+                    setMapMarker(latLng);
+                    Toast.makeText(getContext(), "Latitude\t\t: " + (String.format("%+13.7f", latLng.latitude)) + "\n" +
+                            "Longitude\t: " + (String.format("%+13.7f", latLng.longitude)),Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     };
 
@@ -96,8 +102,6 @@ public class MapsFragment extends Fragment {
             mapFragment.getMapAsync(callback);
         }
 
-        thiscontext = getContext();
-
         updatedLocation_textView = view.findViewById(R.id.updatedLocation_textView);
         locationUpdateBtn = view.findViewById(R.id.locationUpdateBtn);
         locationConfirmBtn = view.findViewById(R.id.locationConfirmBtn);
@@ -107,7 +111,6 @@ public class MapsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 getLocation();
-                setLocationTextView();
             }
         });
 
@@ -123,11 +126,17 @@ public class MapsFragment extends Fragment {
         });
     }
 
-    public void formatLocation() {
-        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+    public void formatLocation(Location l) {
+        Locale locale;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            locale = new Locale.Builder().setLanguage("en").build();
+        }else{
+            locale = Locale.getDefault();
+        }
+        Geocoder geocoder = new Geocoder(getContext(), locale);
         try {
             List<Address> addresses =
-                    geocoder.getFromLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), 1);
+                    geocoder.getFromLocation(l.getLatitude(), l.getLongitude(), 1);
 
             if (addresses.size() > 0) {
                 filterAddress = addresses.get(0).getAddressLine(0);
@@ -163,41 +172,77 @@ public class MapsFragment extends Fragment {
                 provider = providers.get(0);
             }
         }
-
         // if no one is supported, return
-        if (TextUtils.isEmpty(provider)) {
+        if (provider != null) {
+            // check permission
+            if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            currentLocation = locationManager.getLastKnownLocation(provider);
+            if (currentLocation != null){
+                userLat = currentLocation.getLatitude();
+                userLong = currentLocation.getLongitude();
+                LatLng latLng = new LatLng(userLat, userLong);
+                setMapMarker(latLng);
+                Toast.makeText(getContext(), "Latitude\t\t: " + (String.format("%+13.7f", userLat)) + "\n" +
+                        "Longitude\t: " + (String.format("%+13.7f", userLong)),Toast.LENGTH_SHORT).show();
+            }else{
+                locationManager.requestLocationUpdates(provider, 1000, 5, new LocationListener() {
+                    @Override
+                    public void onLocationChanged(@NonNull Location location) {
+                        //remove location callback:
+                        locationManager.removeUpdates(this);
+
+                        //open the map:
+                        userLat = location.getLatitude();
+                        userLong = location.getLongitude();
+                        LatLng latLng = new LatLng(userLat, userLong);
+                        setMapMarker(latLng);
+                        Toast.makeText(getContext(), "Latitude\t\t: " + (String.format("%+13.7f", userLat)) + "\n" +
+                                "Longitude\t: " + (String.format("%+13.7f", userLong)),Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }else {
+            Toast.makeText(getContext(),"Please check the GPS or INTERNET status",Toast.LENGTH_SHORT).show();
             return;
         }
-
-        // check permission
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        currentLocation = locationManager.getLastKnownLocation(provider);
-        if (currentLocation == null) {
-            Log.i("TEST", "Current Location is NULL!");
-            locationManager.requestLocationUpdates(provider, 1000, 0, new LocationListener() {
-                @Override
-                public void onLocationChanged(@NonNull Location location) {
-                    currentLocation = location;
-                    userLat = currentLocation.getLatitude();
-                    userLong = currentLocation.getLongitude();
-                    Toast.makeText(thiscontext, "Latitude\t\t: " + (String.format("%+10.2f", userLat)) + "\n" +
-                            "Longitude\t: " + (String.format("%+10.2f", userLong)),Toast.LENGTH_SHORT).show();
-                }
-            });
-        } else {
-            userLat = currentLocation.getLatitude();
-            userLong = currentLocation.getLongitude();
-            Toast.makeText(getContext(), "Latitude\t\t: " + (String.format("%+10.2f", userLat)) + "\n" +
-                    "Longitude\t: " + (String.format("%+10.2f", userLong)),Toast.LENGTH_SHORT).show();
-        }
-
     }
 
-    public void setLocationTextView(){
-        formatLocation();
+    public void setCustomizedLocationTextView(LatLng latLng){
+        Location l = new Location("New Location");
+        l.setLatitude(latLng.latitude);
+        l.setLongitude(latLng.longitude);
+        formatLocation(l);
+        updatedLocation_textView.setText(filterAddress);
+    }
+
+    public void setMapMarker(LatLng latLng){
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(latLng);
+        markerOptions.title(latLng.latitude + " : " + latLng.longitude);
+        // clear markers on the map
+        mMap.clear();
+        Toast.makeText(getContext(),"LOADING...",Toast.LENGTH_SHORT).show();
+        // move and zoom the camera of the marker
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16), new GoogleMap.CancelableCallback() {
+            @Override
+            public void onFinish() {
+                setCustomizedLocationTextView(latLng);
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+        });
+        // set marker from markerOptions
+        mMap.addMarker(markerOptions);
+    }
+
+    public void setLocationTextView(Location l){
+        formatLocation(l);
         updatedLocation_textView.setText(filterAddress);
     }
 
