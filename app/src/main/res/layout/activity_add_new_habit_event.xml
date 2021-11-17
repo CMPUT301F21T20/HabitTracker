@@ -194,7 +194,6 @@
                 android:layout_height="wrap_content"
                 android:editable="false"
                 android:hint="No location added yet..."
-                android:inputType="text"
                 android:maxLines="1" />
 
             <TextView

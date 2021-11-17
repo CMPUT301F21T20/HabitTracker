@@ -79,6 +79,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         habit = (Habit) intent.getSerializableExtra("Habit");
         filterAddress = (String) intent.getSerializableExtra("Location");
 
+        // View the related habit
         TextView titleText = findViewById(R.id.viewHabitTitle_habitEvent);
         TextView reasonText = findViewById(R.id.viewHabitReason_habitEvent);
         TextView startDateText = findViewById(R.id.viewHabitDateText_habitEvent);
