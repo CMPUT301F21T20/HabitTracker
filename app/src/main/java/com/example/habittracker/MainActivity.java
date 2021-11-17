@@ -54,10 +54,4 @@ public class MainActivity extends AppCompatActivity {
         // TODO: i.e. adding new Habit right now does not refresh habit list locally here (add listener?)
     }
 
-    public void logout(View view) {
-        FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-        finish();
-    }
-
 }
