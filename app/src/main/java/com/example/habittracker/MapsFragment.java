@@ -65,6 +65,9 @@ public class MapsFragment extends Fragment {
         public void onMapReady(GoogleMap googleMap) {
             mMap = googleMap;
 
+            // set default camera at CANADA
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(56.130366, -106.346771)));
+
             getLocation();
 
             // Add a marker in Sydney and move the camera
