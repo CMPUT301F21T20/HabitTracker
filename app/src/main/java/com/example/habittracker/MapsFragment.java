@@ -69,9 +69,16 @@ public class MapsFragment extends Fragment {
 
             // Add a marker in Sydney and move the camera
             LatLng latLng = new LatLng(userLat, userLong);
-            mMap.addMarker(new MarkerOptions().position(latLng).title(String.valueOf(userLat) + " : " + userLong).draggable(true));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 5));
+            setMapMarker(latLng);
+
+            googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                @Override
+                public void onMapClick(LatLng latLng) {
+                    setMapMarker(latLng);
+                    Toast.makeText(getContext(), "Latitude\t\t: " + (String.format("%+13.7f", latLng.latitude)) + "\n" +
+                            "Longitude\t: " + (String.format("%+13.7f", latLng.longitude)),Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     };
 
@@ -89,22 +96,7 @@ public class MapsFragment extends Fragment {
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         if (mapFragment != null) {
-            mapFragment.getMapAsync(new OnMapReadyCallback() {
-                @Override
-                public void onMapReady(GoogleMap googleMap) {
-                    googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                        @Override
-                        public void onMapClick(LatLng latLng) {
-                            MarkerOptions markerOptions = new MarkerOptions();
-                            markerOptions.position(latLng);
-                            markerOptions.title(latLng.latitude + " : " + latLng.longitude);
-                            googleMap.clear();
-                            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
-                            googleMap.addMarker(markerOptions);
-                        }
-                    });
-                }
-            });
+            mapFragment.getMapAsync(callback);
         }
 
         updatedLocation_textView = view.findViewById(R.id.updatedLocation_textView);
@@ -132,7 +124,13 @@ public class MapsFragment extends Fragment {
     }
 
     public void formatLocation(Location l) {
-        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+        Locale locale;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            locale = new Locale.Builder().setLanguage("en").build();
+        }else{
+            locale = Locale.getDefault();
+        }
+        Geocoder geocoder = new Geocoder(getContext(), locale);
         try {
             List<Address> addresses =
                     geocoder.getFromLocation(l.getLatitude(), l.getLongitude(), 1);
@@ -182,7 +180,8 @@ public class MapsFragment extends Fragment {
             if (currentLocation != null){
                 userLat = currentLocation.getLatitude();
                 userLong = currentLocation.getLongitude();
-                setLocationTextView(currentLocation);
+                LatLng latLng = new LatLng(userLat, userLong);
+                setMapMarker(latLng);
                 Toast.makeText(getContext(), "Latitude\t\t: " + (String.format("%+13.7f", userLat)) + "\n" +
                         "Longitude\t: " + (String.format("%+13.7f", userLong)),Toast.LENGTH_SHORT).show();
             }else{
@@ -195,7 +194,8 @@ public class MapsFragment extends Fragment {
                         //open the map:
                         userLat = location.getLatitude();
                         userLong = location.getLongitude();
-                        setLocationTextView(location);
+                        LatLng latLng = new LatLng(userLat, userLong);
+                        setMapMarker(latLng);
                         Toast.makeText(getContext(), "Latitude\t\t: " + (String.format("%+13.7f", userLat)) + "\n" +
                                 "Longitude\t: " + (String.format("%+13.7f", userLong)),Toast.LENGTH_SHORT).show();
                     }
@@ -205,6 +205,37 @@ public class MapsFragment extends Fragment {
             Toast.makeText(getContext(),"Please check the GPS or INTERNET status",Toast.LENGTH_SHORT).show();
             return;
         }
+    }
+
+    public void setCustomizedLocationTextView(LatLng latLng){
+        Location l = new Location("New Location");
+        l.setLatitude(latLng.latitude);
+        l.setLongitude(latLng.longitude);
+        formatLocation(l);
+        updatedLocation_textView.setText(filterAddress);
+    }
+
+    public void setMapMarker(LatLng latLng){
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(latLng);
+        markerOptions.title(latLng.latitude + " : " + latLng.longitude);
+        // clear markers on the map
+        mMap.clear();
+        Toast.makeText(getContext(),"LOADING...",Toast.LENGTH_SHORT).show();
+        // move and zoom the camera of the marker
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16), new GoogleMap.CancelableCallback() {
+            @Override
+            public void onFinish() {
+                setCustomizedLocationTextView(latLng);
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+        });
+        // set marker from markerOptions
+        mMap.addMarker(markerOptions);
     }
 
     public void setLocationTextView(Location l){
