@@ -84,11 +84,17 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         TextView reasonText = findViewById(R.id.viewHabitReason_habitEvent);
         TextView startDateText = findViewById(R.id.viewHabitDateText_habitEvent);
         TextView activeDaysText = findViewById(R.id.viewActiveDaysText_habitEvent);
+        TextView sharedText = findViewById(R.id.viewSharedText_habitEvent);
 
         titleText.setText(habit.getTitle());
         reasonText.setText(habit.getReason());
         startDateText.setText(getDateText(habit.getDateCreated()));
         activeDaysText.setText(getDaysText(habit.getFrequency()));
+        if (habit.getCanShare()){
+            sharedText.setText("SHARED");
+        }else{
+            sharedText.setText("NOT SHARED");
+        }
 
 
         Switch isCompleted = findViewById(R.id.isHabitCompleted);
