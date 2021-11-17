@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--  Gradient Bg for listrow -->
+    <gradient
+        android:startColor="#1A73E9"
+        android:endColor="#6C92F4"
+        android:angle="180" />
+    <corners android:radius="8dp"></corners>
+
+</shape>

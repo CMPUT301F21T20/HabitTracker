@@ -104,8 +104,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
+            android:layout_marginBottom="10dp"
             android:text="Edit HABIT"
-            android:textSize="18dp" />
+            android:textSize="18dp"
+            android:background="@drawable/button_gradient"
+            app:backgroundTint="@null"
+            android:textColor="#ffffff" />
 
         <Button
             android:id="@+id/addHabitEventBtn"
@@ -113,6 +117,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:text="NEW HABIT EVENT"
-            android:textSize="18dp" />
+            android:textSize="18dp"
+            android:background="@drawable/button_gradient"
+            app:backgroundTint="@null"
+            android:textColor="#ffffff" />
     </LinearLayout>
 </RelativeLayout>
