@@ -222,7 +222,7 @@
                 android:layout_height="wrap_content"
                 android:editable="false"
                 android:hint="No location added yet..."
-                android:maxLines="1" />
+                android:maxLines="2" />
 
             <TextView
                 android:layout_width="match_parent"

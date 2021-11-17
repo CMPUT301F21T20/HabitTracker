@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,6 +63,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
     private ImageButton addPhotoBtn_camera;
     private ImageButton addPhotoBtn_album;
     private ImageView photoAdded;
+    private boolean isphotoEnlarged = false;
     private EditText addComment;
     private Button submitBtn;
     public static final int TAKE_CAMERA = 101;
@@ -146,7 +148,11 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         photoAdded.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (!isphotoEnlarged) {
+                    isphotoEnlarged = enlargePhoto();
+                }else{
+                    isphotoEnlarged = !narrowPhoto();
+                }
             }
         });
 
@@ -336,6 +342,37 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         d.setColorFilter(0x89000000, PorterDuff.Mode.MULTIPLY);
         photoAdded.setImageDrawable(d);
         imageUri = null;
+    }
+
+    public boolean enlargePhoto(){
+        // set size to square
+//        ViewTreeObserver vto = photoAdded.getViewTreeObserver();
+//        vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+//            @Override
+//            public boolean onPreDraw() {
+//                int width = photoAdded.getMeasuredWidth();
+//                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+//                        width);
+//                photoAdded.setLayoutParams(params);
+//                return true;
+//            }
+//        });
+
+        // set size with original aspect ratio
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        photoAdded.setLayoutParams(params);
+
+        return true;
+    }
+
+    public boolean narrowPhoto(){
+        // the layout height for photo in the layout file
+        int dpValue = 100;
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                (int) (dpValue * getResources().getDisplayMetrics().density + 0.5f));
+        photoAdded.setLayoutParams(params);
+        return true;
     }
 
     public void locationBtnOnClick(){
