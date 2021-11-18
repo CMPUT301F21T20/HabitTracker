@@ -68,6 +68,7 @@ public class HabitListController {
             if (docData != null) {
 //                ArrayList<Habit> listOfHabits = new ArrayList<>();
                 Log.d("FIRESTORE DATA DEBUG", String.valueOf(docData));
+                habitList.clearHabitList();
                 for (Map.Entry<String, Object> entry : docData.entrySet()) {
                     Map<String, Object> habitData = (Map<String, Object>) entry.getValue();
                     Log.d("Yup", habitData.toString());
@@ -80,7 +81,6 @@ public class HabitListController {
                     habitList.addHabit(habit);
                 }
 
-//                habitList.setHabitList(listOfHabits);
             }
             Log.d("Firestore", "Retrieved habit data");
         } else {

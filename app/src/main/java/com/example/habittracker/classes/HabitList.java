@@ -43,16 +43,17 @@ public class HabitList {
      * @param index the index of the Habit
      * @return the habit at the certain index
      */
-    public Habit get(int index) {
+    public Habit getHabit(int index) {
         return habitList.get(index);
     }
 
-    /**
-     * This function will set the habit list to the given list of habits
-     * @param habitList An ArrayList of Habits
-     */
-    public void setHabitList(ArrayList<Habit> habitList) {
-        this.habitList = habitList;
+    public Habit getHabit(String habitId) {
+        for (Habit habit : habitList) {
+            if (habit.getHabitId().equals(habitId)) {
+                return habit;
+            }
+        }
+        return new Habit();
     }
 
     /**

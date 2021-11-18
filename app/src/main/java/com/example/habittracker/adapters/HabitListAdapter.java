@@ -40,7 +40,7 @@ public class HabitListAdapter extends ArrayAdapter<Habit> {
             view = LayoutInflater.from(context).inflate(R.layout.content_habit_list, parent, false);
         }
 
-        Habit habit = habitList.get(position);
+        Habit habit = habitList.getHabit(position);
 
         TextView habitListTitle = view.findViewById(R.id.habitListTitle);
         Button viewHabitButton = view.findViewById(R.id.habitListViewButton);

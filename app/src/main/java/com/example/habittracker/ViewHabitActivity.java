@@ -2,30 +2,20 @@ package com.example.habittracker;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.habittracker.classes.Habit;
 import com.example.habittracker.classes.HabitList;
 import com.example.habittracker.controllers.HabitListController;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Map;
+
 
 /**
  * This activity is for viewing a habit
@@ -71,18 +61,14 @@ public class ViewHabitActivity extends AppCompatActivity {
             viewSharedText.setText("NOT SHARED");
         }
 
-        editHabitBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openEditHabitActivity();
-            }
-        });
+        editHabitBtn.setOnClickListener(view -> openEditHabitActivity());
 
-        addHabitEventBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openAddHabitEventActivity();
-            }
+        addHabitEventBtn.setOnClickListener(view -> openAddHabitEventActivity());
+
+        db.collection("Habits").document(habit.getUserId()).addSnapshotListener((docSnapshot, e) -> {
+            HabitList newHabitList = new HabitList();
+            HabitListController.convertToHabitList(docSnapshot, newHabitList);
+            updateAttributes(newHabitList.getHabit(habit.getHabitId()));
         });
     }
 
@@ -164,7 +150,7 @@ public class ViewHabitActivity extends AppCompatActivity {
         activeDaysText.setText(getDaysText(habit.getFrequency()));
         if (habit.getCanShare()){
             viewSharedText.setText("SHARED");
-        }else{
+        } else{
             viewSharedText.setText("NOT SHARED");
         }
     }
