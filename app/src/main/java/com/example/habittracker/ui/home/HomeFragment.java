@@ -110,6 +110,8 @@ public class HomeFragment extends Fragment {
                 Log.d("HANDLER", String.valueOf(doc.getData()));
                 Map<String, Object> docData = (Map<String, Object>) doc.getData();
                 newHabitList = hc.convertToHabitList(docData, uid);
+
+
             }
         }
 
