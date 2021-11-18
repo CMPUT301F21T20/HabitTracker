@@ -16,7 +16,6 @@ import com.example.habittracker.adapters.HabitListAdapter;
 import com.example.habittracker.classes.Habit;
 import com.example.habittracker.classes.HabitList;
 import com.example.habittracker.controllers.HabitListController;
-import com.example.habittracker.interfaces.OnHabitListRetrieved;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -55,32 +54,18 @@ public class HabitsTotalFragment extends Fragment {
         addHabitButton = root.findViewById(R.id.addHabitButton);
         habitsListView = root.findViewById(R.id.habits_listview);
 
-        final DocumentReference userHabitDocRef = db.collection("Habits").document(uid);
-
         habitList = new HabitList();
         habitListAdapter = new HabitListAdapter(requireContext(), habitList);
         habitsListView.setAdapter(habitListAdapter);
 
-        HabitListController.getInstance().loadHabitList(uid, new OnHabitListRetrieved() {
+        addHabitButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onHabitListRetrieved(HabitList newHabitList) {
-                habitList.clearHabitList();
-                for (int i = 0; i < newHabitList.getCount(); i++) {
-                    Log.d("HANDLER", i + " -> " + newHabitList.get(i).getTitle());
-                    habitList.addHabit(newHabitList.get(i));
-                }
-                habitListAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onError(Exception taskException) {
-
+            public void onClick(View v) {
+                openAddHabitActivity();
             }
         });
 
-        addHabitButton.setOnClickListener(v -> openAddHabitActivity());
-
-        userHabitDocRef.addSnapshotListener((docSnapshot, e) -> {
+        db.collection("Habits").document(uid).addSnapshotListener((docSnapshot, e) -> {
             HabitListController.convertToHabitList(docSnapshot, habitList);
             habitListAdapter.notifyDataSetChanged();
         });
@@ -95,9 +80,4 @@ public class HabitsTotalFragment extends Fragment {
         Intent intent = new Intent(requireContext(), AddNewHabitActivity.class);
         startActivity(intent);
     }
-
-//    public void setHabitList(HabitList habitList) {
-//        // copies the ArrayList from one object to the other
-////        this.habitList.setHabitList(habitList.getHabitList());
-//    }
 }

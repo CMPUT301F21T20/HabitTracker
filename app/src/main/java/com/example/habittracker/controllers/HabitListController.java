@@ -66,7 +66,7 @@ public class HabitListController {
         if (doc.exists()) {
             Map<String, Object> docData = doc.getData();
             if (docData != null) {
-                ArrayList<Habit> listOfHabits = new ArrayList<>();
+//                ArrayList<Habit> listOfHabits = new ArrayList<>();
                 Log.d("FIRESTORE DATA DEBUG", String.valueOf(docData));
                 for (Map.Entry<String, Object> entry : docData.entrySet()) {
                     Map<String, Object> habitData = (Map<String, Object>) entry.getValue();
@@ -77,10 +77,10 @@ public class HabitListController {
                     Habit habit = new Habit(entry.getKey(), doc.getId(), (String) habitData.get("title"),
                             (String) habitData.get("reason"), ((Timestamp) habitData.get("dateCreated")).toDate(),
                             (ArrayList<Integer>) habitData.get("frequency"), (boolean) habitData.get("canShare"));
-                    listOfHabits.add(habit);
+                    habitList.addHabit(habit);
                 }
 
-                habitList.setHabitList(listOfHabits);
+//                habitList.setHabitList(listOfHabits);
             }
             Log.d("Firestore", "Retrieved habit data");
         } else {
