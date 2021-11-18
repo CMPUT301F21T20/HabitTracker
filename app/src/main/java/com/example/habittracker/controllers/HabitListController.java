@@ -66,12 +66,10 @@ public class HabitListController {
         if (doc.exists()) {
             Map<String, Object> docData = doc.getData();
             if (docData != null) {
-//                ArrayList<Habit> listOfHabits = new ArrayList<>();
                 Log.d("FIRESTORE DATA DEBUG", String.valueOf(docData));
                 habitList.clearHabitList();
                 for (Map.Entry<String, Object> entry : docData.entrySet()) {
                     Map<String, Object> habitData = (Map<String, Object>) entry.getValue();
-                    Log.d("Yup", habitData.toString());
                     if (habitData.get("dateCreated") == null) {
                         continue;
                     }
@@ -133,5 +131,4 @@ public class HabitListController {
                 .addOnFailureListener(e -> Log.w("Firestore", "Error updating document", e));
         return success.get();
     }
-
 }

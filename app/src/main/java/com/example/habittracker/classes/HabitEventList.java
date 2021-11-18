@@ -31,6 +31,14 @@ public class HabitEventList {
         return habitEventList.get(index);
     }
 
+    public void addHabitEvent(HabitEvent habitEvent) {
+        this.habitEventList.add(habitEvent);
+    }
+
+    public void clearHabitEventList() {
+        this.habitEventList.clear();
+    }
+
     public Boolean hasHabitEvent(HabitEvent habitEvent) {
         return habitEventList.contains(habitEvent);
     }
@@ -57,7 +65,7 @@ public class HabitEventList {
         return habitEventList;
     }
 
-    public void setHabitEventListList(ArrayList<HabitEvent> habitEventList) {
+    public void setHabitEventList(ArrayList<HabitEvent> habitEventList) {
         this.habitEventList = habitEventList;
     }
 }

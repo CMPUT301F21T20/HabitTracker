@@ -38,7 +38,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.habittracker.classes.Habit;
 import com.example.habittracker.classes.HabitEvent;
-import com.example.habittracker.controllers.HabitEventController;
+import com.example.habittracker.controllers.HabitEventsController;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -191,8 +191,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
                         addComment.getText().toString()
                 );
 
-                HabitEventController habitEventController = new HabitEventController();
-                habitEventController.saveHabitEvent(habitEvent);
+                HabitEventsController.getInstance().saveHabitEvent(habitEvent);
 
                 finish();
             }
