@@ -334,6 +334,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
             options.inPreferredConfig= Bitmap.Config.RGB_565;
             imageBitmap = BitmapFactory.decodeFile(imagePath,options);
             photoAdded.setImageBitmap(imageBitmap);
+            photoAdded.setBackgroundResource(R.color.trans);
         } else {
             Toast.makeText(this, "Failed to add image", Toast.LENGTH_SHORT).show();
         }
@@ -343,6 +344,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         Drawable d = ContextCompat.getDrawable(AddNewHabitEventActivity.this, R.drawable.ic_baseline_photo_filter_24);
         d.setColorFilter(0x89000000, PorterDuff.Mode.MULTIPLY);
         photoAdded.setImageDrawable(d);
+        photoAdded.setBackgroundResource(R.color.grey);
         imageUri = null;
     }
 

@@ -15,4 +15,7 @@
     <color name="sblueProfile">#09c6df</color>
     <color name="eblueProfile">#0bcce6</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="trans">#FFFFFF</color>
+    <color name="grey">#A9A9A9</color>
 </resources>
