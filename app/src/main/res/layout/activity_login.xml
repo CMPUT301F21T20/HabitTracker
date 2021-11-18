@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Welcome"
-            android:textColor="@color/black"
+            android:textColor="@color/colorPrimary"
             android:textSize="48sp"
             android:textStyle="bold"
             android:typeface="serif" />
@@ -32,9 +32,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="  Sign in to continue"
-            android:textColor="@color/black"
             android:textStyle="italic"
-            android:typeface="serif"></TextView>
+            android:typeface="serif">
+        </TextView>
     </LinearLayout>
 
     <EditText
