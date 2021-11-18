@@ -7,10 +7,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Switch;
 import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 
 import com.example.habittracker.classes.Habit;
 import com.example.habittracker.controllers.HabitController;
@@ -35,7 +35,7 @@ public class AddNewHabitActivity extends AppCompatActivity {
     private EditText startDateText;
     private Button startDateButton;
     private ToggleButton[] selectedDates;
-    private Switch canShare;
+    private SwitchCompat canShare;
     private Button submitButton;
 
 

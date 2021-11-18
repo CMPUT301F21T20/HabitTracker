@@ -24,13 +24,13 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
@@ -58,7 +58,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
     private Habit habit;
     private String filterAddress;
     private String habitEventId;
-    private Switch isCompleted;
+    private SwitchCompat isCompleted;
     private ImageButton deletePhotoBtn;
     private ImageButton addPhotoBtn_camera;
     private ImageButton addPhotoBtn_album;
