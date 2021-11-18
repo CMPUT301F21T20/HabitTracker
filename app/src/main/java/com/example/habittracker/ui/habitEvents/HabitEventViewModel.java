@@ -1,4 +1,4 @@
-package com.example.habittracker.ui.profile;
+package com.example.habittracker.ui.habitEvents;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -8,13 +8,13 @@ import com.example.habittracker.classes.Habit;
 
 import java.util.List;
 
-public class ProfileViewModel extends ViewModel {
-
+public class HabitEventViewModel extends ViewModel {
     private MutableLiveData<List<Habit>> myHabits;
 
-    public ProfileViewModel() {
+    public HabitEventViewModel() {
         myHabits = new MutableLiveData<>();
     }
+
 
     public LiveData<List<Habit>> getList() {
         return myHabits;

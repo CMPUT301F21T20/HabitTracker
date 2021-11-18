@@ -54,6 +54,10 @@ public class ProfileFragment extends Fragment {
         profileViewModel.getList().observe(getViewLifecycleOwner(), users -> {
 
         });
+
+        TextView emailtext = root.findViewById(R.id.profile_email);
+        emailtext.setText(fUser.getEmail());
+
         thisContext = container.getContext();
         Button logoutButton = root.findViewById(R.id.logOutButton);
         logoutButton.setOnClickListener(new View.OnClickListener() {
@@ -62,7 +66,7 @@ public class ProfileFragment extends Fragment {
                 logout(view);
             }
         });
-        Log.d("UID", fUser.getUid());
+
         DocumentReference docRef = db.collection("Users").document(fUser.getUid());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
