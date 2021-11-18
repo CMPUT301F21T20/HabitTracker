@@ -16,7 +16,6 @@ public class ProfileViewModel extends ViewModel {
         myHabits = new MutableLiveData<>();
     }
 
-
     public LiveData<List<Habit>> getList() {
         return myHabits;
     }
