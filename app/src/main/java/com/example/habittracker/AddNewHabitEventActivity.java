@@ -330,17 +330,21 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
 
     private void displayImage(String imagePath) {
         if (imagePath != null) {
-            imageBitmap = BitmapFactory.decodeFile(imagePath);
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inPreferredConfig= Bitmap.Config.RGB_565;
+            imageBitmap = BitmapFactory.decodeFile(imagePath,options);
             photoAdded.setImageBitmap(imageBitmap);
+            photoAdded.setBackgroundResource(R.color.trans);
         } else {
             Toast.makeText(this, "Failed to add image", Toast.LENGTH_SHORT).show();
         }
     }
 
     public void deletePhoto(){
-        Drawable d = getResources().getDrawable(R.drawable.ic_baseline_photo_filter_24);
+        Drawable d = ContextCompat.getDrawable(AddNewHabitEventActivity.this, R.drawable.ic_baseline_photo_filter_24);
         d.setColorFilter(0x89000000, PorterDuff.Mode.MULTIPLY);
         photoAdded.setImageDrawable(d);
+        photoAdded.setBackgroundResource(R.color.grey);
         imageUri = null;
     }
 

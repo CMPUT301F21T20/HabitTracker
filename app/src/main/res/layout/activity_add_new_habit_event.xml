@@ -190,7 +190,8 @@
                 android:layout_height="100dp"
                 android:layout_marginTop="12dp"
                 android:background="#A9A9A9"
-                android:scaleType="center"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"
                 android:src="@drawable/ic_baseline_photo_filter_24">
             </ImageView>
 
