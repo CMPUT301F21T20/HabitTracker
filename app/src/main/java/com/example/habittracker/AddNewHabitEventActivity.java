@@ -2,26 +2,33 @@ package com.example.habittracker;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -32,8 +39,14 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.habittracker.classes.Habit;
 import com.example.habittracker.classes.HabitEvent;
 import com.example.habittracker.controllers.HabitEventController;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -45,12 +58,19 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
     private Habit habit;
     private String filterAddress;
     private String habitEventId;
+    private Switch isCompleted;
+    private ImageButton deletePhotoBtn;
     private ImageButton addPhotoBtn_camera;
     private ImageButton addPhotoBtn_album;
     private ImageView photoAdded;
+    private boolean isphotoEnlarged = false;
+    private EditText addComment;
+    private Button submitBtn;
     public static final int TAKE_CAMERA = 101;
     public static final int PICK_PHOTO = 102;
-    private Uri imageUri;
+    private Uri uri;
+    private Uri imageUri = null;
+    private Bitmap imageBitmap;
     private ImageButton addLocationBtn;
     private EditText addLocation_editText;
 
@@ -60,8 +80,6 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_habit_event);
 
-//         this.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-
         Intent intent = getIntent();
 
         // Must pass the Habit through the intent!
@@ -70,25 +88,33 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         habit = (Habit) intent.getSerializableExtra("Habit");
         filterAddress = (String) intent.getSerializableExtra("Location");
 
+        // View the related habit
         TextView titleText = findViewById(R.id.viewHabitTitle_habitEvent);
         TextView reasonText = findViewById(R.id.viewHabitReason_habitEvent);
         TextView startDateText = findViewById(R.id.viewHabitDateText_habitEvent);
         TextView activeDaysText = findViewById(R.id.viewActiveDaysText_habitEvent);
+        TextView sharedText = findViewById(R.id.viewSharedText_habitEvent);
 
         titleText.setText(habit.getTitle());
         reasonText.setText(habit.getReason());
         startDateText.setText(getDateText(habit.getDateCreated()));
         activeDaysText.setText(getDaysText(habit.getFrequency()));
+        if (habit.getCanShare()){
+            sharedText.setText("SHARED");
+        }else{
+            sharedText.setText("NOT SHARED");
+        }
 
 
-        Switch isCompleted = findViewById(R.id.isHabitCompleted);
+        isCompleted = findViewById(R.id.isHabitCompleted);
+        deletePhotoBtn = findViewById(R.id.deletePhotoBtn);
         addPhotoBtn_camera = findViewById(R.id.addPhotoBtn_fromCamera);
         addPhotoBtn_album = findViewById(R.id.addPhotoBtn_fromAlbum);
         photoAdded = findViewById(R.id.HabitImageView1);
         addLocationBtn = findViewById(R.id.addLocationBtn);
         addLocation_editText = findViewById(R.id.addLocation_editText);
-        EditText addComment = findViewById(R.id.addComment_editText);
-        Button submitBtn = findViewById(R.id.addHabitEventSubmitBtn);
+        addComment = findViewById(R.id.addComment_editText);
+        submitBtn = findViewById(R.id.addHabitEventSubmitBtn);
 
         // use photo through the camera
         addPhotoBtn_camera.setOnClickListener(new View.OnClickListener() {
@@ -105,10 +131,28 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
             }
         });
 
+        deletePhotoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deletePhoto();
+            }
+        });
+
         addLocationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 locationBtnOnClick();
+            }
+        });
+
+        photoAdded.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!isphotoEnlarged) {
+                    isphotoEnlarged = enlargePhoto();
+                }else{
+                    isphotoEnlarged = !narrowPhoto();
+                }
             }
         });
 
@@ -117,6 +161,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
             public void onClick(View v) {
                 FirebaseUser user;
                 String uid;
+                String imageUri_String = "";
                 habitEventId = UUID.randomUUID().toString();
 
                 user = FirebaseAuth.getInstance().getCurrentUser();
@@ -124,14 +169,24 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
                     // User is signed in
                     uid = user.getUid();
                 } else {
+                    Toast.makeText(AddNewHabitEventActivity.this,"Failed to retrieve userId",Toast.LENGTH_SHORT).show();
                     return;
+                }
+
+                if (imageUri != null) {
+                    boolean success = uploadImage(uid);
+                    if (!success){
+                        Toast.makeText(AddNewHabitEventActivity.this,"Failed to upload image",Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    imageUri_String = imageUri.toString();
                 }
 
                 HabitEvent habitEvent = new HabitEvent(
                         habitEventId,
                         uid,
                         isCompleted.isChecked(),
-                        imageUri.toString(),
+                        imageUri_String,
                         addLocation_editText.getText().toString(),
                         addComment.getText().toString()
                 );
@@ -197,15 +252,15 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         // use FileProvider to provide uri to improve the security
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             // system # >= 7.0
-            imageUri = FileProvider.getUriForFile(AddNewHabitEventActivity.this, "com.example.habittracker.fileprovider", outputImage);
+            uri = FileProvider.getUriForFile(AddNewHabitEventActivity.this, "com.example.habittracker.fileprovider", outputImage);
         } else {
             // system # < 7.0
-            imageUri = Uri.fromFile(outputImage);
+            uri = Uri.fromFile(outputImage);
         }
 
         // start the camera program
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         AddNewHabitEventActivity.this.startActivityForResult(intent, TAKE_CAMERA);
     }
 
@@ -275,11 +330,49 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
 
     private void displayImage(String imagePath) {
         if (imagePath != null) {
-            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-            photoAdded.setImageBitmap(bitmap);
+            imageBitmap = BitmapFactory.decodeFile(imagePath);
+            photoAdded.setImageBitmap(imageBitmap);
         } else {
             Toast.makeText(this, "Failed to add image", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void deletePhoto(){
+        Drawable d = getResources().getDrawable(R.drawable.ic_baseline_photo_filter_24);
+        d.setColorFilter(0x89000000, PorterDuff.Mode.MULTIPLY);
+        photoAdded.setImageDrawable(d);
+        imageUri = null;
+    }
+
+    public boolean enlargePhoto(){
+        // set size to square
+//        ViewTreeObserver vto = photoAdded.getViewTreeObserver();
+//        vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+//            @Override
+//            public boolean onPreDraw() {
+//                int width = photoAdded.getMeasuredWidth();
+//                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+//                        width);
+//                photoAdded.setLayoutParams(params);
+//                return true;
+//            }
+//        });
+
+        // set size with original aspect ratio
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        photoAdded.setLayoutParams(params);
+
+        return true;
+    }
+
+    public boolean narrowPhoto(){
+        // the layout height for photo in the layout file
+        int dpValue = 100;
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                (int) (dpValue * getResources().getDisplayMetrics().density + 0.5f));
+        photoAdded.setLayoutParams(params);
+        return true;
     }
 
     public void locationBtnOnClick(){
@@ -297,8 +390,11 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
                 if (resultCode == RESULT_OK) {
                     try {
                         // display the photo
-                        Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
-                        photoAdded.setImageBitmap(bitmap);
+                        imageBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
+                        photoAdded.setImageBitmap(imageBitmap);
+                        if (data != null) {
+                            imageUri = data.getData();
+                        }
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -313,11 +409,40 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
                         // process image when system # < 4.4
                         handleImageBeforeKitKat(data);
                     }
+                    imageUri = data.getData();
                 }
                 break;
             default:
                 break;
         }
+    }
+
+    public String getFileExtension(Uri uri){
+        ContentResolver contentResolver = getContentResolver();
+        MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
+        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
+    }
+
+    public boolean uploadImage(String uid){
+        if (imageUri != null){
+            StorageReference fileRef = FirebaseStorage.getInstance().getReference().child("HabitEventImages_" + uid)
+                    .child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
+            fileRef.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                    fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            String url = uri.toString();
+                            Log.d("DownloadUrl", url);
+                            Toast.makeText(AddNewHabitEventActivity.this, "Image upload successfully", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            });
+            return true;
+        }
+        return false;
     }
 
     /**

@@ -90,6 +90,25 @@
             android:text="Not implemented yet..."
             android:textFontWeight="400"
             android:textSize="16dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:text="Shared"
+            android:textColor="@color/black"
+            android:textFontWeight="400"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/viewSharedText_habitEvent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:fontFamily="sans-serif-black"
+            android:text="Not implemented yet..."
+            android:textFontWeight="400"
+            android:textSize="16dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -137,6 +156,15 @@
                     android:textColor="@color/black"
                     android:textSize="16dp">
                 </TextView>
+
+                <ImageButton
+                    android:id="@+id/deletePhotoBtn"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="end"
+                    android:layout_marginRight="68dp"
+                    android:src="@drawable/ic_baseline_delete_24">
+                </ImageButton>
 
                 <ImageButton
                     android:id="@+id/addPhotoBtn_fromCamera"
@@ -194,8 +222,7 @@
                 android:layout_height="wrap_content"
                 android:editable="false"
                 android:hint="No location added yet..."
-                android:inputType="text"
-                android:maxLines="1" />
+                android:maxLines="2" />
 
             <TextView
                 android:layout_width="match_parent"
