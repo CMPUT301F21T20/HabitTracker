@@ -15,6 +15,8 @@ import com.example.habittracker.classes.HabitList;
 import com.example.habittracker.controllers.HabitListController;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -69,8 +71,6 @@ public class ViewHabitActivity extends AppCompatActivity {
             viewSharedText.setText("NOT SHARED");
         }
 
-        final CollectionReference collectionReference = db.collection("Habits");
-
         editHabitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,13 +82,6 @@ public class ViewHabitActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 openAddHabitEventActivity();
-            }
-        });
-
-        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                handleCollectionUpdate(queryDocumentSnapshots, e);
             }
         });
     }
@@ -157,41 +150,6 @@ public class ViewHabitActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return false;
-    }
-
-    /**
-     * handles an update to the list of habits and updates text of current habit
-     * @param queryDocumentSnapshots snapshots of the affected documents
-     * @param e an exception if raised
-     */
-    public void handleCollectionUpdate(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        String habitId = habit.getHabitId();
-        HabitList habitList = null;
-        HabitListController hc = new HabitListController();
-
-        for(QueryDocumentSnapshot doc: queryDocumentSnapshots)
-        {
-            // get the document that lists all habits for the user currently signed in
-            if (doc.getId().equals(uid)) {
-                Log.d("HANDLER", String.valueOf(doc.getData()));
-                Map<String, Object> docData = (Map<String, Object>) doc.getData();
-                habitList = hc.convertToHabitList(docData, uid);
-            }
-        }
-
-        // If the user has no habits
-        if (habitList == null) {
-            return;
-        }
-
-        // Update texts for current habit if found
-        for (int i = 0; i < habitList.getCount(); i++) {
-            if (habitList.get(i).getHabitId().equals(habitId)) {
-                updateAttributes(habitList.get(i));
-                return;
-            }
-        }
     }
 
     /**

@@ -16,9 +16,12 @@ import com.example.habittracker.adapters.HabitListAdapter;
 import com.example.habittracker.classes.Habit;
 import com.example.habittracker.classes.HabitList;
 import com.example.habittracker.controllers.HabitListController;
+import com.example.habittracker.interfaces.OnHabitListRetrieved;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -35,8 +38,7 @@ public class HabitsTotalFragment extends Fragment {
     private FloatingActionButton addHabitButton;
     private FirebaseFirestore db;
 
-    public HabitsTotalFragment() {
-    }
+    public HabitsTotalFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,24 +55,34 @@ public class HabitsTotalFragment extends Fragment {
         addHabitButton = root.findViewById(R.id.addHabitButton);
         habitsListView = root.findViewById(R.id.habits_listview);
 
+        final DocumentReference userHabitDocRef = db.collection("Habits").document(uid);
+
         habitList = new HabitList();
         habitListAdapter = new HabitListAdapter(requireContext(), habitList);
         habitsListView.setAdapter(habitListAdapter);
 
-        final CollectionReference collectionReference = db.collection("Habits");
-
-        addHabitButton.setOnClickListener(new View.OnClickListener() {
+        HabitListController.getInstance().loadHabitList(uid, new OnHabitListRetrieved() {
             @Override
-            public void onClick(View v) {
-                openAddHabitActivity();
+            public void onHabitListRetrieved(HabitList newHabitList) {
+                habitList.clearHabitList();
+                for (int i = 0; i < newHabitList.getCount(); i++) {
+                    Log.d("HANDLER", i + " -> " + newHabitList.get(i).getTitle());
+                    habitList.addHabit(newHabitList.get(i));
+                }
+                habitListAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onError(Exception taskException) {
+
             }
         });
 
-        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                handleCollectionUpdate(queryDocumentSnapshots, e);
-            }
+        addHabitButton.setOnClickListener(v -> openAddHabitActivity());
+
+        userHabitDocRef.addSnapshotListener((docSnapshot, e) -> {
+            HabitListController.convertToHabitList(docSnapshot, habitList);
+            habitListAdapter.notifyDataSetChanged();
         });
 
         return root;
@@ -84,36 +96,8 @@ public class HabitsTotalFragment extends Fragment {
         startActivity(intent);
     }
 
-    /**
-     * handles an update to the list of habits for a certain user
-     * @param queryDocumentSnapshots snapshots of the affected documents
-     * @param e an exception if raised
-     */
-    public void handleCollectionUpdate(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        HabitList newHabitList = null;
-        HabitListController hc = new HabitListController();
-
-        for(QueryDocumentSnapshot doc: queryDocumentSnapshots)
-        {
-            // get the document that lists all habits for the user currently signed in
-            if (doc.getId().equals(uid)) {
-                Log.d("HANDLER", String.valueOf(doc.getData()));
-                Map<String, Object> docData = (Map<String, Object>) doc.getData();
-                newHabitList = hc.convertToHabitList(docData, uid);
-            }
-        }
-
-        // If the user has no habits
-        if (newHabitList == null) {
-            return;
-        }
-
-        habitList.clear();
-        for (int i = 0; i < newHabitList.getCount(); i++) {
-            Log.d("HANDLER", i + " -> " + newHabitList.get(i).getTitle());
-            habitList.addHabit(newHabitList.get(i));
-        }
-        habitListAdapter.notifyDataSetChanged();
-    }
+//    public void setHabitList(HabitList habitList) {
+//        // copies the ArrayList from one object to the other
+////        this.habitList.setHabitList(habitList.getHabitList());
+//    }
 }

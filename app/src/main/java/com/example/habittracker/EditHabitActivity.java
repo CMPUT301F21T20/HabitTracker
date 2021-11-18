@@ -13,7 +13,7 @@ import android.widget.ToggleButton;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.habittracker.classes.Habit;
-import com.example.habittracker.controllers.HabitController;
+import com.example.habittracker.controllers.HabitListController;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -118,8 +118,8 @@ public class EditHabitActivity extends AppCompatActivity {
                         canShare.isChecked()
                 );
 
-                HabitController controller = new HabitController();
-                Boolean success = controller.editHabit(habit);
+                HabitListController controller = HabitListController.getInstance();
+                Boolean success = controller.saveHabit(habit);
 
                 if (!success) {
                     // TODO: alert user to try again later;

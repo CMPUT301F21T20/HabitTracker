@@ -3,8 +3,6 @@ package com.example.habittracker.classes;
 import android.os.Build;
 import androidx.annotation.RequiresApi;
 
-import com.example.habittracker.controllers.HabitController;
-
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -50,18 +48,26 @@ public class HabitList {
     }
 
     /**
+     * This function will set the habit list to the given list of habits
+     * @param habitList An ArrayList of Habits
+     */
+    public void setHabitList(ArrayList<Habit> habitList) {
+        this.habitList = habitList;
+    }
+
+    /**
+     * This function clears the habit list
+     */
+    public void clearHabitList() {
+        this.habitList.clear();
+    }
+
+    /**
      * this function will return true if the habit is in the list and false otherwise
      * @param habit The habit to search for in the list
      */
     public Boolean hasHabit(Habit habit) {
         return habitList.contains(habit);
-    }
-
-    /**
-     * Clears the habit list
-     */
-    public void clear() {
-        habitList.clear();
     }
 
     /**
@@ -86,9 +92,5 @@ public class HabitList {
 
     public ArrayList<Habit> getHabitList() {
         return habitList;
-    }
-
-    public void setHabitList(ArrayList<Habit> habitList) {
-        this.habitList = habitList;
     }
 }

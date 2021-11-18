@@ -16,7 +16,7 @@ import com.example.habittracker.ViewHabitActivity;
 import com.example.habittracker.classes.Habit;
 import com.example.habittracker.R;
 import com.example.habittracker.classes.HabitList;
-import com.example.habittracker.controllers.HabitController;
+import com.example.habittracker.controllers.HabitListController;
 
 /**
  * Adapter for HabitList, provide access to HabitList data, shows a list of habits
@@ -48,18 +48,11 @@ public class HabitListAdapter extends ArrayAdapter<Habit> {
 
         habitListTitle.setText(habit.getTitle());
 
-        viewHabitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openViewHabitActivity(habit);
-            }
-        });
+        viewHabitButton.setOnClickListener(v -> openViewHabitActivity(habit));
 
-        deleteHabitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                deleteHabit(habit);
-            }
+        deleteHabitButton.setOnClickListener(v -> {
+            HabitListController controller = HabitListController.getInstance();
+            controller.deleteHabit(habit);
         });
 
         return view;
@@ -73,14 +66,5 @@ public class HabitListAdapter extends ArrayAdapter<Habit> {
         Intent i = new Intent(context, ViewHabitActivity.class);
         i.putExtra("Habit", habit);
         context.startActivity(i);
-    }
-
-    /**
-     * Deletes a habit from firebase
-     * @param habit the habit to delete
-     */
-    public void deleteHabit(Habit habit) {
-        HabitController hc = new HabitController();
-        hc.deleteHabit(habit);
     }
 }
