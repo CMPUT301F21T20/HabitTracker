@@ -37,7 +37,6 @@ public class HabitsTodayFragment extends Fragment {
     private FirebaseFirestore db;
 
     public HabitsTodayFragment() {
-
     }
 
     @Override
@@ -101,27 +100,22 @@ public class HabitsTodayFragment extends Fragment {
             day = 8;
         }
 
-        int minus = 0;
-        for (int i = 0; i < newHabitList.getCount(); i++){
-            // if the habit is not repeated today, drop the habit
-            if (("" + newHabitList.get(i - minus).getFrequency().get(day - 2)).equals("0")){
-                newHabitList.deleteHabit(i - minus);
-                minus += 1;
-            }else{
-                // if the habit is started later than today, drop it
-                if (newHabitList.get(i - minus).getDateCreated().getTime() > System.currentTimeMillis()) {
-                    newHabitList.deleteHabit(i - minus);
-                    minus += 1;
-                }
+        HabitList hl = new HabitList();
+
+        for (int i = 0; i < newHabitList.getHabitList().size(); i++){
+            String title = newHabitList.get(i).getTitle();
+            boolean isSameDay = ("" + newHabitList.get(i).getFrequency().get(day - 2)).equals("1");
+            boolean isAfterToday = newHabitList.get(i).getDateCreated().getTime() <= System.currentTimeMillis();
+            if (isSameDay && isAfterToday){
+                hl.addHabit(newHabitList.get(i));
             }
         }
 
         habitList.clear();
-        for (int i = 0; i < newHabitList.getCount(); i++) {
-            Log.d("HANDLER", i + " -> " + newHabitList.get(i).getTitle());
-            habitList.addHabit(newHabitList.get(i));
+        for (int i = 0; i < hl.getCount(); i++) {
+            Log.d("HANDLER", i + " -> " + hl.get(i).getTitle());
+            habitList.addHabit(hl.get(i));
         }
-        habitListAdapter.notifyDataSetChanged();
     }
 
     /**
