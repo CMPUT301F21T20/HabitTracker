@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/habitsToday_fragment_container"
     tools:context=".HabitsTodayFragment">
 
     <LinearLayout
@@ -17,12 +18,12 @@
         android:layout_marginBottom="0dp"
         android:weightSum="10">
 
-        <com.baoyz.swipemenulistview.SwipeMenuListView
+        <ListView
             android:id="@+id/habitsToday_listview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="7">
-        </com.baoyz.swipemenulistview.SwipeMenuListView>
+        </ListView>
 
     </LinearLayout>
 

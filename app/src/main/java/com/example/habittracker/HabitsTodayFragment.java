@@ -26,7 +26,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Map;
 
 public class HabitsTodayFragment extends Fragment {
@@ -116,16 +115,6 @@ public class HabitsTodayFragment extends Fragment {
             Log.d("HANDLER", i + " -> " + hl.get(i).getTitle());
             habitList.addHabit(hl.get(i));
         }
-    }
-
-    /**
-     * Get the date in string format of yyyy-dd-mm
-     * @param date the date to process
-     * @return the formatted string
-     */
-    public String getDateText(Date date) {
-        // Add 1900 to year, as the getYear function returns year - 1900
-        return (date.getYear() + 1900) + "-" +
-                (date.getMonth() + 1) + "-" + date.getDate();
+        habitListAdapter.notifyDataSetChanged();
     }
 }

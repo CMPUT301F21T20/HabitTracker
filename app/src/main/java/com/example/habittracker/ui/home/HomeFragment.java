@@ -30,9 +30,9 @@ public class HomeFragment extends Fragment {
 
         habits_ViewPager2 = root.findViewById(R.id.habits_ViewPager2);
         habits_TabLayout = root.findViewById(R.id.habits_TabLayout);
-
         habits_ViewPager2.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
-        habits_ViewPager2.setAdapter(new ViewPagerAdapter(this));
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this);
+        habits_ViewPager2.setAdapter(viewPagerAdapter);
         new TabLayoutMediator(habits_TabLayout, habits_ViewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
