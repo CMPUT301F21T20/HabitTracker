@@ -1,10 +1,12 @@
 package com.example.habittracker.ui.habitEvents;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.ListView;
@@ -36,6 +38,9 @@ public class HabitEventFragment extends Fragment {
     private FirebaseUser user;
     private FirebaseFirestore db;
 
+    private int lastVisibleItemPosition = 0;    // mark the last scroll position
+    private boolean scrollFlag = false;         // mark if listview is scrolled
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         habitEventViewModel =
@@ -62,6 +67,60 @@ public class HabitEventFragment extends Fragment {
                                             int dayOfMonth) {
                 getHabitEvents(year, month+1, dayOfMonth);
                 Log.i("DATE TEST", year  + ", " + (month+1) + ", " + dayOfMonth);
+            }
+        });
+
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int scrollState) {
+                switch (scrollState) {
+                    // 当不滚动时
+                    case AbsListView.OnScrollListener.SCROLL_STATE_IDLE:// 是当屏幕停止滚动时
+                        scrollFlag = false;
+                        // whether reaches the bottom, position counts from 0
+                        if (listView.getLastVisiblePosition() == (listView.getCount() - 1)) {
+                            Log.d("Scroll", "Scrolled to bottom");
+                        }
+                        // whether reaches the top
+                        if (listView.getFirstVisiblePosition() == 0) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                                calendarView.setVisibility(View.VISIBLE);
+                                Log.d("Scroll", "Scrolled to top");
+                            }
+                        }
+                        break;
+                    case AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL: // when scrolling
+                        scrollFlag = true;
+                        break;
+                    case AbsListView.OnScrollListener.SCROLL_STATE_FLING:
+                        // when user take off finger and page continue scrolling due to inertance
+                        scrollFlag = true;
+                        break;
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                // when scrolling
+                if (scrollFlag) {
+                    if (firstVisibleItem < lastVisibleItemPosition) {
+                        // scroll upwards
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//                            calendarView.setVisibility(View.INVISIBLE);
+                        }
+                        Log.d("Scroll", "Scroll upwards");
+                    } else if (firstVisibleItem > lastVisibleItemPosition) {
+                        // scroll downwards
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            calendarView.setVisibility(View.GONE);
+                        }
+                        Log.d("Scroll", "Scroll downwards");
+                    } else {
+                        return;
+                    }
+                    lastVisibleItemPosition = firstVisibleItem; // update position
+
+                }
             }
         });
 
