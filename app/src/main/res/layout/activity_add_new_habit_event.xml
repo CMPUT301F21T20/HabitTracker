@@ -137,10 +137,11 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/isHabitCompleted"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:theme="@style/SCBSwitch"
                 android:text="Denote Completed"
                 android:textSize="16dp" />
 

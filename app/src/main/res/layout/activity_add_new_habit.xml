@@ -67,9 +67,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="3"
-                android:text="PICK DATE"
                 android:background="@drawable/button_gradient"
-                app:backgroundTint="@null"
+                android:text="PICK DATE"
                 android:textColor="#ffffff"/>
         </LinearLayout>
 
@@ -187,11 +186,12 @@
                 android:textColor="#ffffff"/>
         </LinearLayout>
 
-        <Switch
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/addHabitCanShare"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            android:theme="@style/SCBSwitch"
             android:text="Decide Sharing"
             android:textSize="16dp"/>
 
@@ -208,11 +208,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:text="SAVE CHANGES"
-            android:textSize="18dp"
             android:background="@drawable/button_gradient"
-            app:backgroundTint="@null"
-            android:textColor="#ffffff"/>
+            android:text="SAVE CHANGES"
+            android:textColor="#ffffff"
+            android:textSize="18dp"
+            app:backgroundTint="@null" />
 
     </LinearLayout>
 

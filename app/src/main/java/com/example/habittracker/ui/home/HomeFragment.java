@@ -32,8 +32,10 @@ public class HomeFragment extends Fragment {
         habits_TabLayout = root.findViewById(R.id.habits_TabLayout);
 
         habits_ViewPager2.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
-        habits_ViewPager2.setAdapter(new ViewPagerAdapter(this));
-        new TabLayoutMediator(habits_TabLayout, habits_ViewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this);
+        habits_ViewPager2.setAdapter(viewPagerAdapter);
+        habits_ViewPager2.setPageTransformer(new ScaleInTransformer());
+        new TabLayoutMediator(habits_TabLayout, habits_ViewPager2, true,new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
                 tab.setText(tabs[position]);
@@ -48,5 +50,48 @@ public class HomeFragment extends Fragment {
         });
 
         return root;
+    }
+
+
+    /**
+     * realize scaled pager scroll
+     */
+    private static class ScaleInTransformer implements ViewPager2.PageTransformer {
+        private static final float MIN_SCALE = 0.85f;
+
+        public void transformPage(View view, float position) {
+            int pageWidth = view.getWidth();
+
+            if (position < -1) { // [-Infinity,-1)
+                // This page is way off-screen to the left.
+                view.setAlpha(0f);
+
+            } else if (position <= 0) { // [-1,0]
+                // Use the default slide transition when moving to the left page
+                view.setAlpha(1 + position);
+                view.setTranslationX(pageWidth * -position);
+
+                // Scale the page down (between MIN_SCALE and 1)
+                float scaleFactor = MIN_SCALE + (1 - MIN_SCALE) * (1 - Math.abs(position));
+                view.setScaleX(scaleFactor);
+                view.setScaleY(scaleFactor);
+
+            } else if (position <= 1) { // (0,1]
+                // Fade the page out.
+                view.setAlpha(1 - position);
+
+                // Counteract the default slide transition
+                view.setTranslationX(pageWidth * -position);
+
+                // Scale the page down (between MIN_SCALE and 1)
+                float scaleFactor = MIN_SCALE + (1 - MIN_SCALE) * (1 - Math.abs(position));
+                view.setScaleX(scaleFactor);
+                view.setScaleY(scaleFactor);
+
+            } else { // (1,+Infinity]
+                // This page is way off-screen to the right.
+                view.setAlpha(0f);
+            }
+        }
     }
 }

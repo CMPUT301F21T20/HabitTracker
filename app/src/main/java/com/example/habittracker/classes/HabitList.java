@@ -1,9 +1,8 @@
 package com.example.habittracker.classes;
 
 import android.os.Build;
-import androidx.annotation.RequiresApi;
 
-import com.example.habittracker.controllers.HabitController;
+import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -38,6 +37,10 @@ public class HabitList {
 
     public void deleteHabit(Habit habit) {
         habitList.remove(habit);
+    }
+
+    public void deleteHabit(int index){
+        habitList.remove(index);
     }
 
     /**
