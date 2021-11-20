@@ -70,10 +70,9 @@ public class HomeFragment extends Fragment {
                 // Use the default slide transition when moving to the left page
                 view.setAlpha(1 + position);
                 view.setTranslationX(pageWidth * -position);
-                
+
                 // Scale the page down (between MIN_SCALE and 1)
-                float scaleFactor = MIN_SCALE
-                        + (1 - MIN_SCALE) * (1 - Math.abs(position));
+                float scaleFactor = MIN_SCALE + (1 - MIN_SCALE) * (1 - Math.abs(position));
                 view.setScaleX(scaleFactor);
                 view.setScaleY(scaleFactor);
 
@@ -85,8 +84,7 @@ public class HomeFragment extends Fragment {
                 view.setTranslationX(pageWidth * -position);
 
                 // Scale the page down (between MIN_SCALE and 1)
-                float scaleFactor = MIN_SCALE
-                        + (1 - MIN_SCALE) * (1 - Math.abs(position));
+                float scaleFactor = MIN_SCALE + (1 - MIN_SCALE) * (1 - Math.abs(position));
                 view.setScaleX(scaleFactor);
                 view.setScaleY(scaleFactor);
 
