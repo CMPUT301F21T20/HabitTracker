@@ -189,8 +189,11 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
                 }
 
                 errorCheck(isCompleted, completedDate_editText);
-                if (!completedDate_editText.getError().toString().equals("")){
-                    return;
+                try {
+                    if (!completedDate_editText.getError().toString().equals("")){
+                        return;
+                    }
+                }catch (NullPointerException e){
                 }
 
                 if (imageUri != null) {
@@ -478,8 +481,13 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
                 if (resultCode == RESULT_OK) {
                     try {
                         // display the photo
-                        imageBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
+//                        imageBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
+//                        photoAdded.setImageBitmap(imageBitmap);
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+                        options.inPreferredConfig= Bitmap.Config.RGB_565;
+                        imageBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri),null,options);
                         photoAdded.setImageBitmap(imageBitmap);
+                        photoAdded.setBackgroundResource(R.color.trans);
                         if (data != null) {
                             imageUri = data.getData();
                         }
