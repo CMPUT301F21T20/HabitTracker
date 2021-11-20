@@ -57,7 +57,7 @@ public class HomeFragment extends Fragment {
      * realize scaled pager scroll
      */
     private static class ScaleInTransformer implements ViewPager2.PageTransformer {
-        private static final float MIN_SCALE = 0.8f;
+        private static final float MIN_SCALE = 0.85f;
 
         public void transformPage(View view, float position) {
             int pageWidth = view.getWidth();
