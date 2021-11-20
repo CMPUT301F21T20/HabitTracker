@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -50,7 +51,10 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
@@ -59,6 +63,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
     private String filterAddress;
     private String habitEventId;
     private SwitchCompat isCompleted;
+    private EditText completedDate_editText;
     private ImageButton deletePhotoBtn;
     private ImageButton addPhotoBtn_camera;
     private ImageButton addPhotoBtn_album;
@@ -107,6 +112,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
 
 
         isCompleted = findViewById(R.id.isHabitCompleted);
+        completedDate_editText = findViewById(R.id.completedDate_editText);
         deletePhotoBtn = findViewById(R.id.deletePhotoBtn);
         addPhotoBtn_camera = findViewById(R.id.addPhotoBtn_fromCamera);
         addPhotoBtn_album = findViewById(R.id.addPhotoBtn_fromAlbum);
@@ -115,6 +121,15 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         addLocation_editText = findViewById(R.id.addLocation_editText);
         addComment = findViewById(R.id.addComment_editText);
         submitBtn = findViewById(R.id.addHabitEventSubmitBtn);
+
+        completedDate_editText.setFocusable(false);
+
+        isCompleted.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                checkChanged(b);
+            }
+        });
 
         // use photo through the camera
         addPhotoBtn_camera.setOnClickListener(new View.OnClickListener() {
@@ -173,6 +188,11 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
                     return;
                 }
 
+                errorCheck(isCompleted, completedDate_editText);
+                if (!completedDate_editText.getError().toString().equals("")){
+                    return;
+                }
+
                 if (imageUri != null) {
                     boolean success = uploadImage(uid);
                     if (!success){
@@ -180,6 +200,17 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
                         return;
                     }
                     imageUri_String = imageUri.toString();
+                }
+
+                Date date = null;
+
+                if (!completedDate_editText.getText().toString().equals("")){
+                    try {
+                        date = new SimpleDateFormat("yyyy-MM-dd").parse(completedDate_editText.getText().toString());
+                    } catch (ParseException e) {
+                        completedDate_editText.setError("Cannot parse date");
+                        return;
+                    }
                 }
 
                 HabitEvent habitEvent = new HabitEvent(
@@ -190,7 +221,8 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
                         imageUri_String,
                         addLocation_editText.getText().toString(),
                         addComment.getText().toString(),
-                        new Date()
+                        new Date(),
+                        date
                 );
 
                 HabitEventController habitEventController = new HabitEventController();
@@ -237,6 +269,52 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         }
 
         return out.length() == 0 ? "No active days selected" : out;
+    }
+
+    public void checkChanged(boolean b){
+        if (b) {
+            // set edittext as date today
+            completedDate_editText.setFocusableInTouchMode(true);
+            Date date = new Date();
+            String dateText = getDateText(date);
+            completedDate_editText.setText(dateText);
+
+            // check if today matches the planned days
+            int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+            // if it is sunday, the returned day above is 1, should be changed to 8
+            if (day == 1){
+                day = 8;
+            }
+            // for day, mon is 1, tue is 2, ... , sun is 7
+            day -= 1;
+
+            boolean check = false;
+            boolean isPlanned = false;
+            for (int i = 0; i < 7; i++) {
+                check = String.valueOf(habit.getFrequency().get(i)).equals("1");
+                if (check){
+                    if (day == (i+1)){
+                        isPlanned = true;
+                        break;
+                    }
+                }
+            }
+            if (!isPlanned){
+                completedDate_editText.setError("Day out of plan");
+            }
+        }else{
+            // clear the edittext and forbid editing
+            completedDate_editText.setFocusable(false);
+            if (!completedDate_editText.getText().toString().equals("")){
+                completedDate_editText.setText("");
+            }
+            try {
+                if (!completedDate_editText.getError().toString().equals("")){
+                    completedDate_editText.setError(null);
+                }
+            }catch (NullPointerException e){
+            }
+        }
     }
 
     public void cameraBtnOnClick(){
@@ -421,6 +499,55 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
             default:
                 break;
         }
+    }
+
+    public void errorCheck(SwitchCompat isCompleted, EditText completedDate_editText){
+//        boolean completedDate_editTextError = false;
+
+        if (isCompleted.isChecked()){
+            if (completedDate_editText.getText().toString().length() == 0){
+                completedDate_editText.setError("Date is required");
+//                completedDate_editTextError = true;
+            }else{
+                String datePattern = "^\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])$";
+                String s = completedDate_editText.getText().toString();
+                if (!completedDate_editText.getText().toString().matches(datePattern)){
+                    completedDate_editText.setError("Unacceptable date format");
+//                    completedDate_editTextError = true;
+                }else{
+                    // check if the day matches the planned days
+                    Date date = null;
+                    try {
+                        date = new SimpleDateFormat("yyyy-MM-dd").parse(completedDate_editText.getText().toString());
+                    } catch (ParseException e) {
+                    }
+                    int day = date.getDay();
+                    if (day == 0){
+                        day = 7;
+                    }
+
+                    boolean check = false;
+                    boolean isPlanned = false;
+                    boolean isAfter = date.getTime() >= habit.getDateCreated().getTime();
+                    for (int i = 0; i < 7; i++) {
+                        check = String.valueOf(habit.getFrequency().get(i)).equals("1");
+                        if (check){
+                            if (day == (i+1)){
+                                isPlanned = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!isPlanned){
+                        completedDate_editText.setError("Date out of plan");
+                    }
+                    if (!isAfter){
+                        completedDate_editText.setError("Date should be after created date");
+                    }
+                }
+            }
+        }
+//        return completedDate_editTextError;
     }
 
     public String getFileExtension(Uri uri){

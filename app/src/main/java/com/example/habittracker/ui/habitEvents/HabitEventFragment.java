@@ -83,10 +83,14 @@ public class HabitEventFragment extends Fragment {
 
                         for (String key: docData.keySet()) {
                             Map<String, Object> data = (Map<String, Object>) docData.get(key);
-                            Timestamp timestamp = (Timestamp) data.get("date");
-                            Date dateCreated = timestamp.toDate();
+                            Timestamp timestamp;
+                            timestamp = (Timestamp) data.get("completedDate");
+                            if (timestamp == null){
+                                timestamp = (Timestamp) data.get("createdDate");
+                            }
+                            Date dateOfEvent = timestamp.toDate();
 
-                            if ((dateCreated.getYear() + 1900) == year && (dateCreated.getMonth() + 1) == month && dateCreated.getDate() == day) {
+                            if ((dateOfEvent.getYear() + 1900) == year && (dateOfEvent.getMonth() + 1) == month && dateOfEvent.getDate() == day) {
                                 String location = (String) data.get("location");
                                 if (location.length() == 0) {
                                     events.add("Habit Event for '" + data.get("habitTitle") + "' recorded");
@@ -95,7 +99,7 @@ public class HabitEventFragment extends Fragment {
                                 }
 
                             }
-                            Log.d("HANDLER", (dateCreated.getYear() + 1900) + ", " + (dateCreated.getMonth() + 1) + ", " + dateCreated.getDate());
+                            Log.d("HANDLER", (dateOfEvent.getYear() + 1900) + ", " + (dateOfEvent.getMonth() + 1) + ", " + dateOfEvent.getDate());
                         }
 
                         adapter.notifyDataSetChanged();

@@ -153,6 +153,7 @@ public class AddNewHabitActivity extends AppCompatActivity {
                         // Add 1900 to year, as the getYear function returns year - 1900
                         startDateText.setText((newDate.getYear() + 1900) + "-" +
                                 (newDate.getMonth() + 1) + "-" + newDate.getDate());
+                        startDateText.setError(null);
                     }
                 }, year, month, day);
         datePickerDialog.show();
@@ -171,7 +172,7 @@ public class AddNewHabitActivity extends AppCompatActivity {
         boolean startDateError = false;
 
         if(editTitle.getText().toString().length() == 0){
-            editTitle.setError("Title is Required");
+            editTitle.setError("Title is required");
             titleError = true;
         }
 
