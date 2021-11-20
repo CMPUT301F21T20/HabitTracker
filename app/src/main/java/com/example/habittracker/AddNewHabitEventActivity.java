@@ -302,6 +302,10 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
             if (!isPlanned){
                 completedDate_editText.setError("Day out of plan");
             }
+            boolean isAfter = date.getTime() >= habit.getDateCreated().getTime();
+            if (!isAfter){
+                completedDate_editText.setError("Date should be after started date");
+            }
         }else{
             // clear the edittext and forbid editing
             completedDate_editText.setFocusable(false);
@@ -542,7 +546,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
                         completedDate_editText.setError("Date out of plan");
                     }
                     if (!isAfter){
-                        completedDate_editText.setError("Date should be after created date");
+                        completedDate_editText.setError("Date should be after started date");
                     }
                 }
             }
