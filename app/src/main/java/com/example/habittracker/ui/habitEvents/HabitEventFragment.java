@@ -84,8 +84,9 @@ public class HabitEventFragment extends Fragment {
                         for (String key: docData.keySet()) {
                             Map<String, Object> data = (Map<String, Object>) docData.get(key);
                             Timestamp timestamp;
-                            timestamp = (Timestamp) data.get("completedDate");
-                            if (timestamp == null){
+                            Timestamp timestampCompleted = (Timestamp) data.get("completedDate");
+                            timestamp = timestampCompleted;
+                            if (timestampCompleted == null){
                                 timestamp = (Timestamp) data.get("createdDate");
                             }
                             Date dateOfEvent = timestamp.toDate();
@@ -93,9 +94,9 @@ public class HabitEventFragment extends Fragment {
                             if ((dateOfEvent.getYear() + 1900) == year && (dateOfEvent.getMonth() + 1) == month && dateOfEvent.getDate() == day) {
                                 String location = (String) data.get("location");
                                 if (location.length() == 0) {
-                                    events.add("Habit Event for '" + data.get("habitTitle") + "' recorded");
+                                    events.add("Habit Event for '" + data.get("habitTitle") + "' recorded on: " + getDateText(dateOfEvent));
                                 } else {
-                                    events.add("Habit Event for '" + data.get("habitTitle") + "' recorded at: " + data.get("location"));
+                                    events.add("Habit Event for '" + data.get("habitTitle") + "' recorded on: " + getDateText(dateOfEvent) + " at: " + data.get("location"));
                                 }
 
                             }
@@ -112,5 +113,16 @@ public class HabitEventFragment extends Fragment {
                 }
             }
         });
+    }
+
+    /**
+     * Get the date in string format of yyyy-dd-mm
+     * @param date the date to process
+     * @return the formatted string
+     */
+    public String getDateText(Date date) {
+        // Add 1900 to year, as the getYear function returns year - 1900
+        return (date.getYear() + 1900) + "-" +
+                (date.getMonth() + 1) + "-" + date.getDate();
     }
 }
