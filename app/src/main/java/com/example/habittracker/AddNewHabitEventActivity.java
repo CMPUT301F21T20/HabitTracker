@@ -183,12 +183,14 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
                 }
 
                 HabitEvent habitEvent = new HabitEvent(
+                        habit,
                         habitEventId,
                         uid,
                         isCompleted.isChecked(),
                         imageUri_String,
                         addLocation_editText.getText().toString(),
-                        addComment.getText().toString()
+                        addComment.getText().toString(),
+                        new Date()
                 );
 
                 HabitEventController habitEventController = new HabitEventController();
