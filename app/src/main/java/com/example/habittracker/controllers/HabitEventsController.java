@@ -2,13 +2,18 @@ package com.example.habittracker.controllers;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.example.habittracker.classes.Habit;
 import com.example.habittracker.classes.HabitEvent;
 import com.example.habittracker.classes.HabitEventList;
 import com.example.habittracker.classes.HabitList;
 import com.example.habittracker.interfaces.OnHabitListRetrieved;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -96,8 +101,8 @@ public class HabitEventsController {
         CollectionReference colRef = DB.collection("Users").document(habitEvent.getUserId()).collection("HabitEvents");
 
         LocalDate heDate = habitEvent.getCompletedDate();
-        LocalDate docDateName = LocalDate.of(heDate.getYear(), heDate.getMonthValue(), 1);
-        Date legacyDate = Date.from(docDateName.atStartOfDay().toInstant(ZoneOffset.UTC));
+        LocalDate docDateName = LocalDate.of(heDate.getYear(), heDate.getMonthValue(), 2);
+        Date legacyDate = Date.from(docDateName.atStartOfDay().toInstant(ZoneOffset.ofHours(18)));
         // find the correct HabitEvents document
         colRef.whereEqualTo("startDate", legacyDate).limit(1)
                 .get()
@@ -118,14 +123,24 @@ public class HabitEventsController {
                         }
                         // if the document does not exist then create it with a random document ID
                         if (count < 1) {
+                            Map<String, Date> newDocData = new HashMap<>();
+                            newDocData.put("startDate", legacyDate);
+                            // create the document with the startDate component
                             colRef
-                                    .document()
-                                    .set(mapping, SetOptions.merge())
-                                    .addOnSuccessListener(aVoid -> {
-                                        success.set(true);
+                                    .add(newDocData)
+                                    .addOnSuccessListener(docRef -> {
+                                        // add the habit event to the document
+                                        colRef
+                                                .document(docRef.getId())
+                                                .set(mapping, SetOptions.merge())
+                                                .addOnSuccessListener(bVoid -> {
+                                                    success.set(true);
+                                                    Log.d("Firestore", "DocumentSnapshot successfully updated!");
+                                                })
+                                                .addOnFailureListener(e -> Log.w("Firestore", "Error updating document"));
                                         Log.d("Firestore", "DocumentSnapshot successfully updated!");
                                     })
-                                    .addOnFailureListener(e -> Log.w("Firestore", "Error updating document", e));
+                                    .addOnFailureListener(e -> Log.w("Firestore", "Error adding document", e));
                         }
                     } else {
                         Log.d("Firestore", "Error getting documents: ", task.getException());
