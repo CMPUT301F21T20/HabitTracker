@@ -80,6 +80,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
     private ImageButton addLocationBtn;
     private EditText addLocation_editText;
 
+    TextView activeDaysText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +99,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         TextView titleText = findViewById(R.id.viewHabitTitle_habitEvent);
         TextView reasonText = findViewById(R.id.viewHabitReason_habitEvent);
         TextView startDateText = findViewById(R.id.viewHabitDateText_habitEvent);
-        TextView activeDaysText = findViewById(R.id.viewActiveDaysText_habitEvent);
+        activeDaysText = findViewById(R.id.viewActiveDaysText_habitEvent);
         TextView sharedText = findViewById(R.id.viewSharedText_habitEvent);
 
         titleText.setText(habit.getTitle());
@@ -313,7 +314,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
                 }
             }
             if (!isPlanned){
-                completedDate_editText.setError("Day out of plan");
+                completedDate_editText.setError("Date is not one of \"" + activeDaysText.getText().toString() + "\"");
             }
             boolean isAfter = date.getTime() >= habit.getDateCreated().getTime();
             if (!isAfter){
@@ -561,7 +562,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
                         }
                     }
                     if (!isPlanned){
-                        completedDate_editText.setError("Date out of plan");
+                        completedDate_editText.setError("Date is not one of \"" + activeDaysText.getText().toString() + "\"");
                     }
                     if (!isAfter){
                         completedDate_editText.setError("Date should be after started date");

@@ -83,12 +83,12 @@
                 android:layout_gravity="start">
             </TextView>
 
-            <com.example.habittracker.Legacy.NonScrollListView
+            <com.example.habittracker.Plugins.NonScrollListView
                 android:id="@+id/habitEventList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingHorizontal="12dp">
-            </com.example.habittracker.Legacy.NonScrollListView>
+            </com.example.habittracker.Plugins.NonScrollListView>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

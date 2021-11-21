@@ -1,4 +1,4 @@
-package com.example.habittracker.Legacy;
+package com.example.habittracker.Plugins;
 
 import android.content.Context;
 import android.util.AttributeSet;

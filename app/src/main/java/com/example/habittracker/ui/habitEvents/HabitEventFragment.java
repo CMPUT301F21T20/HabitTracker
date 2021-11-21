@@ -22,7 +22,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.habittracker.Legacy.NonScrollListView;
+import com.example.habittracker.Plugins.NonScrollListView;
 import com.example.habittracker.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
