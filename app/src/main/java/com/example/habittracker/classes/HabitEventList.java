@@ -23,6 +23,10 @@ public class HabitEventList {
         return habitEventList.size();
     }
 
+    public void addHabitEvent(HabitEvent habitEvent) {
+        habitEventList.add(habitEvent);
+    }
+
     public void deleteHabitEvent(HabitEvent habitEvent) {
         habitEventList.remove(habitEvent);
     }

@@ -10,19 +10,19 @@ public class HabitEvent implements Serializable {
     private String habitEventId;
     private String userId;
     private boolean isCompleted;
-    private String imageUri;
+    private String imageStorageNamePrefix;
     private String location;
     private String comment;
     private Date createDate;
     private Date completedDate;
 
     public HabitEvent(Habit habit, String habitEventId, String userId, boolean isCompleted,
-                      String imageUri, String location, String comment, Date createDate, Date completedDate) {
+                      String imageStorageNamePrefix, String location, String comment, Date createDate, Date completedDate) {
         this.habit = habit;
         this.habitEventId = habitEventId;
         this.userId = userId;
         this.isCompleted = isCompleted;
-        this.imageUri = imageUri;
+        this.imageStorageNamePrefix = imageStorageNamePrefix;
         this.location = location;
         this.comment = comment;
         this.createDate = createDate;
@@ -34,7 +34,7 @@ public class HabitEvent implements Serializable {
     public Map<String, Object> getHabitEventMap() {
         Map<String, Object> habitEvent = new HashMap<>();
         habitEvent.put("isCompleted", this.isCompleted);
-        habitEvent.put("imageUri", this.imageUri);
+        habitEvent.put("imageStorageNamePrefix", this.imageStorageNamePrefix);
         habitEvent.put("location", this.location);
         habitEvent.put("comment", this.comment);
         habitEvent.put("createdDate", this.createDate);
@@ -75,12 +75,12 @@ public class HabitEvent implements Serializable {
         isCompleted = completed;
     }
 
-    public String getImageUri() {
-        return imageUri;
+    public String getImageStorageNamePrefix() {
+        return imageStorageNamePrefix;
     }
 
-    public void setBitmap(String imageUri) {
-        this.imageUri = imageUri;
+    public void setImageStorageNamePrefix(String imageStorageNamePrefix) {
+        this.imageStorageNamePrefix = imageStorageNamePrefix;
     }
 
     public String getLocation() {
