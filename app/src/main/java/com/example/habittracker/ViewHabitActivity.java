@@ -2,7 +2,9 @@ package com.example.habittracker;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +22,7 @@ import java.util.Date;
  * This activity is for viewing a habit
  */
 public class ViewHabitActivity extends AppCompatActivity {
+    private ImageView viewHabit_back_icon;
     private Habit habit;
     private FirebaseFirestore db;
     private TextView titleText;
@@ -42,6 +45,7 @@ public class ViewHabitActivity extends AppCompatActivity {
         // https://stackoverflow.com/questions/2736389/how-to-pass-an-object-from-one-activity-to-another-on-android
         habit = (Habit) intent.getSerializableExtra("Habit");
 
+        viewHabit_back_icon = findViewById(R.id.viewHabit_back_icon);
         titleText = findViewById(R.id.viewHabitTitle);
         reasonText = findViewById(R.id.viewHabitReason);
         startDateText = findViewById(R.id.viewHabitDateText);
@@ -61,6 +65,21 @@ public class ViewHabitActivity extends AppCompatActivity {
         }
 
         editHabitBtn.setOnClickListener(view -> openEditHabitActivity());
+
+        viewHabit_back_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewHabit_back_icon.setAlpha(0.5f);
+                onSupportNavigateUp();
+            }
+        });
+
+        editHabitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openEditHabitActivity();
+            }
+        });
 
         addHabitEventBtn.setOnClickListener(view -> openAddHabitEventActivity());
 
@@ -149,7 +168,7 @@ public class ViewHabitActivity extends AppCompatActivity {
         activeDaysText.setText(getDaysText(habit.getFrequency()));
         if (habit.getCanShare()){
             viewSharedText.setText("SHARED");
-        } else{
+        } else {
             viewSharedText.setText("NOT SHARED");
         }
     }
