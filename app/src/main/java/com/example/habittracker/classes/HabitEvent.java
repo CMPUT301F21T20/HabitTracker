@@ -1,6 +1,7 @@
 package com.example.habittracker.classes;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,15 +12,17 @@ public class HabitEvent implements Serializable {
     private String imageUri;
     private String location;
     private String comment;
+    private Date date;
 
     public HabitEvent(String habitEventId, String userId, boolean isCompleted,
-                      String imageUri, String location, String comment) {
+                      String imageUri, String location, String comment, Date date) {
         this.habitEventId = habitEventId;
         this.userId = userId;
         this.isCompleted = isCompleted;
         this.imageUri = imageUri;
         this.location = location;
         this.comment = comment;
+        this.date = date;
     }
 
     public HabitEvent() {}

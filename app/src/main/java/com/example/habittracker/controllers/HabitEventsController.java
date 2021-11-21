@@ -9,6 +9,8 @@ import com.example.habittracker.classes.HabitEventList;
 import com.example.habittracker.interfaces.OnHabitListRetrieved;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -81,14 +83,42 @@ public class HabitEventsController {
         Map<String, Map<String, Object>> mapping = new HashMap<>();
         mapping.put(habitEvent.getHabitEventId(), habitEventMap);
 
-        // save the new habitEvent and create doc if it doesn't already exists
-        DB.collection("HabitEvents").document(habitEvent.getUserId())
-                .set(mapping, SetOptions.merge())
-                .addOnSuccessListener(aVoid -> {
-                    success.set(true);
-                    Log.d("Firestore", "DocumentSnapshot successfully updated!");
-                })
-                .addOnFailureListener(e -> Log.w("Firestore", "Error updating document", e));
+        // create reference to users HabitEvents collection
+        CollectionReference colRef = DB.collection("Users").document(habitEvent.getUserId()).collection("HabitEvents");
+
+        // find the correct HabitEvents document
+        colRef.whereEqualTo("startTimestamp", habitEvent.).limit(1)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        int count = 0;
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            count = count + 1;
+                            Log.d("Firestore", document.getId() + " => " + document.getData());
+                            colRef
+                                .document(document.getId())
+                                .set(mapping, SetOptions.merge())
+                                .addOnSuccessListener(aVoid -> {
+                                    success.set(true);
+                                    Log.d("Firestore", "DocumentSnapshot successfully updated!");
+                                })
+                                .addOnFailureListener(e -> Log.w("Firestore", "Error updating document", e));
+                        }
+                        // if the document does not exist then create it with a random document ID
+                        if (count < 1) {
+                            colRef
+                                .document()
+                                .set(mapping, SetOptions.merge())
+                                .addOnSuccessListener(aVoid -> {
+                                    success.set(true);
+                                    Log.d("Firestore", "DocumentSnapshot successfully updated!");
+                                })
+                                .addOnFailureListener(e -> Log.w("Firestore", "Error updating document", e));
+                    }
+                    } else {
+                        Log.d("Firestore", "Error getting documents: ", task.getException());
+                    }
+                });
         return success.get();
     }
 }
