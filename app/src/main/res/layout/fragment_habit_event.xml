@@ -75,6 +75,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="yyyy-mm-dd"
+                android:textSize="24dp"
                 android:typeface="serif"
                 android:textStyle="bold|italic"
                 android:layout_marginVertical="20dp"
@@ -86,7 +87,7 @@
                 android:id="@+id/habitEventList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="12dp">
+                android:paddingHorizontal="12dp">
             </com.example.habittracker.Legacy.NonScrollListView>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
