@@ -42,15 +42,17 @@ public class HabitEventsController {
 
     private final FirebaseFirestore DB;
 
-    public void loadHabitEvents(String uid, int months, OnHabitListRetrieved listener) {
+    public void loadHabitEvents(String uid, int month, int year, HabitList habitList, OnHabitListRetrieved listener) {
+        LocalDate docDateName = LocalDate.of(year, month, 2);
+        Date legacyDate = Date.from(docDateName.atStartOfDay().toInstant(ZoneOffset.ofHours(18)));
         DB.collection("Users").document(uid).collection("HabitEvents")
-                .whereEqualTo("startTimestamp", 10)
+                .whereEqualTo("startDate", legacyDate)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Log.d("Firestore", document.getId() + " => " + document.getData());
-                        }
+                        HabitEventList habitEventList = new HabitEventList();
+                        convertToHabitEventList(task, habitEventList, habitList);
+                        listener.onHabitListRetrieved(habitList);
                     } else {
                         Log.d("Firestore", "Error getting documents: ", task.getException());
                     }
