@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -42,7 +41,6 @@ public class ProfileFragment extends Fragment {
         profileViewModel =
                 new ViewModelProvider(this).get(ProfileViewModel.class);
         View root = inflater.inflate(R.layout.frag_profile, container, false);
-        final ListView myHabits = root.findViewById(R.id.habitList);
         profileViewModel.getList().observe(getViewLifecycleOwner(), users -> {
 
         });

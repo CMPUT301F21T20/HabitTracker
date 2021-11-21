@@ -104,8 +104,8 @@ public class HabitsTodayFragment extends Fragment {
         for (int i = 0; i < newHabitList.getHabitList().size(); i++){
             String title = newHabitList.get(i).getTitle();
             boolean isSameDay = ("" + newHabitList.get(i).getFrequency().get(day - 2)).equals("1");
-            boolean isAfterToday = newHabitList.get(i).getDateCreated().getTime() <= System.currentTimeMillis();
-            if (isSameDay && isAfterToday){
+            boolean isAfter = newHabitList.get(i).getDateCreated().getTime() <= System.currentTimeMillis();
+            if (isSameDay && isAfter){
                 hl.addHabit(newHabitList.get(i));
             }
         }

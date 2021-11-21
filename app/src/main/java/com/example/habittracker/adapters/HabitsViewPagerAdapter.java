@@ -11,17 +11,17 @@ import com.example.habittracker.HabitsTodayFragment;
 import com.example.habittracker.HabitsTotalFragment;
 import com.example.habittracker.HabitsUnbrokenFragment;
 
-public class ViewPagerAdapter extends FragmentStateAdapter {
+public class HabitsViewPagerAdapter extends FragmentStateAdapter {
 
-    public ViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
+    public HabitsViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
     }
 
-    public ViewPagerAdapter(@NonNull Fragment fragment) {
+    public HabitsViewPagerAdapter(@NonNull Fragment fragment) {
         super(fragment);
     }
 
-    public ViewPagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
+    public HabitsViewPagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
         super(fragmentManager, lifecycle);
     }
 

@@ -13,10 +13,11 @@ public class HabitEvent implements Serializable {
     private String imageUri;
     private String location;
     private String comment;
-    private Date date;
+    private Date createDate;
+    private Date completedDate;
 
     public HabitEvent(Habit habit, String habitEventId, String userId, boolean isCompleted,
-                      String imageUri, String location, String comment, Date date) {
+                      String imageUri, String location, String comment, Date createDate, Date completedDate) {
         this.habit = habit;
         this.habitEventId = habitEventId;
         this.userId = userId;
@@ -24,7 +25,8 @@ public class HabitEvent implements Serializable {
         this.imageUri = imageUri;
         this.location = location;
         this.comment = comment;
-        this.date = date;
+        this.createDate = createDate;
+        this.completedDate = completedDate;
     }
 
     public HabitEvent() {}
@@ -35,7 +37,8 @@ public class HabitEvent implements Serializable {
         habitEvent.put("imageUri", this.imageUri);
         habitEvent.put("location", this.location);
         habitEvent.put("comment", this.comment);
-        habitEvent.put("date", this.date);
+        habitEvent.put("createdDate", this.createDate);
+        habitEvent.put("completedDate", this.completedDate);
         habitEvent.put("habitTitle", this.habit.getTitle());
         return habitEvent;
     }
@@ -96,11 +99,19 @@ public class HabitEvent implements Serializable {
         this.comment = comment;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getCreateDate() {
+        return createDate;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getCompletedDate() {
+        return completedDate;
+    }
+
+    public void setCompletedDate(Date completedDate) {
+        this.completedDate = completedDate;
     }
 }

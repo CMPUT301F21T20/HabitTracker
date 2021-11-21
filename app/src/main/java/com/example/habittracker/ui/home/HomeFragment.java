@@ -13,9 +13,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.habittracker.R;
-import com.example.habittracker.adapters.ViewPagerAdapter;
+import com.example.habittracker.adapters.HabitsViewPagerAdapter;
+import com.example.habittracker.mediator.TabLayoutMediators;
 import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
 
 public class HomeFragment extends Fragment {
     private HomeViewModel homeViewModel;
@@ -32,10 +32,10 @@ public class HomeFragment extends Fragment {
         habits_TabLayout = root.findViewById(R.id.habits_TabLayout);
 
         habits_ViewPager2.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
-        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this);
-        habits_ViewPager2.setAdapter(viewPagerAdapter);
+        HabitsViewPagerAdapter habitsViewPagerAdapter = new HabitsViewPagerAdapter(this);
+        habits_ViewPager2.setAdapter(habitsViewPagerAdapter);
         habits_ViewPager2.setPageTransformer(new ScaleInTransformer());
-        new TabLayoutMediator(habits_TabLayout, habits_ViewPager2, true,new TabLayoutMediator.TabConfigurationStrategy() {
+        new TabLayoutMediators(habits_TabLayout, habits_ViewPager2, true,new TabLayoutMediators.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
                 tab.setText(tabs[position]);
@@ -93,5 +93,19 @@ public class HomeFragment extends Fragment {
                 view.setAlpha(0f);
             }
         }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        habits_TabLayout.setVisibility(View.GONE);
+        habits_ViewPager2.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        habits_TabLayout.setVisibility(View.VISIBLE);
+        habits_ViewPager2.setVisibility(View.VISIBLE);
     }
 }
