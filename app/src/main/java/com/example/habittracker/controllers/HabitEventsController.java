@@ -16,6 +16,8 @@ import com.google.firebase.firestore.SetOptions;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -95,8 +97,9 @@ public class HabitEventsController {
 
         LocalDate heDate = habitEvent.getCompletedDate();
         LocalDate docDateName = LocalDate.of(heDate.getYear(), heDate.getMonthValue(), 1);
+        Date legacyDate = Date.from(docDateName.atStartOfDay().toInstant(ZoneOffset.UTC));
         // find the correct HabitEvents document
-        colRef.whereEqualTo("startDate", docDateName).limit(1)
+        colRef.whereEqualTo("startDate", legacyDate).limit(1)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

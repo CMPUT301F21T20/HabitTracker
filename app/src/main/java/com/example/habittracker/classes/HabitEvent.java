@@ -3,6 +3,8 @@ package com.example.habittracker.classes;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
+import java.time.ZoneOffset;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,14 +34,21 @@ public class HabitEvent implements Serializable {
 
     public HabitEvent() {}
 
+    /**
+     * NOTE: converts createdDate and completedDate to Date from LocalDateTime and LocalDate respectively.
+     * This is because Firebase works with Date natively but not LocalDate or LocalDateTime
+     * @return
+     */
     public Map<String, Object> getHabitEventMap() {
         Map<String, Object> habitEvent = new HashMap<>();
         habitEvent.put("isCompleted", this.isCompleted);
         habitEvent.put("imageUri", this.imageUri);
         habitEvent.put("location", this.location);
         habitEvent.put("comment", this.comment);
-        habitEvent.put("createdDate", this.createDate);
-        habitEvent.put("completedDate", this.completedDate);
+        Date legacyDate = Date.from(this.createDate.toInstant(ZoneOffset.UTC));
+        habitEvent.put("createdDate", legacyDate);
+        Date legacyDate2 = Date.from(this.completedDate.atStartOfDay().toInstant(ZoneOffset.UTC));
+        habitEvent.put("completedDate", legacyDate2);
         habitEvent.put("habitId", this.habit.getHabitId());
         return habitEvent;
     }
