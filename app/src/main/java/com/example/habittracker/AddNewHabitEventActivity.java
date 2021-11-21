@@ -314,7 +314,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
                 }
             }
             if (!isPlanned){
-                completedDate_editText.setError("Date is not one of \"" + activeDaysText.getText().toString() + "\"");
+                completedDate_editText.setError("Date is not within \"" + activeDaysText.getText().toString() + "\"");
             }
             boolean isAfter = date.getTime() >= habit.getDateCreated().getTime();
             if (!isAfter){
@@ -562,7 +562,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
                         }
                     }
                     if (!isPlanned){
-                        completedDate_editText.setError("Date is not one of \"" + activeDaysText.getText().toString() + "\"");
+                        completedDate_editText.setError("Date is not within \"" + activeDaysText.getText().toString() + "\"");
                     }
                     if (!isAfter){
                         completedDate_editText.setError("Date should be after started date");
