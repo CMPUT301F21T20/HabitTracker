@@ -76,6 +76,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
     public static final int PICK_PHOTO = 102;
     private Uri uri;
     private Uri imageUri = null;
+    private long imageStorageNamePrefix;
     private Bitmap imageBitmap;
     private ImageButton addLocationBtn;
     private EditText addLocation_editText;
@@ -187,7 +188,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
             public void onClick(View v) {
                 FirebaseUser user;
                 String uid;
-                String imageUri_String = "";
+                String imageStorageNamePrefixString = "";
                 habitEventId = UUID.randomUUID().toString();
 
                 user = FirebaseAuth.getInstance().getCurrentUser();
@@ -213,7 +214,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
                         Toast.makeText(AddNewHabitEventActivity.this,"Failed to upload image",Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    imageUri_String = imageUri.toString();
+                    imageStorageNamePrefixString = String.valueOf(imageStorageNamePrefix);
                 }
 
                 Date date = null;
@@ -232,7 +233,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
                         habitEventId,
                         uid,
                         isCompleted.isChecked(),
-                        imageUri_String,
+                        imageStorageNamePrefixString,
                         addLocation_editText.getText().toString(),
                         addComment.getText().toString(),
                         new Date(),
@@ -581,8 +582,12 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
 
     public boolean uploadImage(String uid){
         if (imageUri != null){
+            imageStorageNamePrefix = System.currentTimeMillis();
+            if (!getFileExtension(imageUri).equals("jpg")){
+                return false;
+            }
             StorageReference fileRef = FirebaseStorage.getInstance().getReference().child("HabitEventImages_" + uid)
-                    .child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
+                    .child(imageStorageNamePrefix + "." + getFileExtension(imageUri));
             fileRef.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {

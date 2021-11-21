@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
@@ -24,6 +23,9 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.habittracker.Plugins.NonScrollListView;
 import com.example.habittracker.R;
+import com.example.habittracker.adapters.HabitEventListAdapter;
+import com.example.habittracker.classes.HabitEvent;
+import com.example.habittracker.classes.HabitEventList;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -31,10 +33,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
@@ -44,14 +46,14 @@ public class HabitEventFragment extends Fragment {
     private HabitEventViewModel habitEventViewModel;
     private FloatingActionButton eventPickDate_btn;
     private TextView eventPickDate_TextView;
-    private Date selectedDate;
     private NonScrollListView listView;
-    private ArrayList<String> events;
-    private ArrayAdapter<String> adapter;
+    private HabitEventList habitEventsList;
+    private HabitEventListAdapter habitEventsAdapter;
 
     private FirebaseUser user;
     private FirebaseFirestore db;
 
+    private String username;
     private int yearSet;
     private int monthSet;
     private int daySet;
@@ -73,12 +75,14 @@ public class HabitEventFragment extends Fragment {
         eventPickDate_TextView = root.findViewById(R.id.eventPickDate_TextView);
         listView = root.findViewById(R.id.habitEventList);
 
-        events = new ArrayList<>();
-        adapter = new ArrayAdapter<String>(getContext(), R.layout.content_habit_event, R.id.habitEventListText, events);
-        listView.setAdapter(adapter);
-
+        getUsername();
         setDateToday(eventPickDate_TextView);
+
+
         getHabitEvents(yearSet,monthSet,daySet);
+
+        habitEventsAdapter = new HabitEventListAdapter(requireContext(), habitEventsList, username);
+        listView.setAdapter(habitEventsAdapter);
 
         eventPickDate_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,17 +91,31 @@ public class HabitEventFragment extends Fragment {
             }
         });
 
-//        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-//
-//            @Override
-//            public void onSelectedDayChange(CalendarView view, int year, int month,
-//                                            int dayOfMonth) {
-//                getHabitEvents(year, month+1, dayOfMonth);
-//                Log.i("DATE TEST", year  + ", " + (month+1) + ", " + dayOfMonth);
-//            }
-//        });
-
         return root;
+    }
+
+    public void getUsername(){
+        FirebaseAuth fAuth;
+        fAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = fAuth.getCurrentUser();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        DocumentReference docRef = db.collection("Users").document(user.getUid());
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        username = (String) document.getData().get("username");
+                    } else {
+                        Log.d("HABIT EVENT DB", "No such document");
+                    }
+                } else {
+                    Log.d("HABIT EVENT DB", "get failed with ", task.getException());
+                }
+            }
+        });
     }
 
     public void setDateToday(TextView eventPickDate_TextView){
@@ -135,7 +153,6 @@ public class HabitEventFragment extends Fragment {
                         newDate.setMonth(monthOfYear);
                         newDate.setYear(yearSelect - 1900);
                         newDate.setDate(dayOfMonth);
-                        selectedDate = new Date(String.valueOf(newDate));
 
                         yearSet = newDate.getYear() + 1900;
                         monthSet = newDate.getMonth() + 1;
@@ -175,10 +192,14 @@ public class HabitEventFragment extends Fragment {
     }
 
     public void getHabitEvents(int year, int month, int day) {
-        events.clear();
+        habitEventsList = new HabitEventList();
+        HabitEvent habitEvent = new HabitEvent();
 
-        db.collection("HabitEvents").document(user.getUid())
-                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        DocumentReference habitEvents = db.collection("HabitEvents").document(user.getUid());
+
+        Task<DocumentSnapshot> documentSnapshotTask = habitEvents.get();
+
+        documentSnapshotTask.addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
@@ -191,27 +212,39 @@ public class HabitEventFragment extends Fragment {
                             Map<String, Object> data = (Map<String, Object>) docData.get(key);
                             Timestamp timestamp;
                             Timestamp timestampCompleted = (Timestamp) data.get("completedDate");
+                            Timestamp timestampCreated = (Timestamp) data.get("createdDate");
                             timestamp = timestampCompleted;
+                            Date completedDate = null;
                             if (timestampCompleted == null){
-                                timestamp = (Timestamp) data.get("createdDate");
+                                timestamp = timestampCreated;
+                            }else{
+                                completedDate = timestampCompleted.toDate();
                             }
+                            Date createdDate = timestampCreated.toDate();
                             Date dateOfEvent = timestamp.toDate();
 
                             if ((dateOfEvent.getYear() + 1900) == year && (dateOfEvent.getMonth() + 1) == month && dateOfEvent.getDate() == day) {
-                                String location = (String) data.get("location");
-                                if (location.length() == 0) {
-                                    events.add("Habit Event for '" + data.get("habitTitle") + "' recorded on: " + getDateText(dateOfEvent));
-                                } else {
-                                    events.add("Habit Event for '" + data.get("habitTitle") + "' recorded on: " + getDateText(dateOfEvent) + " at: " + data.get("location"));
-                                }
+                                String location = "";
+                                String comment = "";
+                                String imageStorageNamePrefix = "";
+                                location = (String) data.get("location");
+                                comment = (String) data.get("comment");
+                                boolean isCompleted = (boolean) data.get("isCompleted");
+                                imageStorageNamePrefix = (String) data.get("imageStorageNamePrefix");
 
+                                habitEvent.setCompleted(isCompleted);
+                                habitEvent.setLocation(location);
+                                habitEvent.setComment(comment);
+                                habitEvent.setImageStorageNamePrefix(imageStorageNamePrefix);
+                                habitEvent.setCompletedDate(completedDate);
+                                habitEvent.setCreateDate(createdDate);
+
+                                habitEventsList.addHabitEvent(habitEvent);
                             }
                             Log.d("HANDLER", (dateOfEvent.getYear() + 1900) + ", " + (dateOfEvent.getMonth() + 1) + ", " + dateOfEvent.getDate());
                         }
 
-                        adapter.notifyDataSetChanged();
-
-                        int i;
+                        habitEventsAdapter.notifyDataSetChanged();
 
                     } else {
                         Log.d("HABIT EVENT DB", "No such document");
@@ -248,7 +281,5 @@ public class HabitEventFragment extends Fragment {
         requireActivity().findViewById(R.id.main_toolbar).setVisibility(View.GONE);
         final Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.habitEvent_toolbar);
         ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
-//        ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
-//        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }
