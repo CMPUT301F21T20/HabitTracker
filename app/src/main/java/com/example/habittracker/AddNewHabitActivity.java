@@ -151,8 +151,14 @@ public class AddNewHabitActivity extends AppCompatActivity {
                         selectedDate = new Date(String.valueOf(newDate));
 
                         // Add 1900 to year, as the getYear function returns year - 1900
-                        startDateText.setText((newDate.getYear() + 1900) + "-" +
-                                (newDate.getMonth() + 1) + "-" + newDate.getDate());
+
+                        if(newDate.getDate() >= 10) {
+                            startDateText.setText((newDate.getYear() + 1900) + "-" +
+                                    (newDate.getMonth() + 1) + "-" + newDate.getDate());
+                        }else{
+                            startDateText.setText((newDate.getYear() + 1900) + "-" +
+                                    (newDate.getMonth() + 1) + "-0" + newDate.getDate());
+                        }
                         startDateText.setError(null);
                     }
                 }, year, month, day);

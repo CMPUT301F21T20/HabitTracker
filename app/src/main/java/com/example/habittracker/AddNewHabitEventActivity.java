@@ -59,6 +59,7 @@ import java.util.Date;
 import java.util.UUID;
 
 public class AddNewHabitEventActivity extends AppCompatActivity {
+    private ImageView addHabitEvent_back_icon;
     private Habit habit;
     private String filterAddress;
     private String habitEventId;
@@ -111,6 +112,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         }
 
 
+        addHabitEvent_back_icon = findViewById(R.id.addHabitEvent_back_icon);
         isCompleted = findViewById(R.id.isHabitCompleted);
         completedDate_editText = findViewById(R.id.completedDate_editText);
         deletePhotoBtn = findViewById(R.id.deletePhotoBtn);
@@ -123,6 +125,14 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         submitBtn = findViewById(R.id.addHabitEventSubmitBtn);
 
         completedDate_editText.setFocusable(false);
+
+        addHabitEvent_back_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addHabitEvent_back_icon.setAlpha(0.5f);
+                onSupportNavigateUp();
+            }
+        });
 
         isCompleted.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
