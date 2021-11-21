@@ -53,6 +53,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -216,12 +218,12 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
                     imageUri_String = imageUri.toString();
                 }
 
-                Date date = null;
+                LocalDate date = null;
 
                 if (!completedDate_editText.getText().toString().equals("")){
                     try {
-                        date = new SimpleDateFormat("yyyy-MM-dd").parse(completedDate_editText.getText().toString());
-                    } catch (ParseException e) {
+                        date = LocalDate.parse(completedDate_editText.getText().toString());
+                    } catch (Exception e) {
                         completedDate_editText.setError("Cannot parse date");
                         return;
                     }
@@ -235,7 +237,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
                         imageUri_String,
                         addLocation_editText.getText().toString(),
                         addComment.getText().toString(),
-                        new Date(),
+                        LocalDateTime.now(),
                         date
                 );
 

@@ -1,7 +1,8 @@
 package com.example.habittracker.classes;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,11 +14,11 @@ public class HabitEvent implements Serializable {
     private String imageUri;
     private String location;
     private String comment;
-    private Date createDate;
-    private Date completedDate;
+    private LocalDateTime createDate;
+    private LocalDate completedDate;
 
     public HabitEvent(Habit habit, String habitEventId, String userId, boolean isCompleted,
-                      String imageUri, String location, String comment, Date createDate, Date completedDate) {
+                      String imageUri, String location, String comment, LocalDateTime createDate, LocalDate completedDate) {
         this.habit = habit;
         this.habitEventId = habitEventId;
         this.userId = userId;
@@ -39,7 +40,7 @@ public class HabitEvent implements Serializable {
         habitEvent.put("comment", this.comment);
         habitEvent.put("createdDate", this.createDate);
         habitEvent.put("completedDate", this.completedDate);
-        habitEvent.put("habitTitle", this.habit.getTitle());
+        habitEvent.put("habitId", this.habit.getHabitId());
         return habitEvent;
     }
 
@@ -99,19 +100,19 @@ public class HabitEvent implements Serializable {
         this.comment = comment;
     }
 
-    public Date getCreateDate() {
+    public LocalDateTime getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
     }
 
-    public Date getCompletedDate() {
+    public LocalDate getCompletedDate() {
         return completedDate;
     }
 
-    public void setCompletedDate(Date completedDate) {
+    public void setCompletedDate(LocalDate completedDate) {
         this.completedDate = completedDate;
     }
 }
