@@ -76,12 +76,22 @@ public class HabitEventListAdapter extends ArrayAdapter<HabitEvent> {
         habitEventLocation_text = view.findViewById(R.id.habitEventLocation_text);
         isHabitCompletedImage = view.findViewById(R.id.isHabitCompletedImage);
 
+        habitEventUsername_text.setVisibility(View.VISIBLE);
+        habitEventComment_text.setVisibility(View.VISIBLE);
+        habitEventImage.setVisibility(View.VISIBLE);
+        recordDateDescription.setVisibility(View.VISIBLE);
+        recordDateHabitEvent.setVisibility(View.VISIBLE);
+        completedDateDescription.setVisibility(View.VISIBLE);
+        completedDateHabitEvent.setVisibility(View.VISIBLE);
+        habitEventLocation_text.setVisibility(View.VISIBLE);
+        isHabitCompletedImage.setVisibility(View.VISIBLE);
+
         habitEventUsername_text.setText(username);
 
         if (!habitEvent.getComment().equals("")) {
             habitEventComment_text.setText(habitEvent.getComment());
         }else{
-
+            habitEventComment_text.setVisibility(View.GONE);
         }
 
         recordDateHabitEvent.setText(getDateText(habitEvent.getCreateDate()));
@@ -93,11 +103,14 @@ public class HabitEventListAdapter extends ArrayAdapter<HabitEvent> {
         }else{
             Drawable drawable = ContextCompat.getDrawable(context, R.drawable.ic_baseline_pause_circle_outline_24);
             isHabitCompletedImage.setImageDrawable(drawable);
+            completedDateHabitEvent.setVisibility(View.GONE);
+            completedDateDescription.setVisibility(View.GONE);
         }
 
         if (habitEvent.getLocation().length() != 0) {
             habitEventLocation_text.setText(habitEvent.getLocation());
         }else{
+            habitEventLocation_text.setVisibility(View.GONE);
         }
 
         if (habitEvent.getImageStorageNamePrefix().length() != 0){
@@ -128,7 +141,7 @@ public class HabitEventListAdapter extends ArrayAdapter<HabitEvent> {
                 }
             });
         }else{
-
+            habitEventImage.setVisibility(View.GONE);
         }
 
         return view;

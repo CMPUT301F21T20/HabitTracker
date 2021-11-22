@@ -49,9 +49,9 @@
             <ImageView
                 android:id="@+id/habitEventImage"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="120dp"
                 android:padding="1dp"
-                android:background="@color/grayProfile"
+                android:background="@color/grey"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
 

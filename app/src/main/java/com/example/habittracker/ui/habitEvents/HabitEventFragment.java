@@ -30,7 +30,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -39,7 +38,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Map;
 
 public class HabitEventFragment extends Fragment {
     private View rootView;
@@ -193,67 +191,25 @@ public class HabitEventFragment extends Fragment {
 
     public void getHabitEvents(int year, int month, int day) {
         habitEventsList = new HabitEventList();
-        HabitEvent habitEvent = new HabitEvent();
+        HabitEvent habitEvent= new HabitEvent();
+        habitEvent.setCompleted(true);
+        habitEvent.setLocation("Edmonton");
+        habitEvent.setComment("Brief comment");
+        Date date = new Date();
+        habitEvent.setCreateDate(date);
+        habitEvent.setCompletedDate(date);
+        habitEvent.setImageStorageNamePrefix("1637507374741");
+        habitEventsList.addHabitEvent(habitEvent);
 
-        DocumentReference habitEvents = db.collection("HabitEvents").document(user.getUid());
-
-        Task<DocumentSnapshot> documentSnapshotTask = habitEvents.get();
-
-        documentSnapshotTask.addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d("HABIT EVENT DB", "DocumentSnapshot data: " + document.getData());
-                        Map<String, Object> docData = (Map<String, Object>) document.getData();
-
-                        for (String key: docData.keySet()) {
-                            Map<String, Object> data = (Map<String, Object>) docData.get(key);
-                            Timestamp timestamp;
-                            Timestamp timestampCompleted = (Timestamp) data.get("completedDate");
-                            Timestamp timestampCreated = (Timestamp) data.get("createdDate");
-                            timestamp = timestampCompleted;
-                            Date completedDate = null;
-                            if (timestampCompleted == null){
-                                timestamp = timestampCreated;
-                            }else{
-                                completedDate = timestampCompleted.toDate();
-                            }
-                            Date createdDate = timestampCreated.toDate();
-                            Date dateOfEvent = timestamp.toDate();
-
-                            if ((dateOfEvent.getYear() + 1900) == year && (dateOfEvent.getMonth() + 1) == month && dateOfEvent.getDate() == day) {
-                                String location = "";
-                                String comment = "";
-                                String imageStorageNamePrefix = "";
-                                location = (String) data.get("location");
-                                comment = (String) data.get("comment");
-                                boolean isCompleted = (boolean) data.get("isCompleted");
-                                imageStorageNamePrefix = (String) data.get("imageStorageNamePrefix");
-
-                                habitEvent.setCompleted(isCompleted);
-                                habitEvent.setLocation(location);
-                                habitEvent.setComment(comment);
-                                habitEvent.setImageStorageNamePrefix(imageStorageNamePrefix);
-                                habitEvent.setCompletedDate(completedDate);
-                                habitEvent.setCreateDate(createdDate);
-
-                                habitEventsList.addHabitEvent(habitEvent);
-                            }
-                            Log.d("HANDLER", (dateOfEvent.getYear() + 1900) + ", " + (dateOfEvent.getMonth() + 1) + ", " + dateOfEvent.getDate());
-                        }
-
-                        habitEventsAdapter.notifyDataSetChanged();
-
-                    } else {
-                        Log.d("HABIT EVENT DB", "No such document");
-                    }
-                } else {
-                    Log.d("HABIT EVENT DB", "get failed with ", task.getException());
-                }
-            }
-        });
+        habitEvent= new HabitEvent();
+        habitEvent.setCompleted(false);
+        habitEvent.setLocation("");
+        habitEvent.setComment("");
+        date = new Date();
+        habitEvent.setCreateDate(date);
+        habitEvent.setCompletedDate(null);
+        habitEvent.setImageStorageNamePrefix("");
+        habitEventsList.addHabitEvent(habitEvent);
     }
 
     @Override
