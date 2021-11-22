@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -29,12 +30,14 @@ import java.util.Map;
  * This activity is for viewing a habit
  */
 public class ViewHabitActivity extends AppCompatActivity {
+    private ImageView viewHabit_back_icon;
     private Habit habit;
     private FirebaseFirestore db;
     private TextView titleText;
     private TextView reasonText;
     private TextView startDateText;
     private TextView activeDaysText;
+    private TextView viewSharedText;
     private Button editHabitBtn;
     private Button addHabitEventBtn;
 
@@ -50,10 +53,12 @@ public class ViewHabitActivity extends AppCompatActivity {
         // https://stackoverflow.com/questions/2736389/how-to-pass-an-object-from-one-activity-to-another-on-android
         habit = (Habit) intent.getSerializableExtra("Habit");
 
+        viewHabit_back_icon = findViewById(R.id.viewHabit_back_icon);
         titleText = findViewById(R.id.viewHabitTitle);
         reasonText = findViewById(R.id.viewHabitReason);
         startDateText = findViewById(R.id.viewHabitDateText);
         activeDaysText = findViewById(R.id.viewActiveDaysText);
+        viewSharedText = findViewById(R.id.viewSharedText);
         editHabitBtn = findViewById(R.id.editHabitBtn);
         addHabitEventBtn = findViewById(R.id.addHabitEventBtn);
 
@@ -61,8 +66,21 @@ public class ViewHabitActivity extends AppCompatActivity {
         reasonText.setText(habit.getReason());
         startDateText.setText(getDateText(habit.getDateCreated()));
         activeDaysText.setText(getDaysText(habit.getFrequency()));
+        if (habit.getCanShare()){
+            viewSharedText.setText("SHARED");
+        }else{
+            viewSharedText.setText("NOT SHARED");
+        }
 
         final CollectionReference collectionReference = db.collection("Habits");
+
+        viewHabit_back_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewHabit_back_icon.setAlpha(0.5f);
+                onSupportNavigateUp();
+            }
+        });
 
         editHabitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -197,5 +215,10 @@ public class ViewHabitActivity extends AppCompatActivity {
         reasonText.setText(habit.getReason());
         startDateText.setText(getDateText(habit.getDateCreated()));
         activeDaysText.setText(getDaysText(habit.getFrequency()));
+        if (habit.getCanShare()){
+            viewSharedText.setText("SHARED");
+        }else{
+            viewSharedText.setText("NOT SHARED");
+        }
     }
 }

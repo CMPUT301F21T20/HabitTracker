@@ -2,7 +2,6 @@ package com.example.habittracker.controllers;
 
 import android.util.Log;
 
-import com.example.habittracker.classes.Habit;
 import com.example.habittracker.classes.HabitEvent;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;

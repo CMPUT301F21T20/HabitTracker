@@ -7,10 +7,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Switch;
 import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 
 import com.example.habittracker.classes.Habit;
 import com.example.habittracker.controllers.HabitController;
@@ -35,7 +35,7 @@ public class AddNewHabitActivity extends AppCompatActivity {
     private EditText startDateText;
     private Button startDateButton;
     private ToggleButton[] selectedDates;
-    private Switch canShare;
+    private SwitchCompat canShare;
     private Button submitButton;
 
 
@@ -151,8 +151,15 @@ public class AddNewHabitActivity extends AppCompatActivity {
                         selectedDate = new Date(String.valueOf(newDate));
 
                         // Add 1900 to year, as the getYear function returns year - 1900
-                        startDateText.setText((newDate.getYear() + 1900) + "-" +
-                                (newDate.getMonth() + 1) + "-" + newDate.getDate());
+
+                        if(newDate.getDate() >= 10) {
+                            startDateText.setText((newDate.getYear() + 1900) + "-" +
+                                    (newDate.getMonth() + 1) + "-" + newDate.getDate());
+                        }else{
+                            startDateText.setText((newDate.getYear() + 1900) + "-" +
+                                    (newDate.getMonth() + 1) + "-0" + newDate.getDate());
+                        }
+                        startDateText.setError(null);
                     }
                 }, year, month, day);
         datePickerDialog.show();
@@ -171,7 +178,7 @@ public class AddNewHabitActivity extends AppCompatActivity {
         boolean startDateError = false;
 
         if(editTitle.getText().toString().length() == 0){
-            editTitle.setError("Title is Required");
+            editTitle.setError("Title is required");
             titleError = true;
         }
 

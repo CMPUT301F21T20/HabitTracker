@@ -1,25 +1,32 @@
 package com.example.habittracker.classes;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class HabitEvent implements Serializable {
+    private Habit habit;
     private String habitEventId;
     private String userId;
     private boolean isCompleted;
     private String imageUri;
     private String location;
     private String comment;
+    private Date createDate;
+    private Date completedDate;
 
-    public HabitEvent(String habitEventId, String userId, boolean isCompleted,
-                      String imageUri, String location, String comment) {
+    public HabitEvent(Habit habit, String habitEventId, String userId, boolean isCompleted,
+                      String imageUri, String location, String comment, Date createDate, Date completedDate) {
+        this.habit = habit;
         this.habitEventId = habitEventId;
         this.userId = userId;
         this.isCompleted = isCompleted;
         this.imageUri = imageUri;
         this.location = location;
         this.comment = comment;
+        this.createDate = createDate;
+        this.completedDate = completedDate;
     }
 
     public HabitEvent() {}
@@ -30,7 +37,18 @@ public class HabitEvent implements Serializable {
         habitEvent.put("imageUri", this.imageUri);
         habitEvent.put("location", this.location);
         habitEvent.put("comment", this.comment);
+        habitEvent.put("createdDate", this.createDate);
+        habitEvent.put("completedDate", this.completedDate);
+        habitEvent.put("habitTitle", this.habit.getTitle());
         return habitEvent;
+    }
+
+    public Habit getHabit() {
+        return habit;
+    }
+
+    public void setHabit(Habit habit) {
+        this.habit = habit;
     }
 
     public String getHabitEventId() {
@@ -79,5 +97,21 @@ public class HabitEvent implements Serializable {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getCompletedDate() {
+        return completedDate;
+    }
+
+    public void setCompletedDate(Date completedDate) {
+        this.completedDate = completedDate;
     }
 }

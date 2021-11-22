@@ -7,10 +7,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Switch;
+import android.widget.ImageView;
 import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 
 import com.example.habittracker.classes.Habit;
 import com.example.habittracker.controllers.HabitController;
@@ -26,6 +27,7 @@ import java.util.Map;
  * This class hold functionality for when editing a Habit
  */
 public class EditHabitActivity extends AppCompatActivity {
+    private ImageView editHabit_back_icon;
     private Date selectedDate;
     private String habitId;
     private Habit habit = null;
@@ -34,7 +36,7 @@ public class EditHabitActivity extends AppCompatActivity {
     private EditText startDateText;
     private Button startDateButton;
     private ToggleButton[] selectedDates;
-    private Switch canShare;
+    private SwitchCompat canShare;
     private Button submitButton;
 
 
@@ -50,6 +52,7 @@ public class EditHabitActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
+        editHabit_back_icon = findViewById(R.id.editHabit_back_icon);
         editTitle = findViewById(R.id.editHabitTitle);
         editReason = findViewById(R.id.editHabitReason);
         startDateText = findViewById(R.id.editHabitDateText);
@@ -69,6 +72,14 @@ public class EditHabitActivity extends AppCompatActivity {
         // Need to pass habit through intent
         habit = (Habit) intent.getSerializableExtra("Habit");
         setAttributes();
+
+        editHabit_back_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editHabit_back_icon.setAlpha(0.5f);
+                onSupportNavigateUp();
+            }
+        });
 
         startDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,8 +165,13 @@ public class EditHabitActivity extends AppCompatActivity {
                         selectedDate = new Date(String.valueOf(newDate));
 
                         // Add 1900 to year, as the getYear function returns year - 1900
-                        startDateText.setText((newDate.getYear() + 1900) + "-" +
-                                (newDate.getMonth() + 1) + "-" + newDate.getDate());
+                        if(newDate.getDate() >= 10) {
+                            startDateText.setText((newDate.getYear() + 1900) + "-" +
+                                    (newDate.getMonth() + 1) + "-" + newDate.getDate());
+                        }else{
+                            startDateText.setText((newDate.getYear() + 1900) + "-" +
+                                    (newDate.getMonth() + 1) + "-0" + newDate.getDate());
+                        }
                     }
                 }, year, month, day);
         datePickerDialog.show();

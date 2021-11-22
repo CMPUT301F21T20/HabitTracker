@@ -5,13 +5,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp"
     android:clipToPadding="false"
     tools:context=".EditHabitActivity">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/main_APL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/editHabit_toolbar"
+                android:background="@color/colorPrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="?attr/actionBarTheme"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="0dp"
+                app:title="Edit Habit"
+                app:titleTextColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginLeft="56dp" />
+
+
+            <ImageView
+                android:id="@+id/editHabit_back_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toStartOf="@id/editHabit_toolbar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:src="@drawable/ic_baseline_arrow_back_24"
+                app:tint="@color/white">
+
+            </ImageView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:paddingVertical="24dp"
+        android:paddingHorizontal="24dp"
+        android:layout_marginBottom="72dp"
         android:orientation="vertical" >
 
         <TextView
@@ -67,9 +112,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="3"
-                android:text="PICK DATE"
                 android:background="@drawable/button_gradient"
-                app:backgroundTint="@null"
+                android:text="PICK DATE"
                 android:textColor="#ffffff"/>
         </LinearLayout>
 
@@ -98,6 +142,7 @@
                 android:textOff="MON"
                 android:textOn="MON"
                 android:layout_marginHorizontal="1dp"
+                android:layout_marginVertical="1dp"
                 android:background="@drawable/toggle_selector"
                 android:textColor="#ffffff"/>
 
@@ -111,6 +156,7 @@
                 android:textOff="TUE"
                 android:textOn="TUE"
                 android:layout_marginHorizontal="1dp"
+                android:layout_marginVertical="1dp"
                 android:background="@drawable/toggle_selector"
                 android:textColor="#ffffff"/>
 
@@ -124,6 +170,7 @@
                 android:textOff="WED"
                 android:textOn="WED"
                 android:layout_marginHorizontal="1dp"
+                android:layout_marginVertical="1dp"
                 android:background="@drawable/toggle_selector"
                 android:textColor="#ffffff"/>
 
@@ -137,6 +184,7 @@
                 android:textOff="THU"
                 android:textOn="THU"
                 android:layout_marginHorizontal="2dp"
+                android:layout_marginVertical="1dp"
                 android:background="@drawable/toggle_selector"
                 android:textColor="#ffffff"/>
 
@@ -150,6 +198,7 @@
                 android:textOff="FRI"
                 android:textOn="FRI"
                 android:layout_marginHorizontal="2dp"
+                android:layout_marginVertical="1dp"
                 android:background="@drawable/toggle_selector"
                 android:textColor="#ffffff"/>
 
@@ -163,6 +212,7 @@
                 android:textOff="SAT"
                 android:textOn="SAT"
                 android:layout_marginHorizontal="2dp"
+                android:layout_marginVertical="1dp"
                 android:background="@drawable/toggle_selector"
                 android:textColor="#ffffff" />
 
@@ -176,15 +226,17 @@
                 android:textOff="SUN"
                 android:textOn="SUN"
                 android:layout_marginHorizontal="2dp"
+                android:layout_marginVertical="1dp"
                 android:background="@drawable/toggle_selector"
                 android:textColor="#ffffff" />
         </LinearLayout>
 
-        <Switch
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/editHabitCanShare"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            android:theme="@style/SCBSwitch"
             android:text="Decide Sharing"
             android:textSize="16dp"/>
 
@@ -193,6 +245,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="24dp"
         android:gravity="bottom"
         android:orientation="vertical">
 
@@ -201,11 +254,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:text="SAVE CHANGES"
-            android:textSize="18dp"
             android:background="@drawable/button_gradient"
-            app:backgroundTint="@null"
-            android:textColor="#ffffff"/>
+            android:text="SAVE CHANGES"
+            android:textColor="#ffffff"
+            android:textSize="18dp"
+            app:backgroundTint="@null" />
 
     </LinearLayout>
 

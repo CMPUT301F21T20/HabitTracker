@@ -28,19 +28,21 @@
 
     <Button
         android:id="@+id/locationUpdateBtn"
-        android:layout_width="108dp"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_marginBottom="120dp"
-        android:text="Update">
+        android:layout_marginBottom="60dp"
+        android:layout_marginRight="60dp"
+        android:text="Fresh Current">
     </Button>
 
     <Button
         android:id="@+id/locationConfirmBtn"
-        android:layout_width="108dp"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_marginBottom="72dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginRight="60dp"
         android:text="Confirm">
     </Button>
 
