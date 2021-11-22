@@ -16,9 +16,33 @@ public class HabitEvent implements Serializable {
     private Date createDate;
     private Date completedDate;
 
+    public void clear(){
+        this.habit = null;
+        this.habitEventId = "";
+        this.userId = "";
+        this.isCompleted = false;
+        this.imageStorageNamePrefix = "";
+        this.location = "";
+        this.comment = "";
+        this.createDate = null;
+        this.completedDate = null;
+    }
+
     public HabitEvent(Habit habit, String habitEventId, String userId, boolean isCompleted,
                       String imageStorageNamePrefix, String location, String comment, Date createDate, Date completedDate) {
         this.habit = habit;
+        this.habitEventId = habitEventId;
+        this.userId = userId;
+        this.isCompleted = isCompleted;
+        this.imageStorageNamePrefix = imageStorageNamePrefix;
+        this.location = location;
+        this.comment = comment;
+        this.createDate = createDate;
+        this.completedDate = completedDate;
+    }
+
+    public HabitEvent(String habitEventId, String userId, boolean isCompleted,
+                      String imageStorageNamePrefix, String location, String comment, Date createDate, Date completedDate) {
         this.habitEventId = habitEventId;
         this.userId = userId;
         this.isCompleted = isCompleted;

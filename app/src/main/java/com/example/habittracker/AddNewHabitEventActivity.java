@@ -517,7 +517,9 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
                         // process image when system # < 4.4
                         handleImageBeforeKitKat(data);
                     }
-                    imageUri = data.getData();
+                    if (data != null) {
+                        imageUri = data.getData();
+                    }
                 }
                 break;
             default:

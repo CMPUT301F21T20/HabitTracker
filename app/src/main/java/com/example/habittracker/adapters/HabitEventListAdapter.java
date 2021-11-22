@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat;
 import com.example.habittracker.R;
 import com.example.habittracker.classes.HabitEvent;
 import com.example.habittracker.classes.HabitEventList;
+import com.example.habittracker.controllers.HabitEventController;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -47,6 +48,7 @@ public class HabitEventListAdapter extends ArrayAdapter<HabitEvent> {
     private TextView completedDateHabitEvent;
     private TextView habitEventLocation_text;
     private ImageView isHabitCompletedImage;
+    private ImageView habitEventDelete_btn;
 
     public HabitEventListAdapter(@NonNull Context context, HabitEventList habitEventList, String username) {
         super(context, 0, habitEventList.getHabitEventList());
@@ -75,13 +77,38 @@ public class HabitEventListAdapter extends ArrayAdapter<HabitEvent> {
         completedDateHabitEvent = view.findViewById(R.id.completedDateHabitEvent);
         habitEventLocation_text = view.findViewById(R.id.habitEventLocation_text);
         isHabitCompletedImage = view.findViewById(R.id.isHabitCompletedImage);
+        habitEventDelete_btn = view.findViewById(R.id.habitEventDelete_btn);
 
-        habitEventUsername_text.setText(username);
+        habitEventUsername_text.setVisibility(View.VISIBLE);
+        habitEventComment_text.setVisibility(View.VISIBLE);
+        habitEventImage.setVisibility(View.VISIBLE);
+        recordDateDescription.setVisibility(View.VISIBLE);
+        recordDateHabitEvent.setVisibility(View.VISIBLE);
+        completedDateDescription.setVisibility(View.VISIBLE);
+        completedDateHabitEvent.setVisibility(View.VISIBLE);
+        habitEventLocation_text.setVisibility(View.VISIBLE);
+        isHabitCompletedImage.setVisibility(View.VISIBLE);
+        habitEventDelete_btn.setVisibility(View.VISIBLE);
+
+        habitEventDelete_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteHabitEvent(habitEvent);
+            }
+        });
+
+        if (habitEvent.getCreateDate() == null){
+            return view;
+        }
+
+        if (!username.equals("")) {
+            habitEventUsername_text.setText(username);
+        }
 
         if (!habitEvent.getComment().equals("")) {
             habitEventComment_text.setText(habitEvent.getComment());
         }else{
-
+            habitEventComment_text.setVisibility(View.GONE);
         }
 
         recordDateHabitEvent.setText(getDateText(habitEvent.getCreateDate()));
@@ -93,11 +120,14 @@ public class HabitEventListAdapter extends ArrayAdapter<HabitEvent> {
         }else{
             Drawable drawable = ContextCompat.getDrawable(context, R.drawable.ic_baseline_pause_circle_outline_24);
             isHabitCompletedImage.setImageDrawable(drawable);
+            completedDateDescription.setVisibility(View.GONE);
+            completedDateHabitEvent.setVisibility(View.GONE);
         }
 
         if (habitEvent.getLocation().length() != 0) {
             habitEventLocation_text.setText(habitEvent.getLocation());
         }else{
+            habitEventLocation_text.setVisibility(View.GONE);
         }
 
         if (habitEvent.getImageStorageNamePrefix().length() != 0){
@@ -115,6 +145,7 @@ public class HabitEventListAdapter extends ArrayAdapter<HabitEvent> {
             StorageReference photoReference = storageReference.child("HabitEventImages_" + uid + "/" + habitEvent.getImageStorageNamePrefix() + ".jpg");
 
             final long ONE_MEGABYTE = 1024 * 1024;
+
             photoReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                 @Override
                 public void onSuccess(byte[] bytes) {
@@ -128,10 +159,15 @@ public class HabitEventListAdapter extends ArrayAdapter<HabitEvent> {
                 }
             });
         }else{
-
+            habitEventImage.setVisibility(View.GONE);
         }
 
         return view;
+    }
+
+    private void deleteHabitEvent(HabitEvent habitEvent){
+        HabitEventController habitEventController = new HabitEventController();
+        habitEventController.deleteHabitEvent(habitEvent);
     }
 
     /**
