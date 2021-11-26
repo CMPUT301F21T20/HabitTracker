@@ -111,10 +111,4 @@ public class User {
 
         return success.get();
     }
-
-    public void addFollower() {}
-    public void deleteFollower() {}
-    public void follow() {}
-    public void unfollow() {}
-
 }
