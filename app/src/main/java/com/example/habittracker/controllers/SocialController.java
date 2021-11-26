@@ -4,10 +4,17 @@ import android.util.Log;
 
 import com.example.habittracker.models.Request;
 import com.example.habittracker.models.RequestMap;
+import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SocialController {
 
@@ -17,6 +24,7 @@ public class SocialController {
 
     private SocialController() {
         this.db = FirebaseFirestore.getInstance();
+        this.user = FirebaseAuth.getInstance().getCurrentUser();
     }
 
     public static SocialController getInstance() {
@@ -25,6 +33,7 @@ public class SocialController {
 
     //Firestore instance
     private final FirebaseFirestore db;
+    private final FirebaseUser user;
 
     /**
      * This function takes a Firestore Requests document snapshot and populates the given requests
@@ -51,7 +60,8 @@ public class SocialController {
                         Request newRequest = new Request(
                                 requestItem.getKey(),
                                 (String) requestData.get("status"),
-                                (String) requestData.get("username")
+                                (String) requestData.get("username"),
+                                ((Timestamp) requestData.get("createdDate")).toDate()
                         );
                         try {
                             requestMap.addRequest(entry.getKey(), newRequest);
@@ -62,5 +72,82 @@ public class SocialController {
                 }
             }
         }
+    }
+
+    public Boolean saveRequest(String type, Request request) {
+        AtomicBoolean success = new AtomicBoolean(false);
+        Map<String, Object> requestMap = request.getRequestMap();
+
+        // requestTypeMap = { [userId]: requestMap }
+//        Map<String, Map<String, Object>> requestTypeMap = new HashMap<>();
+//        requestTypeMap.put(request.getUserId(), requestMap);
+//
+//        // mapping = { "outgoing/incoming": requestTypeMap }
+//        Map<String, Map<String, Map<String, Object>>> mapping = new HashMap<>();
+//        mapping.put(type, requestTypeMap);
+
+        // update the doc of the user who is submitting the change
+        String path = type + "." + request.getUserId();
+        Map<String, Object> mapping = new HashMap<>();
+        mapping.put(path, requestMap);
+
+        db.collection("Requests").document(this.user.getUid())
+                .set(mapping, SetOptions.merge())
+                .addOnSuccessListener(aVoid -> {
+                    success.set(true);
+                    Log.d("Firestore", "DocumentSnapshot successfully updated!");
+                })
+                .addOnFailureListener(e -> Log.w("Firestore", "Error updating document", e));
+
+        // update the doc of the user who is subject to the change
+        path = flipType(type) + "." + this.user.getUid();
+        mapping = new HashMap<>();
+        mapping.put(path, requestMap);
+
+        db.collection("Requests").document(request.getUserId())
+                .set(mapping, SetOptions.merge())
+                .addOnSuccessListener(aVoid -> {
+                    success.set(true);
+                    Log.d("Firestore", "DocumentSnapshot successfully updated!");
+                })
+                .addOnFailureListener(e -> Log.w("Firestore", "Error updating document", e));
+
+        return success.get();
+    }
+
+    public Boolean deleteRequest(String type, Request request) {
+        AtomicBoolean success = new AtomicBoolean(false);
+
+        // update the doc of the user who is submitting the change
+        String path = type + "." + request.getUserId();
+        Map<String, Object> updates = new HashMap<>();
+        updates.put(path, FieldValue.delete());
+        db.collection("Habits").document(this.user.getUid())
+                .update(updates)
+                .addOnSuccessListener(aVoid -> {
+                    success.set(true);
+                    Log.d("Firestore", "DocumentSnapshot successfully updated!");
+                })
+                .addOnFailureListener(e -> Log.w("Firestore", "Error updating document", e));
+
+
+        path = flipType(type) + "." + this.user.getUid();
+        updates = new HashMap<>();
+        updates.put(path, FieldValue.delete());
+        db.collection("Habits").document(request.getUserId())
+                .update(updates)
+                .addOnSuccessListener(aVoid -> {
+                    success.set(true);
+                    Log.d("Firestore", "DocumentSnapshot successfully updated!");
+                })
+                .addOnFailureListener(e -> Log.w("Firestore", "Error updating document", e));
+
+        return success.get();
+    }
+
+    private static String flipType(String type) {
+        if (type.equals("incoming")) {
+            return "outgoing";
+        } else return "incoming";
     }
 }

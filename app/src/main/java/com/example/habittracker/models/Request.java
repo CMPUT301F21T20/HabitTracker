@@ -4,19 +4,28 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class Request {
     private String userId;
     private String status;
     private String userName;
+    private Date createdDate;
 
     // If enum doesn't works, use string with following constants
     private static final String pending = "Pending";
     private static final String accepted = "Accepted";
     private static final String refused = "Refused";
 
-    public Request(String userId, String status, String username) {}
+    public Request(String userId, String status, String username, Date createdDate) {
+        this.userId = userId;
+        this.status = status;
+        this.userName = username;
+        this.createdDate = createdDate;
+    }
 
     public Request() {}
 
@@ -48,6 +57,26 @@ public class Request {
         this.userName = userName;
     }
 
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date date) {
+        this.createdDate = date;
+    }
+
+    public Map<String, Object> getRequestMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("status", this.status);
+        map.put("username", this.userName);
+        map.put("createdDate", this.createdDate);
+        return map;
+    }
+
+    public Request cloneRequest() {
+        return new Request(this.userId, this.status, this.userName, this.createdDate);
+    }
+
     /**
      * Override the equal operation for better comparison
      */
@@ -57,7 +86,7 @@ public class Request {
         if (o == null || getClass() != o.getClass()) return false;
         Request that = (Request) o;
         return that.getUserId().equals(this.userId) && that.getUserName().equals(this.userName)
-                && that.getStatus().equals(this.status);
+                && that.getStatus().equals(this.status) && that.getCreatedDate().equals(this.createdDate);
     }
 
     /**
