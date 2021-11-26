@@ -9,8 +9,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.habittracker.classes.Habit;
-import com.example.habittracker.classes.HabitList;
+import com.example.habittracker.models.Habit;
+import com.example.habittracker.models.HabitList;
 import com.example.habittracker.controllers.HabitListController;
 import com.google.firebase.firestore.FirebaseFirestore;
 
