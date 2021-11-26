@@ -2,29 +2,21 @@ package com.example.habittracker;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.habittracker.classes.Habit;
 import com.example.habittracker.classes.HabitList;
 import com.example.habittracker.controllers.HabitListController;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Map;
+
 
 /**
  * This activity is for viewing a habit
@@ -72,7 +64,7 @@ public class ViewHabitActivity extends AppCompatActivity {
             viewSharedText.setText("NOT SHARED");
         }
 
-        final CollectionReference collectionReference = db.collection("Habits");
+        editHabitBtn.setOnClickListener(view -> openEditHabitActivity());
 
         viewHabit_back_icon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,18 +81,12 @@ public class ViewHabitActivity extends AppCompatActivity {
             }
         });
 
-        addHabitEventBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openAddHabitEventActivity();
-            }
-        });
+        addHabitEventBtn.setOnClickListener(view -> openAddHabitEventActivity());
 
-        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                handleCollectionUpdate(queryDocumentSnapshots, e);
-            }
+        db.collection("Habits").document(habit.getUserId()).addSnapshotListener((docSnapshot, e) -> {
+            HabitList newHabitList = new HabitList();
+            HabitListController.convertToHabitList(docSnapshot, newHabitList);
+            updateAttributes(newHabitList.getHabit(habit.getHabitId()));
         });
     }
 
@@ -171,41 +157,6 @@ public class ViewHabitActivity extends AppCompatActivity {
     }
 
     /**
-     * handles an update to the list of habits and updates text of current habit
-     * @param queryDocumentSnapshots snapshots of the affected documents
-     * @param e an exception if raised
-     */
-    public void handleCollectionUpdate(QuerySnapshot queryDocumentSnapshots, FirebaseFirestoreException e) {
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        String habitId = habit.getHabitId();
-        HabitList habitList = null;
-        HabitListController hc = new HabitListController();
-
-        for(QueryDocumentSnapshot doc: queryDocumentSnapshots)
-        {
-            // get the document that lists all habits for the user currently signed in
-            if (doc.getId().equals(uid)) {
-                Log.d("HANDLER", String.valueOf(doc.getData()));
-                Map<String, Object> docData = (Map<String, Object>) doc.getData();
-                habitList = hc.convertToHabitList(docData, uid);
-            }
-        }
-
-        // If the user has no habits
-        if (habitList == null) {
-            return;
-        }
-
-        // Update texts for current habit if found
-        for (int i = 0; i < habitList.getCount(); i++) {
-            if (habitList.get(i).getHabitId().equals(habitId)) {
-                updateAttributes(habitList.get(i));
-                return;
-            }
-        }
-    }
-
-    /**
      * Update all attributes for the view and update habit attribute
      * @param newHabit the habit to update attributes to
      */
@@ -217,7 +168,7 @@ public class ViewHabitActivity extends AppCompatActivity {
         activeDaysText.setText(getDaysText(habit.getFrequency()));
         if (habit.getCanShare()){
             viewSharedText.setText("SHARED");
-        }else{
+        } else {
             viewSharedText.setText("NOT SHARED");
         }
     }

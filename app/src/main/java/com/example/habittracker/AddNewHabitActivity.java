@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 
 import com.example.habittracker.classes.Habit;
-import com.example.habittracker.controllers.HabitController;
+import com.example.habittracker.controllers.HabitListController;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -115,7 +115,7 @@ public class AddNewHabitActivity extends AppCompatActivity {
                         canShare.isChecked()
                 );
 
-                HabitController controller = new HabitController();
+                HabitListController controller = HabitListController.getInstance();
                 Boolean success = controller.saveHabit(habit);
 
                 if (!success) {

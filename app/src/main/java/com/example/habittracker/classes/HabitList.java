@@ -39,17 +39,29 @@ public class HabitList {
         habitList.remove(habit);
     }
 
-    public void deleteHabit(int index){
-        habitList.remove(index);
-    }
-
     /**
      * This function will return the specific Habit at the specified index
      * @param index the index of the Habit
      * @return the habit at the certain index
      */
-    public Habit get(int index) {
+    public Habit getHabit(int index) {
         return habitList.get(index);
+    }
+
+    public Habit getHabit(String habitId) {
+        for (Habit habit : habitList) {
+            if (habit.getHabitId().equals(habitId)) {
+                return habit;
+            }
+        }
+        return new Habit();
+    }
+
+    /**
+     * This function clears the habit list
+     */
+    public void clearHabitList() {
+        this.habitList.clear();
     }
 
     /**
@@ -58,13 +70,6 @@ public class HabitList {
      */
     public Boolean hasHabit(Habit habit) {
         return habitList.contains(habit);
-    }
-
-    /**
-     * Clears the habit list
-     */
-    public void clear() {
-        habitList.clear();
     }
 
     /**
@@ -89,9 +94,5 @@ public class HabitList {
 
     public ArrayList<Habit> getHabitList() {
         return habitList;
-    }
-
-    public void setHabitList(ArrayList<Habit> habitList) {
-        this.habitList = habitList;
     }
 }
