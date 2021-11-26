@@ -20,7 +20,6 @@ import com.example.habittracker.AddNewHabitActivity;
 import com.example.habittracker.R;
 import com.example.habittracker.ViewHabitActivity;
 import com.example.habittracker.classes.Habit;
-import com.example.habittracker.controllers.HabitController;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
