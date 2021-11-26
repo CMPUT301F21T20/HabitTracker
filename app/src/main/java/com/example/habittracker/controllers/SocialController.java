@@ -92,27 +92,13 @@ public class SocialController {
         String path = type + "." + request.getUserId();
         Map<String, Object> mapping = new HashMap<>();
         mapping.put(path, requestMap);
-
-        db.collection("Requests").document(this.user.getUid())
-                .set(mapping, SetOptions.merge())
-                .addOnSuccessListener(aVoid -> {
-                    success.set(true);
-                    Log.d("Firestore", "DocumentSnapshot successfully updated!");
-                })
-                .addOnFailureListener(e -> Log.w("Firestore", "Error updating document", e));
+        dbRequest("Requests", user.getUid(), mapping);
 
         // update the doc of the user who is subject to the change
         path = flipType(type) + "." + this.user.getUid();
         mapping = new HashMap<>();
         mapping.put(path, requestMap);
-
-        db.collection("Requests").document(request.getUserId())
-                .set(mapping, SetOptions.merge())
-                .addOnSuccessListener(aVoid -> {
-                    success.set(true);
-                    Log.d("Firestore", "DocumentSnapshot successfully updated!");
-                })
-                .addOnFailureListener(e -> Log.w("Firestore", "Error updating document", e));
+        dbRequest("Requests", request.getUserId(), mapping);
 
         // A status of 'Accepted' and type of 'incoming' means the user has accepted a follow request
         if (request.getStatus().equals("Accepted") && type.equals("incoming")) this.follow(request);
@@ -198,15 +184,24 @@ public class SocialController {
      * @param userIdToUnfollow
      * @return
      */
-    public Boolean unfollow(String userIdToUnfollow) {
-        return true;
+    public void unfollow(String userIdToUnfollow) {
+        // delete the following from the current users profile
+        String path = "following." + userIdToUnfollow;
+        Map<String, Object> updates = new HashMap<>();
+        updates.put(path, FieldValue.delete());
+        dbRequest("Users", user.getUid(), updates);
+
+        // delete the follower from the target users profile
+        path = "followers." + user.getUid();
+        updates.clear();
+        updates.put(path, FieldValue.delete());
+        dbRequest("Users", userIdToUnfollow, updates);
     }
 
 
     private static String flipType(String type) {
-        if (type.equals("incoming")) {
-            return "outgoing";
-        } else return "incoming";
+        if (type.equals("incoming")) return "outgoing";
+        else return "incoming";
     }
 
     private void dbRequest(String colId, String docId, Map<String, Object> data) {
