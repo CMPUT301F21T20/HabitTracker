@@ -40,6 +40,7 @@ public class FollowerFragment extends Fragment {
         Date date = new Date();
         SocialController cont = SocialController.getInstance();
 
+        // leave for testing
         FloatingActionButton addFollowerButton = root.findViewById(R.id.addFollowerButton);
         addFollowerButton.setOnClickListener(v -> {
             // send request from Billy to Bobby
@@ -52,6 +53,7 @@ public class FollowerFragment extends Fragment {
             cont.unfollow("pSppEsNfvcVMTf5W7BqDm9cY8gm1");
         });
 
+        // leave for testing
         FloatingActionButton deleteFollowerButton = root.findViewById(R.id.deleteFollowerButton);
         deleteFollowerButton.setOnClickListener(v -> {
             try {
@@ -70,6 +72,7 @@ public class FollowerFragment extends Fragment {
     }
 }
 
+// LEAVE FOR TESTING FOR NOW
 // ID: pSppEsNfvcVMTf5W7BqDm9cY8gm1
 // Name: Bobby
 // email: 12345678@gmail.com
