@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
 import com.example.habittracker.R;
@@ -26,7 +28,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class HabitEventListAdapter extends ArrayAdapter<HabitEvent> {
 
@@ -55,6 +57,7 @@ public class HabitEventListAdapter extends ArrayAdapter<HabitEvent> {
         this.username = username;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -152,9 +155,10 @@ public class HabitEventListAdapter extends ArrayAdapter<HabitEvent> {
      * @param date the date to process
      * @return the formatted string
      */
-    public String getDateText(Date date) {
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public String getDateText(LocalDate date) {
         // Add 1900 to year, as the getYear function returns year - 1900
-        return (date.getYear() + 1900) + "-" +
-                (date.getMonth() + 1) + "-" + date.getDate();
+        return (date.getYear()) + "-" +
+                (date.getMonth()) + "-" + date.getDayOfMonth();
     }
 }

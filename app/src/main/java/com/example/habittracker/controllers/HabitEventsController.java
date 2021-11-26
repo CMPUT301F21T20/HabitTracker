@@ -1,17 +1,21 @@
 package com.example.habittracker.controllers;
 
+import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 import com.example.habittracker.classes.Habit;
 import com.example.habittracker.classes.HabitEvent;
 import com.example.habittracker.classes.HabitEventList;
 import com.example.habittracker.classes.HabitList;
+import com.example.habittracker.interfaces.OnHabitEventsRetrieved;
 import com.example.habittracker.interfaces.OnHabitListRetrieved;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -19,8 +23,10 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
+import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.HashMap;
@@ -42,7 +48,8 @@ public class HabitEventsController {
 
     private final FirebaseFirestore DB;
 
-    public void loadHabitEvents(String uid, int month, int year, HabitList habitList, OnHabitListRetrieved listener) {
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void loadHabitEvents(String uid, int day, int month, int year, HabitList habitList, OnHabitEventsRetrieved listener) {
         LocalDate docDateName = LocalDate.of(year, month, 2);
         Date legacyDate = Date.from(docDateName.atStartOfDay().toInstant(ZoneOffset.ofHours(18)));
         DB.collection("Users").document(uid).collection("HabitEvents")
@@ -51,37 +58,45 @@ public class HabitEventsController {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         HabitEventList habitEventList = new HabitEventList();
-                        convertToHabitEventList(task, habitEventList, habitList);
-                        listener.onHabitListRetrieved(habitList);
+                        habitEventList = convertToHabitEventList(task, habitEventList, habitList);
+                        listener.onHabitEventsRetrieved(habitEventList);
                     } else {
                         Log.d("Firestore", "Error getting documents: ", task.getException());
                     }
                 });
     }
 
-    public static void convertToHabitEventList(Task<QuerySnapshot> successfulTask, HabitEventList heList, HabitList habitList) {
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static HabitEventList convertToHabitEventList(Task<QuerySnapshot> successfulTask, HabitEventList heList, HabitList habitList) {
         heList.clearHabitEventList();
         for (QueryDocumentSnapshot doc : successfulTask.getResult()) {
             Map<String, Object> docData = doc.getData();
+            Log.i("TEST", doc.getData().toString());
+            Log.i("TEST", "is null test: " + (habitList == null));
             if (docData != null) {
                 for (Map.Entry<String, Object> entry : docData.entrySet()) {
                     // skip the startDate value which is just a value used to sort documents by month/year
                     if (entry.getKey().equals("startDate")) continue;
                     Map<String, Object> data = (Map<String, Object>) entry.getValue();
                     Habit matchingHabit = habitList.getHabit((String) data.get("habitId"));
+                    Timestamp createdDate = (Timestamp) data.get("createdDate");
+                    Timestamp completedDate = (Timestamp) data.get("completedDate");
+
                     HabitEvent habitEvent = new HabitEvent(
                             matchingHabit,
                             entry.getKey(),
                             matchingHabit.getUserId(), (Boolean) data.get("isCompleted"),
-                            (String) data.get("imageUri"),
-                            (String) data.get("location"), (String) data.get("comment"),
-                            LocalDateTime.parse((String) data.get("createdDate")),
-                            LocalDate.parse((String) data.get("completedDate"))
+                            (String) data.get("imageStorageNamePrefix"),
+                            (String) data.get("location"),
+                            (String) data.get("comment"),
+                            createdDate.toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
+                            completedDate.toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
                     );
                     heList.addHabitEvent(habitEvent);
                 }
             }
         }
+        return heList;
     }
 
     /**
@@ -91,6 +106,7 @@ public class HabitEventsController {
      * @param habitEvent The habitEvent to save in Firestore
      * @return True if the operation was successful and false otherwise
      */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public Boolean saveHabitEvent(HabitEvent habitEvent) {
         AtomicBoolean success = new AtomicBoolean(false);
         Map<String, Object> habitEventMap = habitEvent.getHabitEventMap();

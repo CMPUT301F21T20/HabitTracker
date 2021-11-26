@@ -16,11 +16,11 @@ public class HabitEvent implements Serializable {
     private String imageStorageNamePrefix;
     private String location;
     private String comment;
-    private LocalDateTime createDate;
+    private LocalDate createDate;
     private LocalDate completedDate;
 
     public HabitEvent(Habit habit, String habitEventId, String userId, boolean isCompleted,
-        String imageStorageNamePrefix, String location, String comment, LocalDateTime createDate, LocalDate completedDate) {
+        String imageStorageNamePrefix, String location, String comment, LocalDate createDate, LocalDate completedDate) {
         this.habit = habit;
         this.habitEventId = habitEventId;
         this.userId = userId;
@@ -45,7 +45,7 @@ public class HabitEvent implements Serializable {
         habitEvent.put("imageStorageNamePrefix", this.imageStorageNamePrefix);
         habitEvent.put("location", this.location);
         habitEvent.put("comment", this.comment);
-        Date legacyDate = Date.from(this.createDate.toInstant(ZoneOffset.UTC));
+        Date legacyDate = Date.from(this.createDate.atStartOfDay().toInstant(ZoneOffset.UTC));
         habitEvent.put("createdDate", legacyDate);
         Date legacyDate2 = Date.from(this.completedDate.atStartOfDay().toInstant(ZoneOffset.UTC));
         habitEvent.put("completedDate", legacyDate2);
@@ -109,11 +109,11 @@ public class HabitEvent implements Serializable {
         this.comment = comment;
     }
 
-    public LocalDateTime getCreateDate() {
+    public LocalDate getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(LocalDateTime createDate) {
+    public void setCreateDate(LocalDate createDate) {
         this.createDate = createDate;
     }
 

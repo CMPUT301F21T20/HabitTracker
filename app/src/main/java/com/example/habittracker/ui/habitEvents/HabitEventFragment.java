@@ -1,6 +1,7 @@
 package com.example.habittracker.ui.habitEvents;
 
 import android.app.DatePickerDialog;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -26,6 +28,11 @@ import com.example.habittracker.R;
 import com.example.habittracker.adapters.HabitEventListAdapter;
 import com.example.habittracker.classes.HabitEvent;
 import com.example.habittracker.classes.HabitEventList;
+import com.example.habittracker.classes.HabitList;
+import com.example.habittracker.controllers.HabitEventsController;
+import com.example.habittracker.controllers.HabitListController;
+import com.example.habittracker.interfaces.OnHabitEventsRetrieved;
+import com.example.habittracker.interfaces.OnHabitListRetrieved;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -36,6 +43,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -56,9 +64,12 @@ public class HabitEventFragment extends Fragment {
     private int monthSet;
     private int daySet;
 
+    private HabitList habitList;
+
 //    private int lastVisibleItemPosition = 0;    // mark the last scroll position
 //    private boolean scrollFlag = false;         // mark if listview is scrolled
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         habitEventViewModel =
@@ -69,18 +80,15 @@ public class HabitEventFragment extends Fragment {
         user = FirebaseAuth.getInstance().getCurrentUser();
         db = FirebaseFirestore.getInstance();
 
+        // We need Habit List to get Habit Events, retrieve this first the get habit events of today
+        // and initialize array adapter inside function
+        getHabitList();
+
         eventPickDate_btn = root.findViewById(R.id.eventPickDate_btn);
         eventPickDate_TextView = root.findViewById(R.id.eventPickDate_TextView);
         listView = root.findViewById(R.id.habitEventList);
 
         getUsername();
-        setDateToday(eventPickDate_TextView);
-
-
-        getHabitEvents(yearSet,monthSet,daySet);
-
-        habitEventsAdapter = new HabitEventListAdapter(requireContext(), habitEventsList, username);
-        listView.setAdapter(habitEventsAdapter);
 
         eventPickDate_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,6 +153,7 @@ public class HabitEventFragment extends Fragment {
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(),
                 new DatePickerDialog.OnDateSetListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.O)
                     @Override
                     public void onDateSet(DatePicker view, int yearSelect, int monthOfYear, int dayOfMonth) {
                         // Update Selected Date
@@ -189,27 +198,74 @@ public class HabitEventFragment extends Fragment {
                 (date.getMonth() + 1) + "-" + date.getDate();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void getHabitEvents(int year, int month, int day) {
         habitEventsList = new HabitEventList();
-        HabitEvent habitEvent= new HabitEvent();
-        habitEvent.setCompleted(true);
-        habitEvent.setLocation("Edmonton");
-        habitEvent.setComment("Brief comment");
-        Date date = new Date();
-        habitEvent.setCreateDate(date);
-        habitEvent.setCompletedDate(date);
-        habitEvent.setImageStorageNamePrefix("1637507374741");
-        habitEventsList.addHabitEvent(habitEvent);
+        HabitEventsController habitEventsController = HabitEventsController.getInstance();
 
-        habitEvent= new HabitEvent();
-        habitEvent.setCompleted(false);
-        habitEvent.setLocation("");
-        habitEvent.setComment("");
-        date = new Date();
-        habitEvent.setCreateDate(date);
-        habitEvent.setCompletedDate(null);
-        habitEvent.setImageStorageNamePrefix("");
-        habitEventsList.addHabitEvent(habitEvent);
+        Log.i("TEST DATE", day + ", " + month + ", " + year);
+
+        habitEventsController.loadHabitEvents(user.getUid(), day, month, year, habitList, new OnHabitEventsRetrieved() {
+
+            @Override
+            public void onHabitEventsRetrieved(HabitEventList newHabitEventList) {
+                habitEventsList.clear();
+                for (int i = 0; i < newHabitEventList.getCount(); i++) {
+                    HabitEvent event = newHabitEventList.get(i);
+                    Log.i("TEST", event.getCompletedDate().toString());
+                    // TODO ADD DATE CHECK
+                    habitEventsList.addHabitEvent(newHabitEventList.get(i));
+                }
+                habitEventsAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onError(Exception taskException) {
+                Log.i("ERROR", "Error retrieving habit event list");
+            }
+        });
+
+//        HabitEvent habitEvent= new HabitEvent();
+//        habitEvent.setCompleted(true);
+//        habitEvent.setLocation("Edmonton");
+//        habitEvent.setComment("Brief comment");
+//        LocalDate date = LocalDate.now();
+//        habitEvent.setCreateDate(date);
+//        habitEvent.setCompletedDate(date);
+//        habitEvent.setImageStorageNamePrefix("1637507374741");
+//        habitEventsList.addHabitEvent(habitEvent);
+//
+//        habitEvent= new HabitEvent();
+//        habitEvent.setCompleted(false);
+//        habitEvent.setLocation("");
+//        habitEvent.setComment("");
+//        date = LocalDate.now();
+//        habitEvent.setCreateDate(date);
+//        habitEvent.setCompletedDate(null);
+//        habitEvent.setImageStorageNamePrefix("");
+//        habitEventsList.addHabitEvent(habitEvent);
+    }
+
+    public void getHabitList() {
+        HabitListController habitListController = HabitListController.getInstance();
+        habitListController.loadHabitList(user.getUid(), new OnHabitListRetrieved() {
+
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onHabitListRetrieved(HabitList newHabitList) {
+                Log.i("TEST", "Retrieved habit list with size: " + newHabitList.getCount());
+                habitList = newHabitList;
+                setDateToday(eventPickDate_TextView);
+                getHabitEvents(yearSet,monthSet,daySet);
+                habitEventsAdapter = new HabitEventListAdapter(requireContext(), habitEventsList, username);
+                listView.setAdapter(habitEventsAdapter);
+            }
+
+            @Override
+            public void onError(Exception taskException) {
+                Log.i("ERROR", "Error retrieving habit list");
+            }
+        });
     }
 
     @Override

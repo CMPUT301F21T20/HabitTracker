@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
@@ -55,6 +56,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -186,6 +188,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         });
 
         submitBtn.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 FirebaseUser user;
@@ -202,7 +205,9 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
                     return;
                 }
 
-                errorCheck(isCompleted, completedDate_editText);
+                if (errorCheck(isCompleted, completedDate_editText)) {
+                    return;
+                }
                 try {
                     if (!completedDate_editText.getError().toString().equals("")){
                         return;
@@ -219,7 +224,13 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
                     imageStorageNamePrefixString = String.valueOf(imageStorageNamePrefix);
                 }
 
-                LocalDate date = null;
+                Date dateOld = new Date();
+                try {
+                    dateOld =  new SimpleDateFormat("yyyy-MM-dd").parse(completedDate_editText.getText().toString());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                LocalDate date = dateOld.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
                 if (!completedDate_editText.getText().toString().equals("")){
                     try {
@@ -238,7 +249,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
                         imageStorageNamePrefixString,
                         addLocation_editText.getText().toString(),
                         addComment.getText().toString(),
-                        LocalDateTime.now(),
+                        LocalDate.now(),
                         date
                 );
 
@@ -526,53 +537,68 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         }
     }
 
-    public void errorCheck(SwitchCompat isCompleted, EditText completedDate_editText){
-//        boolean completedDate_editTextError = false;
+    public boolean errorCheck(SwitchCompat isCompleted, EditText completedDate_editText){
+        boolean completedDate_editTextError = false;
+        boolean isCompleted_error = false;
+
+        if (!isCompleted.isChecked()) {
+            isCompleted.setError("Please Denote as Completed");
+            isCompleted_error = true;
+        }
+
+        if (completedDate_editText.getText().toString().length() == 0){
+            completedDate_editText.setError("Date is required");
+            completedDate_editTextError = true;
+        }
+
+        if (isCompleted_error || completedDate_editTextError) {
+            return true;
+        }
 
         if (isCompleted.isChecked()){
-            if (completedDate_editText.getText().toString().length() == 0){
-                completedDate_editText.setError("Date is required");
-//                completedDate_editTextError = true;
-            }else{
-                String datePattern = "^\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])$";
-                String s = completedDate_editText.getText().toString();
-                if (!completedDate_editText.getText().toString().matches(datePattern)){
-                    completedDate_editText.setError("Unacceptable date format");
-//                    completedDate_editTextError = true;
-                }else{
-                    // check if the day matches the planned days
-                    Date date = null;
-                    try {
-                        date = new SimpleDateFormat("yyyy-MM-dd").parse(completedDate_editText.getText().toString());
-                    } catch (ParseException e) {
-                    }
-                    int day = date.getDay();
-                    if (day == 0){
-                        day = 7;
-                    }
+            String datePattern = "^\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])$";
+            String s = completedDate_editText.getText().toString();
 
-                    boolean check = false;
-                    boolean isPlanned = false;
-                    boolean isAfter = date.getTime() >= habit.getDateCreated().getTime();
-                    for (int i = 0; i < 7; i++) {
-                        check = String.valueOf(habit.getFrequency().get(i)).equals("1");
-                        if (check){
-                            if (day == (i+1)){
-                                isPlanned = true;
-                                break;
-                            }
-                        }
-                    }
-                    if (!isPlanned){
-                        completedDate_editText.setError("Date is not within \"" + activeDaysText.getText().toString() + "\"");
-                    }
-                    if (!isAfter){
-                        completedDate_editText.setError("Date should be after started date");
+            if (!completedDate_editText.getText().toString().matches(datePattern)){
+                completedDate_editText.setError("Unacceptable date format");
+                completedDate_editTextError = true;
+            } else {
+                // check if the day matches the planned days
+                Date date = null;
+                try {
+                    date = new SimpleDateFormat("yyyy-MM-dd").parse(completedDate_editText.getText().toString());
+                } catch (ParseException e) { }
+
+                int day = date.getDay();
+                if (day == 0){
+                    day = 7;
+                }
+
+                boolean check = false;
+                boolean isPlanned = false;
+                boolean isAfter = date.getTime() >= habit.getDateCreated().getTime();
+                for (int i = 0; i < 7; i++) {
+                    check = String.valueOf(habit.getFrequency().get(i)).equals("1");
+                    if (check && day == (i+1)) {
+                        isPlanned = true;
+                        break;
                     }
                 }
+
+                if (!isPlanned) {
+                    completedDate_editText.setError("Date is not within \"" + activeDaysText.getText().toString() + "\"");
+                    completedDate_editTextError = true;
+                }
+
+                if (!isAfter) {
+                    completedDate_editText.setError("Date should be after started date");
+                    completedDate_editTextError = true;
+                }
             }
+
         }
-//        return completedDate_editTextError;
+
+        return completedDate_editTextError;
     }
 
     public String getFileExtension(Uri uri){

@@ -35,10 +35,6 @@ public class HabitEventList {
         return habitEventList.get(index);
     }
 
-    public void addHabitEvent(HabitEvent habitEvent) {
-        this.habitEventList.add(habitEvent);
-    }
-
     public void clearHabitEventList() {
         this.habitEventList.clear();
     }
