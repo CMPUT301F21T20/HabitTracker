@@ -78,8 +78,9 @@ public class RegisterActivity extends AppCompatActivity {
                             Map<String, Object> newUser = new HashMap<>();
                             newUser.put("username", fullName);
                             newUser.put("info", "");
-                            // TODO: create following/follower objects
 
+                            newUser.put("following", null);
+                            newUser.put("follower", null);
                             try {
                                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                                 String uid = fAuth.getCurrentUser().getUid();
