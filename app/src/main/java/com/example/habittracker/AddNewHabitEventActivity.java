@@ -223,7 +223,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
             Toast.makeText(AddNewHabitEventActivity.this,"Failed to retrieve userId",Toast.LENGTH_SHORT).show();
             return;
         }
-        Log.i("UPLOAD HABIT", "HERE");
+
         if (errorCheck(isCompleted, completedDate_editText)) {
             return;
         }
@@ -233,7 +233,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
             }
         }catch (NullPointerException e){
         }
-        Log.i("UPLOAD HABIT", "HERE2");
+
         Date dateOld = new Date();
         try {
             dateOld =  new SimpleDateFormat("yyyy-MM-dd").parse(completedDate_editText.getText().toString());
@@ -241,7 +241,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         LocalDate date = dateOld.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        Log.i("UPLOAD HABIT", "HERE3");
+
         if (!completedDate_editText.getText().toString().equals("")){
             try {
                 date = LocalDate.parse(completedDate_editText.getText().toString());
@@ -250,7 +250,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
                 return;
             }
         }
-        Log.i("UPLOAD HABIT", "HERE4");
+
         HabitEvent habitEvent = new HabitEvent(
                 habit,
                 habitEventId,

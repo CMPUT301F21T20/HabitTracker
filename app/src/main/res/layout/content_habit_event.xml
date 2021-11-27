@@ -51,10 +51,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
                 android:padding="1dp"
-                android:background="@color/grey"
+                android:background="#ffffff"
                 android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-
+                android:scaleType="centerInside"
                 android:layout_marginBottom="6dp">
             </ImageView>
 
