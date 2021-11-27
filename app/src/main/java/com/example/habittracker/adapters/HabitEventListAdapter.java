@@ -1,8 +1,6 @@
 package com.example.habittracker.adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,12 +17,7 @@ import com.example.habittracker.R;
 import com.example.habittracker.classes.HabitEvent;
 import com.example.habittracker.classes.HabitEventList;
 import com.example.habittracker.controllers.HabitEventController;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.Date;
 
@@ -63,7 +55,7 @@ public class HabitEventListAdapter extends ArrayAdapter<HabitEvent> {
         view = convertView;
 
         if (view == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.content_habit_event, parent, false);
+            view = LayoutInflater.from(context).inflate(R.layout.content_habit_evnt, parent, false);
         }
 
         habitEvent = habitEventList.get(position);
@@ -130,37 +122,37 @@ public class HabitEventListAdapter extends ArrayAdapter<HabitEvent> {
             habitEventLocation_text.setVisibility(View.GONE);
         }
 
-        if (habitEvent.getImageStorageNamePrefix().length() != 0){
-            StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-
-            String uid;
-            user = FirebaseAuth.getInstance().getCurrentUser();
-            if (user != null) {
-                // User is signed in
-                uid = user.getUid();
-            } else {
-                Toast.makeText(context,"Failed to retrieve userId",Toast.LENGTH_SHORT).show();
-                return view;
-            }
-            StorageReference photoReference = storageReference.child("HabitEventImages_" + uid + "/" + habitEvent.getImageStorageNamePrefix() + ".jpg");
-
-            final long ONE_MEGABYTE = 1024 * 1024;
-
-            photoReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                @Override
-                public void onSuccess(byte[] bytes) {
-                    Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                    habitEventImage.setImageBitmap(bmp);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    Toast.makeText(context, "No Such file or Path found!!", Toast.LENGTH_LONG).show();
-                }
-            });
-        }else{
-            habitEventImage.setVisibility(View.GONE);
-        }
+//        if (habitEvent.getImageStorageNamePrefix().length() != 0){
+//            StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+//
+//            String uid;
+//            user = FirebaseAuth.getInstance().getCurrentUser();
+//            if (user != null) {
+//                // User is signed in
+//                uid = user.getUid();
+//            } else {
+//                Toast.makeText(context,"Failed to retrieve userId",Toast.LENGTH_SHORT).show();
+//                return view;
+//            }
+//            StorageReference photoReference = storageReference.child("HabitEventImages_" + uid + "/" + habitEvent.getImageStorageNamePrefix() + ".jpg");
+//
+//            final long ONE_MEGABYTE = 1024 * 1024;
+//
+//            photoReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+//                @Override
+//                public void onSuccess(byte[] bytes) {
+//                    Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+//                    habitEventImage.setImageBitmap(bmp);
+//                }
+//            }).addOnFailureListener(new OnFailureListener() {
+//                @Override
+//                public void onFailure(@NonNull Exception exception) {
+//                    Toast.makeText(context, "No Such file or Path found!!", Toast.LENGTH_LONG).show();
+//                }
+//            });
+//        }else{
+//            habitEventImage.setVisibility(View.GONE);
+//        }
 
         return view;
     }

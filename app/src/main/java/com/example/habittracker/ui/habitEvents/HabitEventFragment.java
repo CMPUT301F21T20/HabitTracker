@@ -27,15 +27,11 @@ import com.example.habittracker.R;
 import com.example.habittracker.adapters.HabitEventListAdapter;
 import com.example.habittracker.classes.HabitEventList;
 import com.example.habittracker.controllers.HabitEventListController;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -85,7 +81,7 @@ public class HabitEventFragment extends Fragment {
         habitEventsAdapter = new HabitEventListAdapter(requireContext(), habitEventsList, username);
         listView.setAdapter(habitEventsAdapter);
 
-        getUsername();
+//        getUsername();
         setDateToday();
 //        getHabitEvents(yearSet,monthSet,daySet);
 
@@ -138,25 +134,25 @@ public class HabitEventFragment extends Fragment {
         habitEventsAdapter.notifyDataSetChanged();
     }
 
-    public void getUsername(){
-        DocumentReference docRef = db.collection("Users").document(user.getUid());
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        username = (String) document.getData().get("username");
-                        Log.d("Username",username);
-                    } else {
-                        Log.d("HABIT EVENT DB", "No such document");
-                    }
-                } else {
-                    Log.d("HABIT EVENT DB", "get failed with ", task.getException());
-                }
-            }
-        });
-    }
+//    public void getUsername(){
+//        DocumentReference docRef = db.collection("Users").document(user.getUid());
+//        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    DocumentSnapshot document = task.getResult();
+//                    if (document.exists()) {
+//                        username = (String) document.getData().get("username");
+//                        Log.d("Username",username);
+//                    } else {
+//                        Log.d("HABIT EVENT DB", "No such document");
+//                    }
+//                } else {
+//                    Log.d("HABIT EVENT DB", "get failed with ", task.getException());
+//                }
+//            }
+//        });
+//    }
 
     public void setDateToday(){
         Calendar c = Calendar.getInstance();
