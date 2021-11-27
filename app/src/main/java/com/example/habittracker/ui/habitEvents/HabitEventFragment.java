@@ -82,6 +82,7 @@ public class HabitEventFragment extends Fragment {
 
         // We need Habit List to get Habit Events, retrieve this first the get habit events of today
         // and initialize array adapter inside function
+        habitEventsList = new HabitEventList();
         getHabitList();
 
         eventPickDate_btn = root.findViewById(R.id.eventPickDate_btn);
@@ -200,7 +201,6 @@ public class HabitEventFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void getHabitEvents(int year, int month, int day) {
-        habitEventsList = new HabitEventList();
         HabitEventsController habitEventsController = HabitEventsController.getInstance();
 
         Log.i("TEST DATE", day + ", " + month + ", " + year);
@@ -211,10 +211,14 @@ public class HabitEventFragment extends Fragment {
             public void onHabitEventsRetrieved(HabitEventList newHabitEventList) {
                 habitEventsList.clear();
                 for (int i = 0; i < newHabitEventList.getCount(); i++) {
-                    HabitEvent event = newHabitEventList.get(i);
-                    Log.i("TEST", event.getCompletedDate().toString());
+                    LocalDate checkDate = newHabitEventList.get(i).getCompletedDate();
+                    Log.i("TEST", checkDate.toString());
                     // TODO ADD DATE CHECK
-                    habitEventsList.addHabitEvent(newHabitEventList.get(i));
+                    if (checkDate.getYear() == year && checkDate.getMonthValue() == month && checkDate.getDayOfMonth() == day) {
+                        Log.i("TEST", "Adding one!");
+                        habitEventsList.addHabitEvent(newHabitEventList.get(i));
+                    }
+
                 }
                 habitEventsAdapter.notifyDataSetChanged();
             }

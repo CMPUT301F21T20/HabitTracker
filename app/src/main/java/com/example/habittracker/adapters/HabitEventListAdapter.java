@@ -19,6 +19,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
 import com.example.habittracker.R;
+import com.example.habittracker.classes.DownloadImageTask;
 import com.example.habittracker.classes.HabitEvent;
 import com.example.habittracker.classes.HabitEventList;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -117,32 +118,7 @@ public class HabitEventListAdapter extends ArrayAdapter<HabitEvent> {
         }
 
         if (habitEvent.getImageStorageNamePrefix().length() != 0){
-            StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-
-            String uid;
-            user = FirebaseAuth.getInstance().getCurrentUser();
-            if (user != null) {
-                // User is signed in
-                uid = user.getUid();
-            } else {
-                Toast.makeText(context,"Failed to retrieve userId",Toast.LENGTH_SHORT).show();
-                return view;
-            }
-            StorageReference photoReference = storageReference.child("HabitEventImages_" + uid + "/" + habitEvent.getImageStorageNamePrefix() + ".jpg");
-
-            final long ONE_MEGABYTE = 1024 * 1024;
-            photoReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                @Override
-                public void onSuccess(byte[] bytes) {
-                    Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                    habitEventImage.setImageBitmap(bmp);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    Toast.makeText(context, "No Such file or Path found!!", Toast.LENGTH_LONG).show();
-                }
-            });
+            new DownloadImageTask(habitEventImage).execute(habitEvent.getImageStorageNamePrefix());
         }else{
             habitEventImage.setVisibility(View.GONE);
         }

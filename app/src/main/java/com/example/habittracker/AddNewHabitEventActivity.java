@@ -14,6 +14,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -52,6 +53,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -78,12 +80,13 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
     private Button submitBtn;
     public static final int TAKE_CAMERA = 101;
     public static final int PICK_PHOTO = 102;
-    private Uri uri;
+    private Uri uri = null;
     private Uri imageUri = null;
     private long imageStorageNamePrefix;
     private Bitmap imageBitmap;
     private ImageButton addLocationBtn;
     private EditText addLocation_editText;
+    private String storageImagePath = "";
 
     TextView activeDaysText;
 
@@ -191,73 +194,78 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-                FirebaseUser user;
-                String uid;
-                String imageStorageNamePrefixString = "";
-                habitEventId = UUID.randomUUID().toString();
-
-                user = FirebaseAuth.getInstance().getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    uid = user.getUid();
-                } else {
-                    Toast.makeText(AddNewHabitEventActivity.this,"Failed to retrieve userId",Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if (errorCheck(isCompleted, completedDate_editText)) {
-                    return;
-                }
-                try {
-                    if (!completedDate_editText.getError().toString().equals("")){
-                        return;
-                    }
-                }catch (NullPointerException e){
-                }
-
+                imageUri = uri;
+                Log.i("IN ONCLICK", String.valueOf(imageUri));
                 if (imageUri != null) {
-                    boolean success = uploadImage(uid);
+                    boolean success = uploadImage(FirebaseAuth.getInstance().getCurrentUser().getUid());
                     if (!success){
                         Toast.makeText(AddNewHabitEventActivity.this,"Failed to upload image",Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    imageStorageNamePrefixString = String.valueOf(imageStorageNamePrefix);
+                } else {
+                    uploadHabitEvent();
                 }
-
-                Date dateOld = new Date();
-                try {
-                    dateOld =  new SimpleDateFormat("yyyy-MM-dd").parse(completedDate_editText.getText().toString());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                LocalDate date = dateOld.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
-                if (!completedDate_editText.getText().toString().equals("")){
-                    try {
-                        date = LocalDate.parse(completedDate_editText.getText().toString());
-                    } catch (Exception e) {
-                        completedDate_editText.setError("Cannot parse date");
-                        return;
-                    }
-                }
-
-                HabitEvent habitEvent = new HabitEvent(
-                        habit,
-                        habitEventId,
-                        uid,
-                        isCompleted.isChecked(),
-                        imageStorageNamePrefixString,
-                        addLocation_editText.getText().toString(),
-                        addComment.getText().toString(),
-                        LocalDate.now(),
-                        date
-                );
-
-                HabitEventsController.getInstance().saveHabitEvent(habitEvent);
-
-                finish();
             }
         });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void uploadHabitEvent() {
+        FirebaseUser user;
+        String uid;
+        habitEventId = UUID.randomUUID().toString();
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            // User is signed in
+            uid = user.getUid();
+        } else {
+            Toast.makeText(AddNewHabitEventActivity.this,"Failed to retrieve userId",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Log.i("UPLOAD HABIT", "HERE");
+        if (errorCheck(isCompleted, completedDate_editText)) {
+            return;
+        }
+        try {
+            if (!completedDate_editText.getError().toString().equals("")){
+                return;
+            }
+        }catch (NullPointerException e){
+        }
+        Log.i("UPLOAD HABIT", "HERE2");
+        Date dateOld = new Date();
+        try {
+            dateOld =  new SimpleDateFormat("yyyy-MM-dd").parse(completedDate_editText.getText().toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        LocalDate date = dateOld.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        Log.i("UPLOAD HABIT", "HERE3");
+        if (!completedDate_editText.getText().toString().equals("")){
+            try {
+                date = LocalDate.parse(completedDate_editText.getText().toString());
+            } catch (Exception e) {
+                completedDate_editText.setError("Cannot parse date");
+                return;
+            }
+        }
+        Log.i("UPLOAD HABIT", "HERE4");
+        HabitEvent habitEvent = new HabitEvent(
+                habit,
+                habitEventId,
+                uid,
+                isCompleted.isChecked(),
+                storageImagePath,
+                addLocation_editText.getText().toString(),
+                addComment.getText().toString(),
+                LocalDate.now(),
+                date
+        );
+        Log.i("UPLOAD HABIT", "HERE5");
+        HabitEventsController.getInstance().saveHabitEvent(habitEvent);
+        Log.i("UPLOAD HABIT", "HERE6");
+        finish();
     }
 
     /**
@@ -348,9 +356,14 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         }
     }
 
-    public void cameraBtnOnClick(){
+    public void cameraBtnOnClick() {
         // create File object to store the output photo in app cache of the CD card
-        File outputImage = new File(getExternalCacheDir(), "output_image.jpg");
+        File outputImage;
+        try {
+            outputImage = getImageFile();
+        } catch (Exception e) {
+            outputImage = new File(getExternalCacheDir(), "output_image.jpg");
+        }
 
         try {
             if (outputImage.exists()) {
@@ -369,10 +382,21 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
             uri = Uri.fromFile(outputImage);
         }
 
+        uri = FileProvider.getUriForFile(AddNewHabitEventActivity.this, "com.example.habittracker.fileprovider", outputImage);
+
         // start the camera program
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         AddNewHabitEventActivity.this.startActivityForResult(intent, TAKE_CAMERA);
+    }
+
+    private File getImageFile() throws IOException {
+        String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageName = FirebaseAuth.getInstance().getCurrentUser().getUid() + "_" + timestamp;
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+
+        File imageFile = File.createTempFile(imageName, ".jpg", storageDir);
+        return imageFile;
     }
 
     public void albumBtnOnClick(){
@@ -619,11 +643,14 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                     fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @RequiresApi(api = Build.VERSION_CODES.O)
                         @Override
                         public void onSuccess(Uri uri) {
                             String url = uri.toString();
-                            Log.d("DownloadUrl", url);
+                            Log.d("DOWNLOADURL", url);
+                            storageImagePath = url;
                             Toast.makeText(AddNewHabitEventActivity.this, "Image upload successfully", Toast.LENGTH_SHORT).show();
+                            uploadHabitEvent();
                         }
                     });
                 }
