@@ -3,7 +3,9 @@ package com.example.habittracker;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -11,6 +13,7 @@ import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.fragment.app.Fragment;
 
 import com.example.habittracker.classes.Habit;
 import com.example.habittracker.controllers.HabitListController;
@@ -214,4 +217,5 @@ public class AddNewHabitActivity extends AppCompatActivity {
         onBackPressed();
         return false;
     }
+
 }

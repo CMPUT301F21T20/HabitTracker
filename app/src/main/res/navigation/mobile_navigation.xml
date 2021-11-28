@@ -18,6 +18,12 @@
         tools:layout="@layout/fragment_habit_event" />
 
     <fragment
+        android:id="@+id/navigation_users"
+        android:name="com.example.habittracker.ui.users.UsersFragment"
+        android:label="@string/title_users"
+        tools:layout="@layout/fragment_following_list" />
+
+    <fragment
         android:id="@+id/navigation_following"
         android:name="com.example.habittracker.ui.following.FollowingFragment"
         android:label="@string/title_following"

@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser fUser = fAuth.getCurrentUser();
 
         if (fUser != null) {
-            user = new User(fUser.getUid());
+            user = new User(fUser.getUid(), fUser.getDisplayName(), "Placeholder");
         } else {
             // Throw error or redirect to login
         }
