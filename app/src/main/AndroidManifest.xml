@@ -122,6 +122,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".UserProfileActivity"
+            android:label="Show a user profile">
+        </activity>
     </application>
 
 </manifest>

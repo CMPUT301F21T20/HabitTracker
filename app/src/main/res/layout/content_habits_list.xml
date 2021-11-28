@@ -1,23 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/habit_text"
-        android:layout_width="wrap_content"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:padding="10dp">
+    <RelativeLayout
+        android:layout_width="0dip"
         android:layout_height="wrap_content"
-        android:padding="15dp"
-        android:text="habitName"
-        android:textSize="25sp">
-    </TextView>
+        android:layout_weight="0.5"
+        android:layout_gravity="center">
 
-    <View
-        android:layout_width="385dp"
-        android:layout_height="2dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="1dp"
-        android:background="#666666" />
+        <TextView
+            android:id="@+id/habit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textSize="20sp"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/habitViewButton"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:text="View" />
+        </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>
