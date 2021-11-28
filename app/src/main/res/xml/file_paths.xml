@@ -5,5 +5,5 @@
         . means share the whole CD card -->
     <external-path
         name="my_images"
-        path="." />
+        path="Android/data/com.example.habittracker/files/Pictures"/>
 </paths>
