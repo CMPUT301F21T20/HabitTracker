@@ -40,7 +40,7 @@ public class UsersListController {
         if (doc.exists()) {
             Map<String, Object> userData = doc.getData();
             if (userData != null && !(doc.getId().equals(fUser.getUid()))) {
-                Log.d("FIRESTORE DATA DEBUG", String.valueOf(userData));
+                //Log.d("FIRESTORE DATA DEBUG", String.valueOf(userData));
 
                     User user = new User(doc.getId(), (String) userData.get("username"),
                             (String) userData.get("info"));
