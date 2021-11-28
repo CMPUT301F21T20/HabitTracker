@@ -1,4 +1,4 @@
-package com.example.habittracker.classes;
+package com.example.habittracker.models;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

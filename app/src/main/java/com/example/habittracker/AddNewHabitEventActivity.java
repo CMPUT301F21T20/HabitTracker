@@ -39,8 +39,8 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.habittracker.classes.Habit;
-import com.example.habittracker.classes.HabitEvent;
+import com.example.habittracker.models.Habit;
+import com.example.habittracker.models.HabitEvent;
 import com.example.habittracker.controllers.HabitEventsController;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;

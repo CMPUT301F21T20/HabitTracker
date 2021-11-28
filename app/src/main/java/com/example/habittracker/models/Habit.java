@@ -1,13 +1,9 @@
-package com.example.habittracker.classes;
-
-import com.google.protobuf.Any;
+package com.example.habittracker.models;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

@@ -13,7 +13,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.habittracker.classes.User;
+import com.example.habittracker.models.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser fUser = fAuth.getCurrentUser();
 
         if (fUser != null) {
-            user = new User(fUser.getUid());
+            user = new User(fUser.getUid(), fUser.getDisplayName(), "Placeholder");
         } else {
             // Throw error or redirect to login
         }

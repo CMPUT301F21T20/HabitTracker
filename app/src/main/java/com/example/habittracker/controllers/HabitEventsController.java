@@ -5,16 +5,13 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-
-import com.example.habittracker.classes.Habit;
-import com.example.habittracker.classes.HabitEvent;
-import com.example.habittracker.classes.HabitEventList;
-import com.example.habittracker.classes.HabitList;
 import com.example.habittracker.interfaces.OnHabitEventDeleted;
 import com.example.habittracker.interfaces.OnHabitEventsRetrieved;
+import com.example.habittracker.models.Habit;
+import com.example.habittracker.models.HabitEvent;
+import com.example.habittracker.models.HabitEventList;
+import com.example.habittracker.models.HabitList;
 import com.example.habittracker.interfaces.OnHabitListRetrieved;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;

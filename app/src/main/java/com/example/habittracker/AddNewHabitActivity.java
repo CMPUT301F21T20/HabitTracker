@@ -7,13 +7,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 
-import com.example.habittracker.classes.Habit;
 import com.example.habittracker.controllers.HabitListController;
+import com.example.habittracker.models.Habit;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -27,6 +28,7 @@ import java.util.UUID;
  * This class hold functionality for when creating a New Habit
   */
 public class AddNewHabitActivity extends AppCompatActivity {
+    private ImageView addHabit_back_icon;
     private Date selectedDate;
     private String habitId;
     private Habit habit = null;
@@ -51,6 +53,7 @@ public class AddNewHabitActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
+        addHabit_back_icon = findViewById(R.id.addHabit_back_icon);
         editTitle = findViewById(R.id.addHabitTitle);
         editReason = findViewById(R.id.addHabitReason);
         startDateText = findViewById(R.id.addHabitDateText);
@@ -71,6 +74,14 @@ public class AddNewHabitActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 datePicker(startDateText);
+            }
+        });
+
+        addHabit_back_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addHabit_back_icon.setAlpha(0.5f);
+                onSupportNavigateUp();
             }
         });
 
