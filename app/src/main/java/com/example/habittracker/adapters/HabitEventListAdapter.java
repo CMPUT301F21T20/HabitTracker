@@ -41,7 +41,7 @@ public class HabitEventListAdapter extends ArrayAdapter<HabitEvent> {
     private HabitEvent habitEvent;
     private String username;
 
-    private TextView habitEventUsername_text;
+    private TextView habitEventHabitTitle_text;
     private TextView habitEventComment_text;
     private ImageView habitEventImage;
     private TextView recordDateDescription;
@@ -70,7 +70,7 @@ public class HabitEventListAdapter extends ArrayAdapter<HabitEvent> {
 
         habitEvent = habitEventList.get(position);
 
-        habitEventUsername_text = view.findViewById(R.id.habitEventUsername_text);
+        habitEventHabitTitle_text = view.findViewById(R.id.habitEventHabitTitle_text);
         habitEventComment_text = view.findViewById(R.id.habitEventComment_text);
         habitEventImage = view.findViewById(R.id.habitEventImage);
         recordDateDescription = view.findViewById(R.id.recordDateDescription);
@@ -80,7 +80,7 @@ public class HabitEventListAdapter extends ArrayAdapter<HabitEvent> {
         habitEventLocation_text = view.findViewById(R.id.habitEventLocation_text);
         isHabitCompletedImage = view.findViewById(R.id.isHabitCompletedImage);
 
-        habitEventUsername_text.setVisibility(View.VISIBLE);
+        habitEventHabitTitle_text.setVisibility(View.VISIBLE);
         habitEventComment_text.setVisibility(View.VISIBLE);
         habitEventImage.setVisibility(View.VISIBLE);
         recordDateDescription.setVisibility(View.VISIBLE);
@@ -90,7 +90,7 @@ public class HabitEventListAdapter extends ArrayAdapter<HabitEvent> {
         habitEventLocation_text.setVisibility(View.VISIBLE);
         isHabitCompletedImage.setVisibility(View.VISIBLE);
 
-        habitEventUsername_text.setText(username);
+        habitEventHabitTitle_text.setText(habitEvent.getHabit().getTitle());
 
         if (!habitEvent.getComment().equals("")) {
             habitEventComment_text.setText(habitEvent.getComment());

@@ -29,10 +29,10 @@
             android:layout_weight="9">
 
             <TextView
-                android:id="@+id/habitEventUsername_text"
+                android:id="@+id/habitEventHabitTitle_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Username"
+                android:text="Title"
                 android:textStyle="bold"
                 android:layout_marginBottom="6dp">
             </TextView>

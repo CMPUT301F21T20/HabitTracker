@@ -1,6 +1,7 @@
 package com.example.habittracker.ui.habitEvents;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
@@ -25,6 +27,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.habittracker.Plugins.NonScrollListView;
 import com.example.habittracker.R;
+import com.example.habittracker.ViewHabitEventActivity;
 import com.example.habittracker.adapters.HabitEventListAdapter;
 import com.example.habittracker.classes.HabitEvent;
 import com.example.habittracker.classes.HabitEventList;
@@ -95,6 +98,18 @@ public class HabitEventFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 datePicker(eventPickDate_TextView);
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                HabitEvent clickedHabitEvent = habitEventsList.get(position);
+                Log.i("POS", String.valueOf(position));
+                Intent i = new Intent(getContext(), ViewHabitEventActivity.class);
+                i.putExtra("HabitEvent", clickedHabitEvent);
+                startActivity(i);
             }
         });
 
