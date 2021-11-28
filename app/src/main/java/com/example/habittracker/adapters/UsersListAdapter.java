@@ -6,21 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.habittracker.R;
-import com.example.habittracker.ViewHabitActivity;
-import com.example.habittracker.models.Habit;
-import com.example.habittracker.models.HabitList;
+import com.example.habittracker.UserProfileActivity;
 import com.example.habittracker.models.User;
 import com.example.habittracker.models.UsersList;
-import com.example.habittracker.controllers.HabitListController;
-import com.example.habittracker.models.User;
-import com.example.habittracker.ui.users.ViewUserProfileActivity;
 
 public class UsersListAdapter extends ArrayAdapter<User> {
     private Context context;
@@ -44,12 +38,12 @@ public class UsersListAdapter extends ArrayAdapter<User> {
         User user = usersList.getUser(position);
 
         TextView usernameList = view.findViewById(R.id.usernameList);
-        Button viewUserButton = view.findViewById(R.id.userViewButton);
+        //Button viewUserButton = view.findViewById(R.id.userViewButton);
         //Button deleteHabitButton = view.findViewById(R.id.habitListDeleteButton);
 
         usernameList.setText(user.getUsername());
 
-        viewUserButton.setOnClickListener(v -> openViewUserActivity(user));
+       //viewUserButton.setOnClickListener(v -> openViewUserActivity(user));
 
         /*deleteHabitButton.setOnClickListener(v -> {
             HabitListController controller = HabitListController.getInstance();
@@ -60,7 +54,7 @@ public class UsersListAdapter extends ArrayAdapter<User> {
     }
 
     public void openViewUserActivity(User user) {
-        Intent i = new Intent(context, ViewUserProfileActivity.class);
+        Intent i = new Intent(context, UserProfileActivity.class);
         i.putExtra("User", user);
         context.startActivity(i);
     }
