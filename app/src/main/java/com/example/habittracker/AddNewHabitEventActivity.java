@@ -484,18 +484,6 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
     }
 
     public boolean enlargePhoto(){
-        // set size to square
-//        ViewTreeObserver vto = photoAdded.getViewTreeObserver();
-//        vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-//            @Override
-//            public boolean onPreDraw() {
-//                int width = photoAdded.getMeasuredWidth();
-//                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-//                        width);
-//                photoAdded.setLayoutParams(params);
-//                return true;
-//            }
-//        });
 
         // set size with original aspect ratio
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
