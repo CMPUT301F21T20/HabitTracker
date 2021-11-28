@@ -77,7 +77,7 @@ public class UsersFragment extends Fragment {
         usersList = new UsersList();
         userListAdapter = new UsersListAdapter(requireContext(), usersList);
         UsersListView.setAdapter(userListAdapter);
-
+        UsersList userListCopy = new UsersList();
         db.collection("Users")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -91,22 +91,42 @@ public class UsersFragment extends Fragment {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                             }
 
+
+                            for (int i = 0; i < usersList.getCount(); i++){
+                                userListCopy.addUser(usersList.getUser(i));
+                            }
+
                             userListAdapter.notifyDataSetChanged();
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
+
+        //System.out.println("user LIst copy size" + userListCopy.getCount());
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String userName = searchBar.getText().toString().trim();
                 UsersList updatedUserList = new UsersList();
 
+                System.out.println("user LIst copy size" + userListCopy.getCount());
+                System.out.println("user list size" + usersList.getCount());
+                if (usersList.getCount() < userListCopy.getCount() ) {
+                    System.out.println("I am here to update user List");
+                    for (int i = 0; i < userListCopy.getCount(); i++) {
+                        System.out.println("Printing user in copy:" + userListCopy.getUser(i));
+                        usersList.addUser(userListCopy.getUser(i));
+                    }
+                    userListAdapter.notifyDataSetChanged();
+                }
+
+
                 if(TextUtils.isEmpty(userName)){
                     searchBar.setError("Username is required");
                     return;
                 }
+
                 System.out.println(usersList.getCount());
                 for (int i =0; i < usersList.getCount(); i++) {
                     System.out.println(i);
@@ -114,6 +134,7 @@ public class UsersFragment extends Fragment {
                     if (userName.equals(usersList.getUser(i).getUsername())) {
                         //usersList.clearUserList();
                         System.out.println("I am about to update updateUserLIst");
+                        updatedUserList.clearUserList();
                         updatedUserList.addUser(usersList.getUser(i));
                         break;
                     }
