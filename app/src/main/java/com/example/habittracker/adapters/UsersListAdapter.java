@@ -14,11 +14,12 @@ import androidx.annotation.Nullable;
 
 import com.example.habittracker.R;
 import com.example.habittracker.ViewHabitActivity;
-import com.example.habittracker.classes.Habit;
-import com.example.habittracker.classes.HabitList;
-import com.example.habittracker.classes.User;
-import com.example.habittracker.classes.UsersList;
+import com.example.habittracker.models.Habit;
+import com.example.habittracker.models.HabitList;
+import com.example.habittracker.models.User;
+import com.example.habittracker.models.UsersList;
 import com.example.habittracker.controllers.HabitListController;
+import com.example.habittracker.models.User;
 
 public class UsersListAdapter extends ArrayAdapter<User> {
     private Context context;

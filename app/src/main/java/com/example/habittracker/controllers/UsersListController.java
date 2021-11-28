@@ -2,10 +2,11 @@ package com.example.habittracker.controllers;
 
 import android.util.Log;
 
-import com.example.habittracker.classes.Habit;
-import com.example.habittracker.classes.HabitList;
-import com.example.habittracker.classes.User;
-import com.example.habittracker.classes.UsersList;
+import com.example.habittracker.models.Habit;
+import com.example.habittracker.models.HabitList;
+import com.example.habittracker.models.User;
+import com.example.habittracker.models.UsersList;
+import com.example.habittracker.models.User;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;

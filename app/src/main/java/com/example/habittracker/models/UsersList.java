@@ -1,4 +1,6 @@
-package com.example.habittracker.classes;
+package com.example.habittracker.models;
+
+import com.example.habittracker.models.User;
 
 import java.util.ArrayList;
 

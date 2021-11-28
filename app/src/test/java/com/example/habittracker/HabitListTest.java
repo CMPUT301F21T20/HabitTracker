@@ -4,8 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import com.example.habittracker.classes.Habit;
-import com.example.habittracker.classes.HabitList;
+import com.example.habittracker.models.Habit;
+import com.example.habittracker.models.HabitList;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -13,8 +13,6 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Objects;
-import java.util.UUID;
 
 public class HabitListTest {
     private HabitList list;
