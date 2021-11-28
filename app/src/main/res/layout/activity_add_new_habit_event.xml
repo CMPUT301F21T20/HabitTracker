@@ -263,7 +263,7 @@
             <ImageView
                 android:id="@+id/HabitImageView1"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="120dp"
                 android:layout_marginTop="12dp"
                 android:background="#A9A9A9"
                 android:adjustViewBounds="true"
