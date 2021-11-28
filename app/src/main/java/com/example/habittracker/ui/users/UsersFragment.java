@@ -82,7 +82,7 @@ public class UsersFragment extends Fragment {
 
             }
         });
-        
+
         UsersList userListCopy = new UsersList();
 
         db.collection("Users")

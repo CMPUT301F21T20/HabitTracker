@@ -38,7 +38,7 @@ public class UserProfileActivity extends AppCompatActivity {
         // reference the following link if unsure on how to do this:
         // https://stackoverflow.com/questions/2736389/how-to-pass-an-object-from-one-activity-to-another-on-android
         user = (User) intent.getSerializableExtra("User");
-        name = findViewById(R.id.userprofileName);
+        name = findViewById(R.id.userProfileName);
         habitsListView = findViewById(R.id.userHabits_listview);
         name.setText(user.getUsername());
         habitList = new HabitList();
