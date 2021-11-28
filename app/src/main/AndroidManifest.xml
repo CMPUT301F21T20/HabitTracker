@@ -19,6 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HabitTracker">
         <activity
+            android:name=".EditHabitEventActivity"
+            android:exported="false" />
+        <activity
             android:name=".ViewHabitEventActivity"
             android:label="View Habit Event">
 

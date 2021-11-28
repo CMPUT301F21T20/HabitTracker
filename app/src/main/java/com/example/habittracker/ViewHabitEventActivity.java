@@ -114,7 +114,7 @@ public class ViewHabitEventActivity extends AppCompatActivity {
         editHabitEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                navigateToEditHabitEvent();
             }
         });
     }
@@ -129,5 +129,14 @@ public class ViewHabitEventActivity extends AppCompatActivity {
         // Add 1900 to year, as the getYear function returns year - 1900
         return (date.getYear()) + "-" +
                 (date.getMonth()) + "-" + date.getDayOfMonth();
+    }
+
+    /**
+     * Handles navigation to to edit habit event
+     */
+    public void navigateToEditHabitEvent() {
+        Intent i = new Intent(this, EditHabitEventActivity.class);
+        i.putExtra("HabitEvent", habitEvent);
+        startActivity(i);
     }
 }
