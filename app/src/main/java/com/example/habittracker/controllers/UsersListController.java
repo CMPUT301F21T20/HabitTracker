@@ -39,8 +39,13 @@ public class UsersListController {
                 //for (Map.Entry<String, Object> entry : docData.entrySet()) {
                     //Map<String, Object> userData = (Map<String, Object>) docData.entrySet().getValue();
 
-                    User user = new User(doc.getId(), (String) userData.get("username"),
-                            (String) userData.get("info"));
+                    User user = new User(doc.getId(),
+                            (String) userData.get("username"),
+                            (String) userData.get("info"),
+                            (Map<String, Map<String, Object>>) userData.get("followers"),
+                            (Map<String, Map<String, Object>>) userData.get("following")
+                    );
+
                     usersList.addUser(user);
                // }
 
@@ -50,5 +55,4 @@ public class UsersListController {
             Log.d("Firestore", "No such document");
         }
     }
-
 }

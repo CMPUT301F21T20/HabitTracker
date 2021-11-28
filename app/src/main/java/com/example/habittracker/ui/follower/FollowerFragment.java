@@ -48,7 +48,7 @@ public class FollowerFragment extends Fragment {
 
         db.collection("Requests").document(uid).addSnapshotListener((docSnapshot, e) -> {
             SocialController.convertToRequestMap(docSnapshot, reqMap);
-            RequestListAdapter.notifyDataSetChanged();
+//            RequestListAdapter.notifyDataSetChanged();
         });
 
         db.collection("Users").document(uid).addSnapshotListener((docSnapshot, e) -> {
