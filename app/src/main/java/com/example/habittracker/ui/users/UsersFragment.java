@@ -10,34 +10,27 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
-import com.example.habittracker.LoginActivity;
 import com.example.habittracker.R;
-import com.example.habittracker.adapters.HabitListAdapter;
+import com.example.habittracker.UserProfileActivity;
 import com.example.habittracker.adapters.UsersListAdapter;
-import com.example.habittracker.models.Habit;
-import com.example.habittracker.models.HabitList;
 import com.example.habittracker.models.User;
 import com.example.habittracker.models.UsersList;
-import com.example.habittracker.controllers.HabitListController;
 import com.example.habittracker.controllers.UsersListController;
-import com.example.habittracker.ui.profile.ProfileViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -52,6 +45,8 @@ public class UsersFragment extends Fragment {
     private Context thisContext;
     EditText searchBar;
     Button searchButton;
+
+    public UsersFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -77,7 +72,19 @@ public class UsersFragment extends Fragment {
         usersList = new UsersList();
         userListAdapter = new UsersListAdapter(requireContext(), usersList);
         UsersListView.setAdapter(userListAdapter);
+
+        UsersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
+
+                User user = (User) usersList.getUser(position);
+                openUserProfileActivity(user);
+
+            }
+        });
+
         UsersList userListCopy = new UsersList();
+
         db.collection("Users")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -155,5 +162,14 @@ public class UsersFragment extends Fragment {
         });
 
         return root;
-}
+    }
+
+    /**
+     * This function will handle opening the user profile activity
+     */
+    public void openUserProfileActivity(User user) {
+        Intent intent = new Intent(requireContext(), UserProfileActivity.class);
+        intent.putExtra("User", user);
+        startActivity(intent);
+    }
 }
