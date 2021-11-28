@@ -43,12 +43,12 @@ public class UsersListAdapter extends ArrayAdapter<User> {
         User user = usersList.getUser(position);
 
         TextView usernameList = view.findViewById(R.id.usernameList);
-        //Button viewHabitButton = view.findViewById(R.id.habitListViewButton);
+        Button viewUserButton = view.findViewById(R.id.userViewButton);
         //Button deleteHabitButton = view.findViewById(R.id.habitListDeleteButton);
 
         usernameList.setText(user.getUsername());
 
-        //viewHabitButton.setOnClickListener(v -> openViewHabitActivity(habit));
+        viewUserButton.setOnClickListener(v -> openViewUserActivity(user));
 
         /*deleteHabitButton.setOnClickListener(v -> {
             HabitListController controller = HabitListController.getInstance();
@@ -58,9 +58,9 @@ public class UsersListAdapter extends ArrayAdapter<User> {
         return view;
     }
 
-    /*public void openViewUserActivity(User user) {
-        Intent i = new Intent(context, ViewUserActivity.class);
-        i.putExtra("user", user);
-        context.startActivity(i);
-    }*/
+    public void openViewUserActivity(User user) {
+       // Intent i = new Intent(context, ViewUserActivity.class);
+        //i.putExtra("user", user);
+        //context.startActivity(i);
+    }
 }
