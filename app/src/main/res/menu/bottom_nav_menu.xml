@@ -11,16 +11,16 @@
         android:icon="@drawable/ic_baseline_calendar_24"
         android:title="Habit Events" />
 
+
     <item
         android:id="@+id/navigation_following"
         android:icon="@drawable/ic_following_black_24dp"
         android:title="@string/title_following" />
 
     <item
-        android:id="@+id/navigation_follower"
-        android:icon="@drawable/ic_follower_black_24dp"
-        android:title="@string/title_follower" />
-
+        android:id="@+id/navigation_users"
+        android:icon="@drawable/ic_baseline_person_search_24"
+        android:title="@string/title_users" />
 
     <item
         android:id="@+id/navigation_profile"
