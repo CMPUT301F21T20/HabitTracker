@@ -15,6 +15,7 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -44,7 +45,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.time.LocalDate;
 import java.util.Calendar;
@@ -69,9 +73,6 @@ public class HabitEventFragment extends Fragment {
 
     private HabitList habitList;
 
-//    private int lastVisibleItemPosition = 0;    // mark the last scroll position
-//    private boolean scrollFlag = false;         // mark if listview is scrolled
-
     @RequiresApi(api = Build.VERSION_CODES.O)
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -82,11 +83,6 @@ public class HabitEventFragment extends Fragment {
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         db = FirebaseFirestore.getInstance();
-
-        // We need Habit List to get Habit Events, retrieve this first the get habit events of today
-        // and initialize array adapter inside function
-        habitEventsList = new HabitEventList();
-        getHabitList();
 
         eventPickDate_btn = root.findViewById(R.id.eventPickDate_btn);
         eventPickDate_TextView = root.findViewById(R.id.eventPickDate_TextView);
@@ -106,20 +102,34 @@ public class HabitEventFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 HabitEvent clickedHabitEvent = habitEventsList.get(position);
-                Log.i("POS", String.valueOf(position));
                 Intent i = new Intent(getContext(), ViewHabitEventActivity.class);
                 i.putExtra("HabitEvent", clickedHabitEvent);
                 startActivity(i);
             }
         });
 
+        db.collection("Habits").document(user.getUid()).collection("HabitEvents").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value,
+                                @Nullable FirebaseFirestoreException e) {
+                // We need Habit List to get Habit Events, retrieve this first then get habit events of today
+                // and initialize array adapter inside function
+                Log.i("EVENT", "Event happened");
+                habitEventsList = new HabitEventList();
+                getHabitList();
+            }
+        });
+
         return root;
     }
 
+    /**
+     * Gets username of the current user
+     */
     public void getUsername(){
         FirebaseAuth fAuth;
         fAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = fAuth.getCurrentUser();
+        user = fAuth.getCurrentUser();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         DocumentReference docRef = db.collection("Users").document(user.getUid());
@@ -140,6 +150,10 @@ public class HabitEventFragment extends Fragment {
         });
     }
 
+    /**
+     * Will update the textView to display todays date
+     * @param eventPickDate_TextView the textView to update
+     */
     public void setDateToday(TextView eventPickDate_TextView){
         Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
@@ -158,6 +172,10 @@ public class HabitEventFragment extends Fragment {
         }
     }
 
+    /**
+     * Open the date picker Dialog to select a certain date
+     * @param eventPickDate_TextView the textview to update
+     */
     public void datePicker(TextView eventPickDate_TextView) {
         final Calendar c = Calendar.getInstance();
         Date newDate = new Date();
@@ -214,27 +232,37 @@ public class HabitEventFragment extends Fragment {
                 (date.getMonth() + 1) + "-" + date.getDate();
     }
 
+    /**
+     * Get Habit Events from Firestore given a date
+     * @param year the year of the habit Event
+     * @param month the month of the Habit Event
+     * @param day the day of the habit Event
+     */
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void getHabitEvents(int year, int month, int day) {
         HabitEventsController habitEventsController = HabitEventsController.getInstance();
 
-        Log.i("TEST DATE", day + ", " + month + ", " + year);
-
         habitEventsController.loadHabitEvents(user.getUid(), day, month, year, habitList, new OnHabitEventsRetrieved() {
-
             @Override
             public void onHabitEventsRetrieved(HabitEventList newHabitEventList) {
                 habitEventsList.clear();
+
+                // Because habits event docs are organized by month, we need to iterate through all retrieved
+                // habits and check if date match today
                 for (int i = 0; i < newHabitEventList.getCount(); i++) {
                     LocalDate checkDate = newHabitEventList.get(i).getCompletedDate();
-                    Log.i("TEST", checkDate.toString());
-                    // TODO ADD DATE CHECK
-                    if (checkDate.getYear() == year && checkDate.getMonthValue() == month && checkDate.getDayOfMonth() == day) {
-                        Log.i("TEST", "Adding one!");
+                    if (checkDate.getDayOfMonth() == day) {
                         habitEventsList.addHabitEvent(newHabitEventList.get(i));
                     }
-
                 }
+
+                // if no habit events were added add a dummy habie event to show that no habit events were added
+                if (habitEventsList.getCount() == 0) {
+                    HabitEvent dummyHabitEvent = new HabitEvent();
+                    dummyHabitEvent.setComment("Sent By Developer -> No Habits Today");
+                    habitEventsList.addHabitEvent(dummyHabitEvent);
+                }
+
                 habitEventsAdapter.notifyDataSetChanged();
             }
 
@@ -243,28 +271,11 @@ public class HabitEventFragment extends Fragment {
                 Log.i("ERROR", "Error retrieving habit event list");
             }
         });
-
-//        HabitEvent habitEvent= new HabitEvent();
-//        habitEvent.setCompleted(true);
-//        habitEvent.setLocation("Edmonton");
-//        habitEvent.setComment("Brief comment");
-//        LocalDate date = LocalDate.now();
-//        habitEvent.setCreateDate(date);
-//        habitEvent.setCompletedDate(date);
-//        habitEvent.setImageStorageNamePrefix("1637507374741");
-//        habitEventsList.addHabitEvent(habitEvent);
-//
-//        habitEvent= new HabitEvent();
-//        habitEvent.setCompleted(false);
-//        habitEvent.setLocation("");
-//        habitEvent.setComment("");
-//        date = LocalDate.now();
-//        habitEvent.setCreateDate(date);
-//        habitEvent.setCompletedDate(null);
-//        habitEvent.setImageStorageNamePrefix("");
-//        habitEventsList.addHabitEvent(habitEvent);
     }
 
+    /**
+     * First retrieves habit list, then will call the getHabitEvents function when retrieved
+     */
     public void getHabitList() {
         HabitListController habitListController = HabitListController.getInstance();
         habitListController.loadHabitList(user.getUid(), new OnHabitListRetrieved() {
@@ -272,11 +283,10 @@ public class HabitEventFragment extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onHabitListRetrieved(HabitList newHabitList) {
-                Log.i("TEST", "Retrieved habit list with size: " + newHabitList.getCount());
                 habitList = newHabitList;
                 setDateToday(eventPickDate_TextView);
                 getHabitEvents(yearSet,monthSet,daySet);
-                habitEventsAdapter = new HabitEventListAdapter(requireContext(), habitEventsList, username);
+                habitEventsAdapter = new HabitEventListAdapter(requireContext(), habitEventsList, username, habitList);
                 listView.setAdapter(habitEventsAdapter);
             }
 

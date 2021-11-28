@@ -18,6 +18,7 @@ public class HabitEvent implements Serializable {
     private String comment;
     private LocalDate createDate;
     private LocalDate completedDate;
+    private String docId;
 
     public HabitEvent(Habit habit, String habitEventId, String userId, boolean isCompleted,
         String imageStorageNamePrefix, String location, String comment, LocalDate createDate, LocalDate completedDate) {
@@ -123,5 +124,13 @@ public class HabitEvent implements Serializable {
 
     public void setCompletedDate(LocalDate completedDate) {
         this.completedDate = completedDate;
+    }
+
+    public String getDocId() {
+        return docId;
+    }
+
+    public void setDocId(String docId) {
+        this.docId = docId;
     }
 }

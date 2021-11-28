@@ -10,6 +10,7 @@ import com.example.habittracker.classes.Habit;
 import com.example.habittracker.classes.HabitEvent;
 import com.example.habittracker.classes.HabitEventList;
 import com.example.habittracker.classes.HabitList;
+import com.example.habittracker.interfaces.OnHabitEventDeleted;
 import com.example.habittracker.interfaces.OnHabitEventsRetrieved;
 import com.example.habittracker.interfaces.OnHabitListRetrieved;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -18,6 +19,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -71,8 +73,7 @@ public class HabitEventsController {
         heList.clearHabitEventList();
         for (QueryDocumentSnapshot doc : successfulTask.getResult()) {
             Map<String, Object> docData = doc.getData();
-            Log.i("TEST", doc.getData().toString());
-            Log.i("TEST", "is null test: " + (habitList == null));
+
             if (docData != null) {
                 for (Map.Entry<String, Object> entry : docData.entrySet()) {
                     // skip the startDate value which is just a value used to sort documents by month/year
@@ -92,6 +93,10 @@ public class HabitEventsController {
                             createdDate.toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
                             completedDate.toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
                     );
+
+                    // Add to habitEvent for easy access to doc for deletion
+                    habitEvent.setDocId(doc.getId());
+
                     heList.addHabitEvent(habitEvent);
                 }
             }
@@ -166,4 +171,55 @@ public class HabitEventsController {
                 });
         return success.get();
     }
+
+    /**
+     * Will delete a habit Event in firestore
+     * @param habitEvent the habit event to be deleted
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void deleteHabitEvent(HabitEvent habitEvent) {
+        Map<String, Object> updates = new HashMap<>();
+        updates.put(habitEvent.getHabitEventId(), FieldValue.delete());
+
+        int year = habitEvent.getCompletedDate().getYear();
+        int month = habitEvent.getCompletedDate().getMonthValue();
+
+        LocalDate docDateName = LocalDate.of(year, month, 2);
+        Date legacyDate = Date.from(docDateName.atStartOfDay().toInstant(ZoneOffset.ofHours(18)));
+        DB.collection("Users").document(habitEvent.getUserId()).collection("HabitEvents")
+                .document(habitEvent.getDocId())
+                .update(updates)
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("Firestore", "DocumentSnapshot successfully updated!");
+                })
+                .addOnFailureListener(e -> Log.w("Firestore", "Error updating document", e));
+
+    }
+
+    /**
+     * Will delete a habit Event in firestore with a callback using a listener
+     *@param habitEvent the habit event to be deleted
+     * @param listener the listener interface that wil be used to handle callback
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void deleteHabitEventWithCallback(HabitEvent habitEvent, OnHabitEventDeleted listener) {
+        Map<String, Object> updates = new HashMap<>();
+        updates.put(habitEvent.getHabitEventId(), FieldValue.delete());
+
+        int year = habitEvent.getCompletedDate().getYear();
+        int month = habitEvent.getCompletedDate().getMonthValue();
+
+        LocalDate docDateName = LocalDate.of(year, month, 2);
+        Date legacyDate = Date.from(docDateName.atStartOfDay().toInstant(ZoneOffset.ofHours(18)));
+        DB.collection("Users").document(habitEvent.getUserId()).collection("HabitEvents")
+                .document(habitEvent.getDocId())
+                .update(updates)
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("Firestore", "DocumentSnapshot successfully updated!");
+                    listener.onHabitEventDeleted();
+                })
+                .addOnFailureListener(e -> Log.w("Firestore", "Error updating document", e));
+
+    }
+
 }
