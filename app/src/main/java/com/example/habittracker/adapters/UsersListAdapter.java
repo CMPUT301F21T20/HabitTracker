@@ -20,6 +20,7 @@ import com.example.habittracker.models.User;
 import com.example.habittracker.models.UsersList;
 import com.example.habittracker.controllers.HabitListController;
 import com.example.habittracker.models.User;
+import com.example.habittracker.ui.users.ViewUserProfileActivity;
 
 public class UsersListAdapter extends ArrayAdapter<User> {
     private Context context;
@@ -59,8 +60,8 @@ public class UsersListAdapter extends ArrayAdapter<User> {
     }
 
     public void openViewUserActivity(User user) {
-       // Intent i = new Intent(context, ViewUserActivity.class);
-        //i.putExtra("user", user);
-        //context.startActivity(i);
+        Intent i = new Intent(context, ViewUserProfileActivity.class);
+        i.putExtra("User", user);
+        context.startActivity(i);
     }
 }
