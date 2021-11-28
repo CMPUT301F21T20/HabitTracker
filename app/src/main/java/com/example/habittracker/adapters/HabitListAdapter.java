@@ -13,9 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.habittracker.ViewHabitActivity;
-import com.example.habittracker.classes.Habit;
+import com.example.habittracker.models.Habit;
 import com.example.habittracker.R;
-import com.example.habittracker.classes.HabitList;
+import com.example.habittracker.models.HabitList;
 import com.example.habittracker.controllers.HabitListController;
 
 /**

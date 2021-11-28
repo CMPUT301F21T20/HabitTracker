@@ -1,4 +1,4 @@
-package com.example.habittracker.classes;
+package com.example.habittracker.models;
 
 
 import android.util.Log;
@@ -111,10 +111,4 @@ public class User {
 
         return success.get();
     }
-
-    public void addFollower() {}
-    public void deleteFollower() {}
-    public void follow() {}
-    public void unfollow() {}
-
 }

@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.habittracker.classes.Habit;
+import com.example.habittracker.models.Habit;
 
 import java.util.List;
 

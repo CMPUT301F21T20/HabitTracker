@@ -1,6 +1,6 @@
 package com.example.habittracker.interfaces;
 
-import com.example.habittracker.classes.HabitList;
+import com.example.habittracker.models.HabitList;
 
 // This class wil be used to handle the asynchronous firestore call
 // to retrieve the habit list

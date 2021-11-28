@@ -82,10 +82,23 @@ public class RegisterActivity extends AppCompatActivity {
                             newUser.put("following", null);
                             newUser.put("follower", null);
                             try {
+                                // create user document
                                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                                 String uid = fAuth.getCurrentUser().getUid();
                                 db.collection("Users").document(uid)
                                         .set(newUser)
+                                        .addOnSuccessListener(aVoid -> Log.d("Firestore", "DocumentSnapshot successfully written!"))
+                                        .addOnFailureListener(e -> {
+                                            // TODO: throw error - user auth successful but user doc creation failed
+                                            Log.w("Firestore", "Error writing document", e);
+                                        });
+                                Map<String, Object> mapping = new HashMap<>();
+
+                                // create request document
+                                mapping.put("outgoing", new HashMap<>());
+                                mapping.put("incoming", new HashMap<>());
+                                db.collection("Requests").document(uid)
+                                        .set(mapping)
                                         .addOnSuccessListener(aVoid -> Log.d("Firestore", "DocumentSnapshot successfully written!"))
                                         .addOnFailureListener(e -> {
                                             // TODO: throw error - user auth successful but user doc creation failed
