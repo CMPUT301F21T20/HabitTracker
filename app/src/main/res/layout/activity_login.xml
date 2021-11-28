@@ -22,7 +22,7 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Welcome"
+            android:text="H-Log"
             android:textColor="@color/colorPrimary"
             android:textSize="48sp"
             android:textStyle="bold"
@@ -31,8 +31,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="  Sign in to continue"
+            android:text=" Sign in to continue"
             android:textStyle="italic"
+            android:layout_marginTop="8dp"
             android:typeface="serif">
         </TextView>
     </LinearLayout>
@@ -96,11 +97,9 @@
     <Button
         android:id="@+id/loginButton"
         android:layout_width="0dp"
-        android:layout_height="52dp"
-        android:layout_marginStart="24dp"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="48dp"
-        android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
         android:text="SIGN IN"
         android:shadowColor="@android:color/darker_gray"
@@ -116,7 +115,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:text="Create Account"
+        android:text="No Account yet? Create Here"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loginButton" />
