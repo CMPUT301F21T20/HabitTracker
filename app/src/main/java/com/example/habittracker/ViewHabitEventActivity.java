@@ -11,8 +11,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.habittracker.classes.DownloadImageTask;
-import com.example.habittracker.classes.HabitEvent;
+import com.example.habittracker.models.DownloadImageTask;
+import com.example.habittracker.models.HabitEvent;
 
 import java.time.LocalDate;
 

@@ -20,10 +20,10 @@ import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
 import com.example.habittracker.R;
-import com.example.habittracker.classes.DownloadImageTask;
-import com.example.habittracker.classes.HabitEvent;
-import com.example.habittracker.classes.HabitEventList;
-import com.example.habittracker.classes.HabitList;
+import com.example.habittracker.models.DownloadImageTask;
+import com.example.habittracker.models.HabitEvent;
+import com.example.habittracker.models.HabitEventList;
+import com.example.habittracker.models.HabitList;
 import com.example.habittracker.controllers.HabitEventsController;
 import com.example.habittracker.interfaces.OnHabitEventDeleted;
 import com.example.habittracker.interfaces.OnHabitEventsRetrieved;

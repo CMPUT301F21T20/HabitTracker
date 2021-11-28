@@ -1,4 +1,4 @@
-package com.example.habittracker.classes;
+package com.example.habittracker.models;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
