@@ -36,16 +36,16 @@ public class UsersListAdapter extends ArrayAdapter<User> {
         View view = convertView;
 
         if (view == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.content_habit_list, parent, false);
+            view = LayoutInflater.from(context).inflate(R.layout.content_user_list, parent, false);
         }
 
         User user = usersList.getUser(position);
 
-        TextView habitListTitle = view.findViewById(R.id.habitListTitle);
+        TextView usernameList = view.findViewById(R.id.usernameList);
         //Button viewHabitButton = view.findViewById(R.id.habitListViewButton);
         //Button deleteHabitButton = view.findViewById(R.id.habitListDeleteButton);
 
-        //habitListTitle.setText(habit.getTitle());
+        usernameList.setText(user.getUsername());
 
         //viewHabitButton.setOnClickListener(v -> openViewHabitActivity(habit));
 
@@ -57,13 +57,9 @@ public class UsersListAdapter extends ArrayAdapter<User> {
         return view;
     }
 
-    /**
-     * Opens the view habit activity
-     * @param habit the habit to display information about
-     */
-    public void openViewHabitActivity(Habit habit) {
-        Intent i = new Intent(context, ViewHabitActivity.class);
-        i.putExtra("Habit", habit);
+    /*public void openViewUserActivity(User user) {
+        Intent i = new Intent(context, ViewUserActivity.class);
+        i.putExtra("user", user);
         context.startActivity(i);
-    }
+    }*/
 }

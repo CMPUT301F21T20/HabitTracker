@@ -22,6 +22,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.habittracker.LoginActivity;
 import com.example.habittracker.R;
 import com.example.habittracker.adapters.HabitListAdapter;
+import com.example.habittracker.adapters.UsersListAdapter;
 import com.example.habittracker.classes.Habit;
 import com.example.habittracker.classes.HabitList;
 import com.example.habittracker.classes.User;
@@ -49,6 +50,11 @@ public class UsersFragment extends Fragment {
     private Context thisContext;
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         FirebaseAuth fAuth;
@@ -56,14 +62,14 @@ public class UsersFragment extends Fragment {
         FirebaseUser fUser = fAuth.getCurrentUser();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        View root = inflater.inflate(R.layout.fragment_users, container, false);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        //((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Vardan");
+
+        View root = inflater.inflate(R.layout.fragment_users, container, false);
 
         UsersListView = root.findViewById(R.id.users_listview);
 
         usersList = new UsersList();
-        //userListAdapter = new userListAdapter(requireContext(), usersList);
+        userListAdapter = new UsersListAdapter(requireContext(), usersList);
         UsersListView.setAdapter(userListAdapter);
 
         db.collection("Users")
@@ -73,10 +79,13 @@ public class UsersFragment extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             usersList.clearUserList();
+
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 UsersListController.convertToUserList(document, usersList);
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                             }
+
+                            userListAdapter.notifyDataSetChanged();
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }

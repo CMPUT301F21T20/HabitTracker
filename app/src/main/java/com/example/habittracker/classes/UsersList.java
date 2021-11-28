@@ -40,14 +40,14 @@ public class UsersList {
     }
 
 
-    /*public User getUser(String uid) {
+    public User getUser(String uid) {
         for (User user : usersList) {
             if (user.getUid().equals(uid)) {
                 return user;
             }
         }
-       return user;
-    }*/
+       return null;
+    }
 
     /**
      * This function clears the habit list
@@ -57,11 +57,11 @@ public class UsersList {
     }
 
     /**
-     * this function will return true if the habit is in the list and false otherwise
-     * @param habit The habit to search for in the list
+     * this function will return true if the user is in the list and false otherwise
+     * @param user The user to search for in the list
      */
-    public Boolean hasUser(Habit habit) {
-        return usersList.contains(habit);
+    public Boolean hasUser(User user) {
+        return usersList.contains(user);
     }
 
     /**
