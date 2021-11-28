@@ -251,6 +251,9 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
             }
         }
 
+        // Local date retrieves a date that is 1 day behind, therefore we need to add one day
+        LocalDate updatedDate = date.plusDays(1);
+
         HabitEvent habitEvent = new HabitEvent(
                 habit,
                 habitEventId,
@@ -259,12 +262,12 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
                 storageImagePath,
                 addLocation_editText.getText().toString(),
                 addComment.getText().toString(),
-                LocalDate.now(),
-                date
+                LocalDate.now().plusDays(1),
+                updatedDate
         );
-        Log.i("UPLOAD HABIT", "HERE5");
+
         HabitEventsController.getInstance().saveHabitEvent(habitEvent);
-        Log.i("UPLOAD HABIT", "HERE6");
+
         finish();
     }
 

@@ -149,7 +149,11 @@ public class HabitEventListAdapter extends ArrayAdapter<HabitEvent> {
                 habitEventsController.deleteHabitEventWithCallback(habitEvent, new OnHabitEventDeleted() {
                     @Override
                     public void onHabitEventDeleted() {
-                        getHabitEvents(habitEvent.getCreateDate().getYear(), habitEvent.getCreateDate().getMonthValue(), habitEvent.getCreateDate().getDayOfMonth());
+                        getHabitEvents(
+                            habitEvent.getCompletedDate().getYear(),
+                            habitEvent.getCompletedDate().getMonthValue(),
+                            habitEvent.getCompletedDate().getDayOfMonth()
+                        );
                     }
 
                     @Override
