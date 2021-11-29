@@ -31,7 +31,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Firestore Controller class for Habit Events
  */
 public class HabitEventsController {
-    private final FirebaseFirestore DB;
+    private FirebaseFirestore DB;
 
     private static class Loader {
         static volatile HabitEventsController INSTANCE = new HabitEventsController();
@@ -51,8 +51,6 @@ public class HabitEventsController {
     public static HabitEventsController getInstance() {
         return Loader.INSTANCE;
     }
-
-    private FirebaseFirestore DB;
 
     /**
      * Loads habits events for a certain user with in a certain month

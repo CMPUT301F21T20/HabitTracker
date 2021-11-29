@@ -23,7 +23,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * HabitListController is for sync local habit with data in firestore
  */
 public class HabitListController {
-    private final FirebaseFirestore db;
+    private FirebaseFirestore db;
 
     private static class Loader {
         static volatile HabitListController INSTANCE = new HabitListController();
@@ -43,9 +43,6 @@ public class HabitListController {
     public static HabitListController getInstance() {
         return Loader.INSTANCE;
     }
-
-    //Firestore instance
-    private FirebaseFirestore db;
 
     /**
      * Loads all the habits from a specific Habits document in Firestore and returns an instance
