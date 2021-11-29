@@ -58,6 +58,7 @@ public class ViewHabitActivity extends AppCompatActivity {
         reasonText.setText(habit.getReason());
         startDateText.setText(getDateText(habit.getDateCreated()));
         activeDaysText.setText(getDaysText(habit.getFrequency()));
+
         if (habit.getCanShare()){
             viewSharedText.setText("SHARED");
         }else{

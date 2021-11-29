@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.profile.ProfileFragment"
+    tools:context=".UserProfileActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
@@ -16,24 +16,24 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="405dp">
+            android:layout_height="350dp">
 
 
             <LinearLayout
-                android:background="@drawable/profile_bg"
                 android:layout_width="match_parent"
-                android:layout_height="350dp"
+                android:layout_height="250dp"
+                android:background="@drawable/profile_bg"
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="45dp"
                     android:src="@drawable/common_google_signin_btn_icon_dark" />
 
                 <TextView
-                    android:id="@+id/profileName"
+                    android:id="@+id/userProfileName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -44,9 +44,9 @@
             </LinearLayout>
             <androidx.cardview.widget.CardView
                 android:layout_width="400dp"
-                android:layout_height="120dp"
+                android:layout_height="80dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="275dp"
+                android:layout_marginTop="210dp"
                 android:background="@color/grayProfile">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -123,67 +123,36 @@
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
+
+            <Button
+                android:id="@+id/logOutButton"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="295dp"
+
+                android:text="Follow" />
         </RelativeLayout>
 
         <LinearLayout
-            android:layout_width="360dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="center"
-            android:layout_marginTop="45dp">
-            <LinearLayout
-                android:orientation="horizontal"
-                android:paddingLeft="25dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <ImageView
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:src="@drawable/ic_baseline_email_24"/>
-                <TextView
-                    android:id="@+id/profile_email"
-                    android:textStyle="bold"
-                    android:layout_gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="20dp"
-                    android:text="Wiliam@gmail.com"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_marginTop="25dp"
-                android:orientation="horizontal"
-                android:paddingLeft="25dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <ImageView
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:src="@drawable/ic_baseline_phone_24"/>
-                <TextView
-                    android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="301dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginBottom="72dp"
+            android:orientation="vertical">
 
-                    android:layout_gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="20dp"
-                    android:text="+266 225 225"/>
-            </LinearLayout>
-
+            <ListView
+                android:id="@+id/userHabits_listview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></ListView>
         </LinearLayout>
 
-    <Button
-        android:id="@+id/logOutButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="logout"
-        android:text="Log Out"
-        android:layout_marginTop="35dp"
-        android:layout_gravity="center_horizontal" />
-
-
-
-     </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
+</ScrollView>
 
 
     <!-- UI inspiration and code credits https://awsrh.blogspot.com/2017/10/modern-profile-ui-design-in-android.html-->

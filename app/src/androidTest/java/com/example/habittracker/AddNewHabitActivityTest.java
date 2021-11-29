@@ -95,7 +95,7 @@ public class AddNewHabitActivityTest {
         solo.clickOnButton("ADD");
 
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-//        ListView habitList = (ListView) solo.getView(R.id.habits_today_listview);
+//        ListView habitList = (ListView) solo.getView(R.id.habitsToday_listview);
 
         // Check to see if habit was added to list
 //        Assert.assertEquals(habitList.getAdapter().getCount(), 2);

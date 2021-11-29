@@ -23,16 +23,16 @@ public class HabitEventList {
         return habitEventList.size();
     }
 
+    public void addHabitEvent(HabitEvent habitEvent) {
+        habitEventList.add(habitEvent);
+    }
+
     public void deleteHabitEvent(HabitEvent habitEvent) {
         habitEventList.remove(habitEvent);
     }
 
     public HabitEvent get(int index) {
         return habitEventList.get(index);
-    }
-
-    public void addHabitEvent(HabitEvent habitEvent) {
-        this.habitEventList.add(habitEvent);
     }
 
     public void clearHabitEventList() {

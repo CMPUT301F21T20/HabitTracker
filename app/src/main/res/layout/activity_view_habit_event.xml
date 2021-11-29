@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:clipToPadding="false"
+    tools:context=".ViewHabitEventActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/main_APL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/viewHabit_toolbar"
+                android:background="@color/colorPrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="?attr/actionBarTheme"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="0dp"
+                app:title="View Habit Event"
+                app:titleTextColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginLeft="56dp" />
+
+
+            <ImageView
+                android:id="@+id/viewHabitEvent_back_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toStartOf="@id/viewHabit_toolbar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:src="@drawable/ic_baseline_arrow_back_24"
+                app:tint="@color/white">
+
+            </ImageView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="24dp"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:paddingTop="24dp"
+        android:layout_marginBottom="132dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/habitEvent_habitTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:fontFamily="sans-serif-black"
+            android:text="Habit"
+            android:textColor="@color/black"
+            android:textFontWeight="400"
+            android:textSize="16dp"/>
+
+        <TextView
+            android:id="@+id/habitEvent_habitTitle_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:text="Not implemented yet..."
+            android:textFontWeight="400"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/habitEvent_DateCompleted"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:fontFamily="sans-serif-black"
+            android:text="Date Completed"
+            android:textColor="@color/black"
+            android:textFontWeight="400"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/habitEvent_DateCompleted_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:text="Not implemented yet..."
+            android:textFontWeight="400"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/habitEvent_DateRecorded"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:fontFamily="sans-serif-black"
+            android:text="Date Recorded"
+            android:textColor="@color/black"
+            android:textFontWeight="400"
+            android:textSize="16dp"/>
+
+        <TextView
+            android:id="@+id/habitEvent_DateRecorded_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:text="Not implemented yet..."
+            android:textFontWeight="400"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/habitEvent_Picture"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:fontFamily="sans-serif-black"
+            android:text="Picture"
+            android:textColor="@color/black"
+            android:textFontWeight="400"
+            android:textSize="16dp" />
+
+        <ImageView
+            android:id="@+id/habitEventImage"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:padding="1dp"
+            android:background="#ffffff"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"
+            android:layout_marginBottom="6dp">
+        </ImageView>
+
+        <TextView
+            android:id="@+id/habitEvent_Location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:fontFamily="sans-serif-black"
+            android:text="Location"
+            android:textColor="@color/black"
+            android:textFontWeight="400"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/habitEvent_Location_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:text="Not implemented yet..."
+            android:textFontWeight="400"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/habitEvent_Comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:fontFamily="sans-serif-black"
+            android:text="Comment"
+            android:textColor="@color/black"
+            android:textFontWeight="400"
+            android:textSize="16dp"/>
+
+        <TextView
+            android:id="@+id/habitEvent_Comment_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:text="Not implemented yet..."
+            android:textFontWeight="400"
+            android:textSize="20dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:padding="24dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/editHabitEventBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="10dp"
+            android:text="Edit Habit Event"
+            android:textSize="18dp"
+            android:background="@drawable/button_gradient"
+            app:backgroundTint="@null"
+            android:textColor="#ffffff" />
+    </LinearLayout>
+</RelativeLayout>
