@@ -60,4 +60,12 @@ public class FollowList implements Serializable {
     public ArrayList<Follow> getFollowList() {
         return followList;
     }
+
+    public ArrayList<String> getFollowUids() {
+        ArrayList<String> list = new ArrayList<String>();
+        for (Follow follow : followList) {
+            list.add(follow.getUid());
+        }
+        return list;
+    }
 }
