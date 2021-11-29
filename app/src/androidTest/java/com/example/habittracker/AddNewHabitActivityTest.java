@@ -80,8 +80,7 @@ public class AddNewHabitActivityTest {
         solo.sleep(3000);
 
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        ListView habitList = (ListView) solo.getView(R.id.habits_listview);
-        int size =habitList.getAdapter().getCount();
+
         // Navigate to Add Activity and check
         View fab = solo.getView(R.id.addHabitButton);
 
@@ -99,11 +98,9 @@ public class AddNewHabitActivityTest {
 
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
 
-        int newSize = habitList.getAdapter().getCount();
         // Check to see if habit was added to list
-        Assert.assertEquals(newSize, size+1);
-
-
+        Assert.assertTrue(solo.searchText("Test Add"));
+        
         View profile = solo.getView(R.id.navigation_profile);
         solo.clickOnView(profile);
         // Logout and check to see if we return to LoginActivity
