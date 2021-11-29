@@ -259,27 +259,6 @@ public class HabitEventFragment extends Fragment {
                             Log.d("ERROR", "Error getting documents: ", task.getException());
                         }
                     }
-//                    @Override
-//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        if (task.isSuccessful()) {
-//                            docIds.clear();
-//                            Log.d("TEST Task", task.getResult().getDocuments().toString());
-//                            for (DocumentSnapshot document : task.getResult().getDocuments()) {
-//                                docIds.put(document.getId(), document.getId());
-//                            }
-//                            Log.d("TEST", docIds.toString() + " size: " + docIds.size());
-//                            for (String docId : docIds.keySet()) {
-//                                db.collection("Habits").document(user.getUid())
-//                                        .collection("HabitEvents").document(docId)
-//                                        .addSnapshotListener((docSnapshot, e) -> {
-//                                            Log.i("EVENT IND DOC", "Event happened on doc " + docId);
-//                                            getHabitEvents(yearSet, monthSet, daySet);
-//                                        });
-//                            }
-//                        } else {
-//                            Log.d("ERROR", "Error getting documents: ", task.getException());
-//                        }
-//                    }
                 });
     }
 
@@ -349,7 +328,7 @@ public class HabitEventFragment extends Fragment {
                 habitList = newHabitList;
                 setDateToday(eventPickDate_TextView);
                 getHabitEvents(yearSet,monthSet,daySet);
-                habitEventsAdapter = new HabitEventListAdapter(requireContext(), habitEventsList, username, habitList);
+                habitEventsAdapter = new HabitEventListAdapter(requireContext(), habitEventsList, habitList);
                 listView.setAdapter(habitEventsAdapter);
                 setListeners();
             }
