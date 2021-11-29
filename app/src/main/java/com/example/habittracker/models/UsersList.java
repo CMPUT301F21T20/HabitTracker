@@ -44,7 +44,7 @@ public class UsersList {
 
     public User getUser(String uid) {
         for (User user : usersList) {
-            if (user.getUid().equals(uid)) {
+            if (user.getUid().trim().equals(uid.trim())) {
                 return user;
             }
         }

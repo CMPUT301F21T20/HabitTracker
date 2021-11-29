@@ -46,7 +46,8 @@ public class UsersFragment extends Fragment {
     EditText searchBar;
     Button searchButton;
 
-    public UsersFragment() {}
+    public UsersFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,7 +62,7 @@ public class UsersFragment extends Fragment {
         FirebaseUser fUser = fAuth.getCurrentUser();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         View root = inflater.inflate(R.layout.fragment_users, container, false);
 
@@ -73,12 +74,9 @@ public class UsersFragment extends Fragment {
         userListAdapter = new UsersListAdapter(requireContext(), usersList);
         UsersListView.setAdapter(userListAdapter);
 
-        UsersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
-                User user = (User) usersList.getUser(position);
-                openUserProfileActivity(user);
-            }
+        UsersListView.setOnItemClickListener((arg0, view, position, id) -> {
+            User user = (User) usersList.getUser(position);
+            openUserProfileActivity(user);
         });
 
         UsersList userListCopy = new UsersList();
@@ -97,7 +95,7 @@ public class UsersFragment extends Fragment {
                             }
 
 
-                            for (int i = 0; i < usersList.getCount(); i++){
+                            for (int i = 0; i < usersList.getCount(); i++) {
                                 userListCopy.addUser(usersList.getUser(i));
                             }
 
@@ -109,54 +107,48 @@ public class UsersFragment extends Fragment {
                 });
 
         //System.out.println("user LIst copy size" + userListCopy.getCount());
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String userName = searchBar.getText().toString().trim();
-                UsersList updatedUserList = new UsersList();
+        searchButton.setOnClickListener(view -> {
+            String userName = searchBar.getText().toString().trim();
+            UsersList updatedUserList = new UsersList();
 
-                System.out.println("user LIst copy size" + userListCopy.getCount());
-                System.out.println("user list size" + usersList.getCount());
-                if (usersList.getCount() < userListCopy.getCount() ) {
-                    System.out.println("I am here to update user List");
-                    for (int i = 0; i < userListCopy.getCount(); i++) {
-                        System.out.println("Printing user in copy:" + userListCopy.getUser(i));
-                        usersList.addUser(userListCopy.getUser(i));
-                    }
-                    userListAdapter.notifyDataSetChanged();
+            System.out.println("user LIst copy size" + userListCopy.getCount());
+            System.out.println("user list size" + usersList.getCount());
+            if (usersList.getCount() < userListCopy.getCount()) {
+                System.out.println("I am here to update user List");
+                for (int i = 0; i < userListCopy.getCount(); i++) {
+                    System.out.println("Printing user in copy:" + userListCopy.getUser(i));
+                    usersList.addUser(userListCopy.getUser(i));
                 }
-
-
-                if(TextUtils.isEmpty(userName)){
-                    searchBar.setError("Username is required");
-                    return;
-                }
-
-                System.out.println(usersList.getCount());
-                for (int i =0; i < usersList.getCount(); i++) {
-                    System.out.println(i);
-                    System.out.println(usersList.getUser(i).getUsername());
-                    if (userName.equals(usersList.getUser(i).getUsername())) {
-                        //usersList.clearUserList();
-                        System.out.println("I am about to update updateUserLIst");
-                        updatedUserList.clearUserList();
-                        updatedUserList.addUser(usersList.getUser(i));
-                        break;
-                    }
-
-                }
-
-                if (updatedUserList.getCount() > 0){
-                usersList.clearUserList();
-                usersList.addUser(updatedUserList.getUser(0));
                 userListAdapter.notifyDataSetChanged();
-                }
-                else {
-                    searchBar.setError("Incorrect username");
-                    return;
+            }
+
+
+            if (TextUtils.isEmpty(userName)) {
+                searchBar.setError("Username is required");
+                return;
+            }
+
+            System.out.println(usersList.getCount());
+            for (int i = 0; i < usersList.getCount(); i++) {
+                System.out.println(i);
+                System.out.println(usersList.getUser(i).getUsername());
+                if (userName.equals(usersList.getUser(i).getUsername())) {
+                    //usersList.clearUserList();
+                    System.out.println("I am about to update updateUserLIst");
+                    updatedUserList.clearUserList();
+                    updatedUserList.addUser(usersList.getUser(i));
+                    break;
                 }
             }
 
+            if (updatedUserList.getCount() > 0) {
+                usersList.clearUserList();
+                usersList.addUser(updatedUserList.getUser(0));
+                userListAdapter.notifyDataSetChanged();
+            } else {
+                searchBar.setError("Incorrect username");
+                return;
+            }
         });
 
         return root;

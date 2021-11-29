@@ -35,8 +35,6 @@ public class UsersListController {
     }
 
     private final FirebaseFirestore db;
-    //private FirebaseAuth fAuth;
-
 
     public static void convertToUserList(DocumentSnapshot doc, UsersList usersList) {
         fAuth = FirebaseAuth.getInstance();
@@ -92,7 +90,7 @@ public class UsersListController {
             Map<String, Object> followData = (Map<String, Object>) entry.getValue();
             if (followData.get("since") != null) {
                 Follow follow = new Follow(
-                        entry.getKey(),
+                        entry.getKey().trim(),
                         (String) followData.get("username"),
                         ((Timestamp) followData.get("since")).toDate()
                 );
