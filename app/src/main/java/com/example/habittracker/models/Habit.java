@@ -17,6 +17,10 @@ public class Habit implements Serializable {
     private Date dateCreated;
     private ArrayList<Integer> frequency;  // Frequency represent which day of a week is required to do the habit
     private boolean canShare;  // Accessibility for other users
+    private int streak;
+    private int highestStreak;
+
+
 
     /**
      *
@@ -29,7 +33,7 @@ public class Habit implements Serializable {
      * @param canShare      Accessibility for other users
      */
     public Habit(String habitId, String userId, String title, String reason,
-                 Date dateCreated, ArrayList<Integer> frequency, boolean canShare) {
+                 Date dateCreated, ArrayList<Integer> frequency, boolean canShare, int streak, int highestStreak) {
         this.habitId = habitId;
         this.userId = userId;
         this.title = title;
@@ -37,6 +41,8 @@ public class Habit implements Serializable {
         this.dateCreated = dateCreated;
         this.frequency = frequency;
         this.canShare = canShare;
+        this.streak = streak;
+        this.highestStreak = highestStreak;
     }
 
     public Habit() {}
@@ -54,6 +60,8 @@ public class Habit implements Serializable {
         habit.put("dateCreated", this.dateCreated);
         habit.put("frequency", this.frequency);
         habit.put("canShare", this.canShare);
+        habit.put("streak", this.streak);
+        habit.put("highestStreak", this.highestStreak);
         return habit;
     }
 
@@ -117,4 +125,22 @@ public class Habit implements Serializable {
     public void setCanShare(boolean canShare) {
         this.canShare = canShare;
     }
+
+    public int getStreak() {
+        return streak;
+    }
+
+    public void setStreak(int streak) {
+        this.streak = streak;
+    }
+
+    public int getHighestStreak() {
+        return highestStreak;
+    }
+
+    public void setHighestStreak(int highestStreak) {
+        this.highestStreak = highestStreak;
+    }
+
+
 }

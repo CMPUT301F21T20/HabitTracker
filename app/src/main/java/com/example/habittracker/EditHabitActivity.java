@@ -119,18 +119,20 @@ public class EditHabitActivity extends AppCompatActivity {
                     frequency.add(i, temp);
                 }
 
-                Habit habit = new Habit(
+                Habit newHabit = new Habit(
                         habitId,
                         uid,
                         editTitle.getText().toString(),
                         editReason.getText().toString(),
                         selectedDate,
                         frequency,
-                        canShare.isChecked()
+                        canShare.isChecked(),
+                        habit.getStreak(),
+                        habit.getHighestStreak()
                 );
 
                 HabitListController controller = HabitListController.getInstance();
-                Boolean success = controller.saveHabit(habit);
+                Boolean success = controller.saveHabit(newHabit);
 
                 if (!success) {
                     // TODO: alert user to try again later;

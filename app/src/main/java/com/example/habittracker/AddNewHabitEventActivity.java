@@ -39,6 +39,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.habittracker.controllers.HabitListController;
 import com.example.habittracker.models.Habit;
 import com.example.habittracker.models.HabitEvent;
 import com.example.habittracker.controllers.HabitEventsController;
@@ -266,10 +267,15 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
                 updatedDate
         );
 
+        habit.setStreak(habit.getStreak()+1);
+        HabitListController.getInstance().saveHabit(habit);
+
         HabitEventsController.getInstance().saveHabitEvent(habitEvent);
 
-        onSupportNavigateUp();
-    }
+        //Navigate back to main activity without changing it's state
+        Intent gotoScreenVar = new Intent(this, MainActivity.class);
+        gotoScreenVar.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(gotoScreenVar);    }
 
     /**
      * Get the date in string format of yyyy-dd-mm

@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,6 +40,8 @@ public class AddNewHabitActivity extends AppCompatActivity {
     private ToggleButton[] selectedDates;
     private SwitchCompat canShare;
     private Button submitButton;
+    private TextView streak;
+    private TextView highestStreak;
 
 
     /**
@@ -69,6 +72,7 @@ public class AddNewHabitActivity extends AppCompatActivity {
         };
         canShare = findViewById(R.id.addHabitCanShare);
         submitButton = findViewById(R.id.addHabitSubmitButton);
+
 
         startDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,7 +127,10 @@ public class AddNewHabitActivity extends AppCompatActivity {
                         editReason.getText().toString(),
                         selectedDate,
                         frequency,
-                        canShare.isChecked()
+                        canShare.isChecked(),
+                        0,
+                        0
+
                 );
 
                 HabitListController controller = HabitListController.getInstance();

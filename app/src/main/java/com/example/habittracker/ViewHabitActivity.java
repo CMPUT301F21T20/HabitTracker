@@ -33,6 +33,8 @@ public class ViewHabitActivity extends AppCompatActivity {
     private Button editHabitBtn;
     private Button addHabitEventBtn;
     private String activity;
+    private TextView streak;
+    private TextView highestStreak;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,11 +57,16 @@ public class ViewHabitActivity extends AppCompatActivity {
         viewSharedText = findViewById(R.id.viewSharedText);
         editHabitBtn = findViewById(R.id.editHabitBtn);
         addHabitEventBtn = findViewById(R.id.addHabitEventBtn);
+        streak = findViewById(R.id.viewStreakText);
+        highestStreak = findViewById(R.id.viewLongestStreakText);
+
 
         titleText.setText(habit.getTitle());
         reasonText.setText(habit.getReason());
         startDateText.setText(getDateText(habit.getDateCreated()));
         activeDaysText.setText(getDaysText(habit.getFrequency()));
+        streak.setText(String.valueOf(habit.getStreak()));
+        highestStreak.setText(String.valueOf(habit.getHighestStreak()));
 
         if (habit.getCanShare()){
             viewSharedText.setText("SHARED");
