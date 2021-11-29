@@ -32,7 +32,7 @@
                     android:theme="?attr/actionBarTheme"
                     tools:layout_editor_absoluteX="0dp"
                     tools:layout_editor_absoluteY="0dp"
-                    app:title="Following Users"
+                    app:title="Following"
                     app:titleTextColor="@color/white"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

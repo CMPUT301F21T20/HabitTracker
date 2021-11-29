@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class FollowersActivity extends AppCompatActivity {
 
+    private ImageView back_icon;
     private FirebaseFirestore db;
     private User user;
     private ArrayAdapter<Follow> followListAdapter;
@@ -29,8 +31,9 @@ public class FollowersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_followers);
         db = FirebaseFirestore.getInstance();
-
+        back_icon = findViewById(R.id.viewHabit_back_icon);
         user = new User();
+
         final ListView followerListView = findViewById(R.id.followers_list);
         followListAdapter = new FollowersAdapter(getApplicationContext(), user.getFollowers());
         followerListView.setAdapter(followListAdapter);
@@ -49,5 +52,16 @@ public class FollowersActivity extends AppCompatActivity {
                 Log.d(">>>>>>>>>>>>>>>>>>>>>>>", user.getFollowers().getFollow(0).getUsername());
             });
         }
+
+        back_icon.setOnClickListener(view -> {
+            back_icon.setAlpha(0.5f);
+            onSupportNavigateUp();
+        });
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return false;
     }
 }

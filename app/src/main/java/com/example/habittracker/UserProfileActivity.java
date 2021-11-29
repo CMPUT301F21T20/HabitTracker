@@ -84,22 +84,14 @@ public class UserProfileActivity extends AppCompatActivity {
             habitListAdapter.notifyDataSetChanged();
         });
 
-        habitsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
-
-                Habit habit = (Habit) showHabitList.getHabit(position);
-                openViewHabitActivity(habit);
-
-            }
+        habitsListView.setOnItemClickListener((arg0, view, position, id) -> {
+            Habit habit = (Habit) showHabitList.getHabit(position);
+            openViewHabitActivity(habit);
         });
 
-        userProfile_back_icon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                userProfile_back_icon.setAlpha(0.5f);
-                onSupportNavigateUp();
-            }
+        userProfile_back_icon.setOnClickListener(view -> {
+            userProfile_back_icon.setAlpha(0.5f);
+            onSupportNavigateUp();
         });
     }
 
