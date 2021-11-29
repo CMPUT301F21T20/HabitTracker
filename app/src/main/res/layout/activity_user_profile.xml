@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".UserProfileActivity"
+    tools:context=".activities.UserProfileActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
@@ -128,21 +128,24 @@
                             android:orientation="vertical"
                             android:layout_width="0dp"
                             android:layout_weight="1"
-                            android:layout_height="match_parent">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Followers"
-                                android:textSize="20sp"
-                                />
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="1205"
-                                android:textStyle="bold"
-                                android:textSize="20sp"
-                                android:paddingTop="10dp"
-                                android:textColor="@color/ColorProfileDark"/>
+                            android:layout_height="match_parent"
+                            android:id="@+id/FollowersButton"
+                        android:clickable="true">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Followers"
+                            android:textSize="20sp"
+                            />
+                        <TextView
+                            android:id="@+id/followers_counter_p"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1205"
+                            android:textStyle="bold"
+                            android:textSize="20sp"
+                            android:paddingTop="10dp"
+                            android:textColor="@color/ColorProfileDark"/>
 
                         </LinearLayout>
                         <LinearLayout
@@ -150,21 +153,24 @@
                             android:orientation="vertical"
                             android:layout_width="0dp"
                             android:layout_weight="1"
-                            android:layout_height="match_parent">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Following"
-                                android:textSize="20sp"
-                                />
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="360"
-                                android:textStyle="bold"
-                                android:textSize="20sp"
-                                android:paddingTop="10dp"
-                                android:textColor="@color/ColorProfileDark"/>
+                            android:layout_height="match_parent"
+                            android:id="@+id/FollowingButton"
+                        android:clickable="true">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Following"
+                            android:textSize="20sp"
+                            />
+                        <TextView
+                            android:id="@+id/following_counter_p"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="360"
+                            android:textStyle="bold"
+                            android:textSize="20sp"
+                            android:paddingTop="10dp"
+                            android:textColor="@color/ColorProfileDark"/>
 
                         </LinearLayout>
                     </LinearLayout>
@@ -182,18 +188,17 @@
             </RelativeLayout>
 
             <Button
-                android:id="@+id/logOutButton"
+                android:id="@+id/followButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginRight="12dp"
-                android:layout_gravity="top|end"
+android:layout_gravity="top|end"
                 android:text="Follow"
                 android:backgroundTint="@android:color/transparent"
                 android:outlineSpotShadowColor="@android:color/transparent">
             </Button>
         </FrameLayout>
-
 
         <LinearLayout
             android:layout_width="match_parent"

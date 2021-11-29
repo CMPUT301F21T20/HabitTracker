@@ -2,9 +2,8 @@ package com.example.habittracker.controllers;
 
 import android.util.Log;
 
-import com.example.habittracker.models.Request;
-import com.example.habittracker.models.RequestMap;
-import com.example.habittracker.models.User;
+import com.example.habittracker.models.Request.Request;
+import com.example.habittracker.models.Request.RequestMap;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -22,9 +21,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Controller to handle all social activiites
  */
 public class SocialController {
-    private final FirebaseFirestore db;
-    private final FirebaseUser user;
-    private String username;
+    //Firestore instance
+    private FirebaseFirestore db;
+    private FirebaseUser user;
 
     private static class Loader {
         static volatile SocialController INSTANCE = new SocialController();
@@ -34,25 +33,7 @@ public class SocialController {
      * Singleton Design Pattern: set constructor as private
      */
     private SocialController() {
-        this.db = FirebaseFirestore.getInstance();
-        this.user = FirebaseAuth.getInstance().getCurrentUser();
-
-        db.collection("Users").document(this.user.getUid())
-            .get().addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    assert document != null;
-                    if (document.exists()) {
-                        Map<String, Object> userData = document.getData();
-                        username = (String) userData.get("username");
-                        Log.d("Firestore", "DocumentSnapshot data: " + userData);
-                    } else {
-                        Log.d("Firestore", "No such document");
-                    }
-                } else {
-                    Log.d("Firestore", "get failed with ", task.getException());
-                }
-        });
+        connect();
     }
 
     /**
@@ -78,7 +59,7 @@ public class SocialController {
             Map<String, Object> docData = doc.getData();
             if (docData != null) {
                 requestMap.clearRequestList();
-                Log.d("FIRESTORE DATA DEBUG", String.valueOf(docData));
+                Log.d("Social Controller (convertToRequestMap)", String.valueOf(docData));
                 for (Map.Entry<String, Object> entry : docData.entrySet()) {
                     // data will either be the outgoing requests or the incoming requests object
                     Map<String, Object> data = (Map<String, Object>) entry.getValue();
@@ -110,11 +91,8 @@ public class SocialController {
      * document. Inverted request just means flipping the type, user ID, and username.
      * @param type
      * @param request The request to save
-     * @return A bool indicating failure or success
      */
-    public Boolean saveRequest(String type, Request request) {
-        AtomicBoolean success = new AtomicBoolean(false);
-
+    public void saveRequest(String type, Request request) {
         // create needed maps
         Map<String, Object> userRequestMap = new HashMap<>();
         Map<String, Map<String, Object>> mapping = new HashMap<>();
@@ -122,6 +100,10 @@ public class SocialController {
         // update the doc of the user who is submitting the change
         userRequestMap.put(request.getUserId(), request.getRequestMap());
         mapping.put(type, userRequestMap);
+        Log.d("SocialController (saveRequest::status)", request.getStatus());
+        Log.d("SocialController (saveRequest::targert UID)", request.getUserId());
+        Log.d("SocialController (saveRequest::target username)", request.getUserName());
+        Log.d("SocialController (saveRequest::current UID)", user.getUid());
         dbRequest("Requests", user.getUid(), mapping);
 
         // clear maps
@@ -130,14 +112,16 @@ public class SocialController {
 
         // update the doc of the user who is subject to the change
         Request flippedRequest = flipRequest(request);
+        Log.d("FlippedRequest (saveRequest::status)", flippedRequest.getStatus());
+        Log.d("FlippedRequest (saveRequest::targert UID)", flippedRequest.getUserId());
+        Log.d("FlippedRequest (saveRequest::target username)", flippedRequest.getUserName());
+        Log.d("FillpedRequest (saveRequest::doc UID)", request.getUserId());
         userRequestMap.put(flippedRequest.getUserId(), flippedRequest.getRequestMap());
         mapping.put(flipType(type), userRequestMap);
         dbRequest("Requests", request.getUserId(), mapping);
 
         // A status of 'Accepted' and type of 'incoming' means the user has accepted a follow request
         if (request.getStatus().equals("Accepted") && type.equals("incoming")) this.follow(request);
-
-        return success.get();
     }
 
     /**
@@ -205,7 +189,8 @@ public class SocialController {
         Map<String, Object> followerData = new HashMap<>();
 
         // update the current users followers in user profile
-        followerData.put("followerSince", saveDate);
+        followerData.put("since", saveDate);
+        followerData.put("username", request.getUserName());
         follower.put(request.getUserId(), followerData);
         mapping.put("followers", follower);
         dbRequest("Users", user.getUid(), mapping);
@@ -215,7 +200,8 @@ public class SocialController {
         followerData.clear();
 
         // update the target users (user who request to follow current user) following map
-        followerData.put("followingSince", saveDate);
+        followerData.put("since", saveDate);
+        followerData.put("username", CurrentUserController.getInstance().getUser().getUsername());
         follower.put(user.getUid(), followerData);
         mapping.put("following", follower);
         dbRequest("Users", request.getUserId(), mapping);
@@ -279,7 +265,7 @@ public class SocialController {
     private Request flipRequest(Request request) {
         Request clone = request.cloneRequest();
         clone.setUserId(user.getUid());
-        clone.setUserName(username);
+        clone.setUserName(CurrentUserController.getInstance().getUser().getUsername());
         return clone;
     }
 
@@ -296,6 +282,11 @@ public class SocialController {
                     Log.d("Firestore", "DocumentSnapshot successfully updated!");
                 })
                 .addOnFailureListener(e -> Log.w("Firestore", "Error updating document", e));
+    }
+
+    public void connect() {
+        this.db = FirebaseFirestore.getInstance();
+        this.user = FirebaseAuth.getInstance().getCurrentUser();
     }
 }
 

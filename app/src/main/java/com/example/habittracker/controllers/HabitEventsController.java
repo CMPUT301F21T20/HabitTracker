@@ -3,28 +3,23 @@ package com.example.habittracker.controllers;
 import android.os.Build;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import com.example.habittracker.interfaces.OnHabitEventDeleted;
 import com.example.habittracker.interfaces.OnHabitEventsRetrieved;
-import com.example.habittracker.models.Habit;
-import com.example.habittracker.models.HabitEvent;
-import com.example.habittracker.models.HabitEventList;
-import com.example.habittracker.models.HabitList;
-import com.example.habittracker.interfaces.OnHabitListRetrieved;
+import com.example.habittracker.models.Habit.Habit;
+import com.example.habittracker.models.HabitEvent.HabitEvent;
+import com.example.habittracker.models.HabitEvent.HabitEventList;
+import com.example.habittracker.models.Habit.HabitList;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
-import java.sql.Time;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.Date;
@@ -36,7 +31,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Firestore Controller class for Habit Events
  */
 public class HabitEventsController {
-    private final FirebaseFirestore DB;
+    private FirebaseFirestore DB;
 
     private static class Loader {
         static volatile HabitEventsController INSTANCE = new HabitEventsController();
@@ -46,7 +41,7 @@ public class HabitEventsController {
      * Singleton Design Pattern: set constructor as private
      */
     private HabitEventsController() {
-        this.DB = FirebaseFirestore.getInstance();
+        connect();
     }
 
     /**
@@ -78,7 +73,11 @@ public class HabitEventsController {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         HabitEventList habitEventList = new HabitEventList();
-                        habitEventList = convertToHabitEventList(task, habitEventList, habitList);
+                        try {
+                            convertToHabitEventList(task, habitEventList, habitList);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         listener.onHabitEventsRetrieved(habitEventList);
                     } else {
                         Log.d("Firestore", "Error getting documents: ", task.getException());
@@ -94,7 +93,7 @@ public class HabitEventsController {
      * @return
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public static HabitEventList convertToHabitEventList(Task<QuerySnapshot> successfulTask, HabitEventList heList, HabitList habitList) {
+    public static void convertToHabitEventList(Task<QuerySnapshot> successfulTask, HabitEventList heList, HabitList habitList) throws Exception {
         heList.clearHabitEventList();
         for (QueryDocumentSnapshot doc : successfulTask.getResult()) {
             Map<String, Object> docData = doc.getData();
@@ -126,7 +125,6 @@ public class HabitEventsController {
                 }
             }
         }
-        return heList;
     }
 
     /**
@@ -246,6 +244,10 @@ public class HabitEventsController {
                 })
                 .addOnFailureListener(e -> Log.w("Firestore", "Error updating document", e));
 
+    }
+
+    public void connect() {
+        this.DB = FirebaseFirestore.getInstance();
     }
 
 }

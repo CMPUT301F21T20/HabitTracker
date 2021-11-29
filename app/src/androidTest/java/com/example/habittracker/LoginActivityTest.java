@@ -7,6 +7,9 @@ import android.widget.EditText;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
+import com.example.habittracker.activities.LoginActivity;
+import com.example.habittracker.activities.MainActivity;
+import com.example.habittracker.activities.RegisterActivity;
 import com.robotium.solo.Solo;
 
 import org.junit.After;

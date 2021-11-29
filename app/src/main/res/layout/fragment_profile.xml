@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.profile.ProfileFragment"
+    tools:context=".fragments.ProfileFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
@@ -93,7 +93,9 @@
                         android:orientation="vertical"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:id="@+id/FollowersButton"
+                        android:clickable="true">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -101,6 +103,7 @@
                             android:textSize="20sp"
                             />
                         <TextView
+                            android:id="@+id/followers_counter"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="1205"
@@ -110,12 +113,15 @@
                             android:textColor="@color/ColorProfileDark"/>
 
                     </LinearLayout>
+
                     <LinearLayout
                         android:gravity="center"
                         android:orientation="vertical"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:id="@+id/FollowingButton"
+                        android:clickable="true">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -123,6 +129,7 @@
                             android:textSize="20sp"
                             />
                         <TextView
+                            android:id="@+id/following_counter"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="360"

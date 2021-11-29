@@ -1,7 +1,6 @@
 package com.example.habittracker.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.habittracker.R;
-import com.example.habittracker.UserProfileActivity;
-import com.example.habittracker.models.User;
-import com.example.habittracker.models.UsersList;
+import com.example.habittracker.models.User.User;
+import com.example.habittracker.models.User.UsersList;
 
 /**
  * Adapter for user  list, handles functionality for user list items

@@ -7,38 +7,31 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.habittracker.ui.home.HomeFragment"
+        android:name="com.example.habittracker.fragments.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_habit_events"
-        android:name="com.example.habittracker.ui.habitEvents.HabitEventFragment"
+        android:name="com.example.habittracker.fragments.HabitEventFragment"
         android:label="Habit Events"
         tools:layout="@layout/fragment_habit_event" />
 
     <fragment
         android:id="@+id/navigation_users"
-        android:name="com.example.habittracker.ui.users.UsersFragment"
+        android:name="com.example.habittracker.fragments.UsersFragment"
         android:label="@string/title_users"
         tools:layout="@layout/fragment_following_list" />
 
     <fragment
         android:id="@+id/navigation_request"
-        android:name="com.example.habittracker.RequestFragment"
+        android:name="com.example.habittracker.fragments.RequestFragment"
         android:label="@string/title_following"
         tools:layout="@layout/fragment_request" />
 
     <fragment
-        android:id="@+id/navigation_follower"
-        android:name="com.example.habittracker.ui.follower.FollowerFragment"
-        android:label="@string/title_follower"
-        tools:layout="@layout/fragment_follower" />
-
-
-    <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.example.habittracker.ui.profile.ProfileFragment"
+        android:name="com.example.habittracker.fragments.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
 </navigation>

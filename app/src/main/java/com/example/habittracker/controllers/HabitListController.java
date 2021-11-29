@@ -2,8 +2,8 @@ package com.example.habittracker.controllers;
 
 import android.util.Log;
 
-import com.example.habittracker.models.Habit;
-import com.example.habittracker.models.HabitList;
+import com.example.habittracker.models.Habit.Habit;
+import com.example.habittracker.models.Habit.HabitList;
 import com.example.habittracker.interfaces.OnHabitListRetrieved;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -23,7 +23,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * HabitListController is for sync local habit with data in firestore
  */
 public class HabitListController {
-    private final FirebaseFirestore db;
+    private FirebaseFirestore db;
 
     private static class Loader {
         static volatile HabitListController INSTANCE = new HabitListController();
@@ -33,7 +33,7 @@ public class HabitListController {
      * Singleton Design Pattern: set constructor as private
      */
     private HabitListController() {
-        this.db = FirebaseFirestore.getInstance();
+        connect();
     }
 
     /**
@@ -165,5 +165,9 @@ public class HabitListController {
                 })
                 .addOnFailureListener(e -> Log.w("Firestore", "Error updating document", e));
         return success.get();
+    }
+
+    public void connect() {
+        this.db = FirebaseFirestore.getInstance();
     }
 }
