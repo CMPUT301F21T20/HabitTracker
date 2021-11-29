@@ -13,6 +13,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.habittracker.controllers.CurrentUserController;
 import com.example.habittracker.models.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -65,12 +66,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        //HabitListController habitListController = new HabitListController();
-        //HabitList habitList = habitListController.loadHabitList(user.getUid());
-        // TODO: connect habitList with AddNewHabitActivity so that creating a new habit reloads the list
-        // TODO: OR use the habitList directly (return the habit and add it to habit list from here)
-        // TODO: i.e. adding new Habit right now does not refresh habit list locally here (add listener?)
+        CurrentUserController cont = CurrentUserController.getInstance();
     }
 
 }

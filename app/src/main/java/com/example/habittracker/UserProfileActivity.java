@@ -77,7 +77,7 @@ public class UserProfileActivity extends AppCompatActivity {
             if (follower) {
                 SocialController.getInstance().unfollow(user.getUid());
             } else {
-                Request request = new Request(user.getUid(), "pending", user.getUsername(), new Date());
+                Request request = new Request(user.getUid(), "Pending", user.getUsername(), new Date());
                 SocialController.getInstance().saveRequest("outgoing", request);
             }
         });

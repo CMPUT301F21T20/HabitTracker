@@ -28,24 +28,6 @@ public class SocialController {
     private SocialController() {
         this.db = FirebaseFirestore.getInstance();
         this.user = FirebaseAuth.getInstance().getCurrentUser();
-
-        // TODO: change this (pass username instead?)
-        db.collection("Users").document(this.user.getUid())
-            .get().addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    assert document != null;
-                    if (document.exists()) {
-                        Map<String, Object> userData = document.getData();
-                        username = (String) userData.get("username");
-                        Log.d("Firestore", "DocumentSnapshot data: " + userData);
-                    } else {
-                        Log.d("Firestore", "No such document");
-                    }
-                } else {
-                    Log.d("Firestore", "get failed with ", task.getException());
-                }
-        });
     }
 
     public static SocialController getInstance() {
@@ -72,7 +54,7 @@ public class SocialController {
             Map<String, Object> docData = doc.getData();
             if (docData != null) {
                 requestMap.clearRequestList();
-                Log.d("FIRESTORE DATA DEBUG", String.valueOf(docData));
+                Log.d("Social Controller (convertToRequestMap)", String.valueOf(docData));
                 for (Map.Entry<String, Object> entry : docData.entrySet()) {
                     // data will either be the outgoing requests or the incoming requests object
                     Map<String, Object> data = (Map<String, Object>) entry.getValue();
@@ -266,7 +248,7 @@ public class SocialController {
     private Request flipRequest(Request request) {
         Request clone = request.cloneRequest();
         clone.setUserId(user.getUid());
-        clone.setUserName(username);
+        clone.setUserName(CurrentUserController.getInstance().getUser().getUsername());
         return clone;
     }
 
