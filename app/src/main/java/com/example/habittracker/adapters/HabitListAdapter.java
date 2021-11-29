@@ -43,12 +43,9 @@ public class HabitListAdapter extends ArrayAdapter<Habit> {
         Habit habit = habitList.getHabit(position);
 
         TextView habitListTitle = view.findViewById(R.id.habitListTitle);
-        Button viewHabitButton = view.findViewById(R.id.habitListViewButton);
         Button deleteHabitButton = view.findViewById(R.id.habitListDeleteButton);
 
         habitListTitle.setText(habit.getTitle());
-
-        viewHabitButton.setOnClickListener(v -> openViewHabitActivity(habit));
 
         deleteHabitButton.setOnClickListener(v -> {
             HabitListController controller = HabitListController.getInstance();
@@ -58,14 +55,5 @@ public class HabitListAdapter extends ArrayAdapter<Habit> {
         return view;
     }
 
-    /**
-     * Opens the view habit activity
-     * @param habit the habit to display information about
-     */
-    public void openViewHabitActivity(Habit habit) {
-        Intent i = new Intent(context, ViewHabitActivity.class);
-        i.putExtra("Habit", habit);
-        i.putExtra("pActivity", "Adapter");
-        context.startActivity(i);
-    }
+
 }

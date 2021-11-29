@@ -9,7 +9,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.habittracker.HabitsTodayFragment;
 import com.example.habittracker.HabitsTotalFragment;
-import com.example.habittracker.HabitsUnbrokenFragment;
 
 public class HabitsViewPagerAdapter extends FragmentStateAdapter {
 
@@ -33,14 +32,12 @@ public class HabitsViewPagerAdapter extends FragmentStateAdapter {
                 return new HabitsTotalFragment();
             case 1:
                 return new HabitsTodayFragment();
-            case 2:
-                return new HabitsUnbrokenFragment();
         }
         return null;
     }
 
     @Override
     public int getItemCount() {
-        return 3;
+        return 2;
     }
 }
