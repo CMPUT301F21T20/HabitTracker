@@ -65,6 +65,7 @@ public class HabitListAdapter extends ArrayAdapter<Habit> {
     public void openViewHabitActivity(Habit habit) {
         Intent i = new Intent(context, ViewHabitActivity.class);
         i.putExtra("Habit", habit);
+        i.putExtra("pActivity", "Adapter");
         context.startActivity(i);
     }
 }
