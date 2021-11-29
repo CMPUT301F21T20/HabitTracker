@@ -14,16 +14,27 @@ import com.example.habittracker.R;
 import com.example.habittracker.models.Habit.Habit;
 import com.example.habittracker.models.Habit.HabitList;
 
+/**
+ * Adapter for user habit list, handles functionality for user habit list items
+ */
 public class UserHabitListAdapter extends ArrayAdapter<Habit> {
     private Context context;
     private HabitList habitList;
 
+    /**
+     * Constructor for User Habit List Adapter class
+     * @param context the context of the app
+     * @param habitList the list of habits to show
+     */
     public UserHabitListAdapter(@NonNull Context context, HabitList habitList) {
         super(context, 0, habitList.getHabitList());
         this.context = context;
         this.habitList = habitList;
     }
 
+    /**
+     * Configures view for user habit list item
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -36,7 +47,6 @@ public class UserHabitListAdapter extends ArrayAdapter<Habit> {
         Habit habit = habitList.getHabit(position);
         TextView habitListTitle = view.findViewById(R.id.habit_text);
         habitListTitle.setText(habit.getTitle());
-
 
         return view;
     }

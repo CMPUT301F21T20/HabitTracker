@@ -2,8 +2,10 @@ package com.example.habittracker.interfaces;
 
 import com.example.habittracker.models.Habit.HabitList;
 
-// This class wil be used to handle the asynchronous firestore call
-// to retrieve the habit list
+/**
+ * This class wil be used to handle the asynchronous firestore call
+ * to retrieve the habit list
+ */
 public interface OnHabitListRetrieved {
     /**
      * Funciton to be run when habit list is retrieved

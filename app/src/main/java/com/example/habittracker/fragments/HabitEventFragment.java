@@ -57,6 +57,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This fragment shows the habit events of a specific date
+ */
 public class HabitEventFragment extends Fragment {
     private View rootView;
     private FloatingActionButton eventPickDate_btn;
@@ -92,6 +95,7 @@ public class HabitEventFragment extends Fragment {
 
         getUsername();
 
+        // Set the date values as today
         setDateToday(eventPickDate_TextView);
 
         eventPickDate_btn.setOnClickListener(new View.OnClickListener() {
@@ -105,6 +109,7 @@ public class HabitEventFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
+                // when clicking on an item in the list view, open the view habit event activity
                 HabitEvent clickedHabitEvent = habitEventsList.get(position);
                 Intent i = new Intent(getContext(), ViewHabitEventActivity.class);
                 i.putExtra("HabitEvent", clickedHabitEvent);
@@ -118,6 +123,7 @@ public class HabitEventFragment extends Fragment {
         // all the documents
         docIds = new HashMap<String, String>();
 
+        // This listener will be called once, and populate list initially
         db.collection("Habits").document(user.getUid()).collection("HabitEvents").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value,
@@ -142,6 +148,7 @@ public class HabitEventFragment extends Fragment {
         user = fAuth.getCurrentUser();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+        // Username is stored in firestore, retrieve by querying database
         DocumentReference docRef = db.collection("Users").document(user.getUid());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -231,24 +238,35 @@ public class HabitEventFragment extends Fragment {
         datePickerDialog.show();
     }
 
+    /**
+     * Create listeners for each doc for all of the user's habit event docs
+     */
     public void setListeners() {
         db.collection("Users").document(user.getUid()).collection("HabitEvents")
                 .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        docIds.clear();
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            docIds.put(document.getId(), document.getId());
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            docIds.clear();
+
+                            // gather all doc ids in map
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                docIds.put(document.getId(), document.getId());
+                            }
+
+                            // create listener for each id
+                            for (String docId : docIds.keySet()) {
+                                db.collection("Users").document(user.getUid())
+                                        .collection("HabitEvents").document(docId)
+                                        .addSnapshotListener((docSnapshot, e) -> {
+                                            getHabitEvents(yearSet, monthSet, daySet);
+                                        });
+                            }
+
+                        } else {
+                            Log.d("ERROR", "Error getting documents: ", task.getException());
                         }
-                        for (String docId : docIds.keySet()) {
-                            db.collection("Users").document(user.getUid())
-                                    .collection("HabitEvents").document(docId)
-                                    .addSnapshotListener((docSnapshot, e) -> {
-                                        getHabitEvents(yearSet, monthSet, daySet);
-                                    });
-                        }
-                    } else {
-                        Log.d("ERROR", "Error getting documents: ", task.getException());
                     }
                 });
     }
@@ -278,7 +296,6 @@ public class HabitEventFragment extends Fragment {
             @Override
             public void onHabitEventsRetrieved(HabitEventList newHabitEventList) {
                 habitEventsList.clear();
-
                 // Because habits event docs are organized by month, we need to iterate through all retrieved
                 // habits and check if date match today
                 for (int i = 0; i < newHabitEventList.getCount(); i++) {
@@ -319,7 +336,7 @@ public class HabitEventFragment extends Fragment {
                 habitList = newHabitList;
                 setDateToday(eventPickDate_TextView);
                 getHabitEvents(yearSet,monthSet,daySet);
-                habitEventsAdapter = new HabitEventListAdapter(requireContext(), habitEventsList, username, habitList);
+                habitEventsAdapter = new HabitEventListAdapter(requireContext(), habitEventsList, habitList);
                 listView.setAdapter(habitEventsAdapter);
                 setListeners();
             }
@@ -331,14 +348,20 @@ public class HabitEventFragment extends Fragment {
         });
     }
 
+    /**
+     * Runs when we leave the current fragment
+     */
     @Override
     public void onStop() {
         super.onStop();
+
+        // Set the toolbar to be visible
         final androidx.appcompat.widget.Toolbar toolbar = requireActivity().findViewById(R.id.main_toolbar);
         requireActivity().findViewById(R.id.main_toolbar).setVisibility(View.VISIBLE);
         ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
 
         BottomNavigationView navView = requireActivity().findViewById(R.id.nav_view);
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(R.id.navigation_home, R.id.navigation_habit_events,
@@ -346,13 +369,19 @@ public class HabitEventFragment extends Fragment {
                 .build();
         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
 
+        // Update navigaiton
         NavigationUI.setupActionBarWithNavController((AppCompatActivity) requireActivity(), navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
     }
 
+    /**
+     * Runs when we resume the current fragment
+     */
     @Override
     public void onResume() {
         super.onResume();
+
+        // Hide the toolbar
         requireActivity().findViewById(R.id.main_toolbar).setVisibility(View.GONE);
         final Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.habitEvent_toolbar);
         ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);

@@ -1,5 +1,6 @@
 package com.example.habittracker;
 
+import android.view.View;
 import android.widget.EditText;
 
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -40,7 +41,7 @@ public class RegisterActivityTest {
     public void checkNavigateToRegister() {
         solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
 
-        solo.clickOnText("Create Account");
+        solo.clickOnText("Create");
         solo.assertCurrentActivity("Wrong Activity", RegisterActivity.class);
     }
 
@@ -48,7 +49,7 @@ public class RegisterActivityTest {
     public void CheckRegisterButton() {
         solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
 
-        solo.clickOnText("Create Account");
+        solo.clickOnText("Create");
         solo.assertCurrentActivity("Wrong Activity", RegisterActivity.class);
 
         // create a unique email for testing purposes
@@ -65,6 +66,8 @@ public class RegisterActivityTest {
         // Should be in Main Activity after signing up
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
 
+        View profile = solo.getView(R.id.navigation_profile);
+        solo.clickOnView(profile);
         // Logout and check to see if we return to LoginActivity
         solo.clickOnButton("Log Out");
 

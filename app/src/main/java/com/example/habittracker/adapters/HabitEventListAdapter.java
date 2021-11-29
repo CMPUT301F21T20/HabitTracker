@@ -30,6 +30,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.time.LocalDate;
 
+/**
+ * Adapter for habit event list, handles functionality for habit event list items
+ */
 public class HabitEventListAdapter extends ArrayAdapter<HabitEvent> {
     private FirebaseUser user;
     private FirebaseFirestore db;
@@ -50,13 +53,22 @@ public class HabitEventListAdapter extends ArrayAdapter<HabitEvent> {
     private TextView habitEventLocation_text;
     private ImageView isHabitCompletedImage;
 
-    public HabitEventListAdapter(@NonNull Context context, HabitEventList habitEventList, String username, HabitList habitList) {
+    /**
+     * HabitEventListAdapter Constructor
+     * @param context the context of the app
+     * @param habitEventList the list of habitEvents
+     * @param habitList the list of the user's habits
+     */
+    public HabitEventListAdapter(@NonNull Context context, HabitEventList habitEventList, HabitList habitList) {
         super(context, 0, habitEventList.getHabitEventList());
         this.context = context;
         this.habitEventList = habitEventList;
         this.habitList = habitList;
     }
 
+    /**
+     * Configures view of list item
+     */
     @RequiresApi(api = Build.VERSION_CODES.O)
     @NonNull
     @Override
@@ -103,42 +115,31 @@ public class HabitEventListAdapter extends ArrayAdapter<HabitEvent> {
 
         habitEventHabitTitle_text.setText(habitEvent.getHabit().getTitle());
 
+        // Set all the attributes of the habit event list item
         setAttributes(habitEvent);
 
         deleteHabit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("CLICKED", "CLICKED");
                 deleteHabit.setAlpha(0.5f);
                 habitEventsController.deleteHabitEventWithCallback(habitEvent, new OnHabitEventDeleted() {
                     @Override
                     public void onHabitEventDeleted() {
+                        // When we succesfully delete a habit, update the adapter
                         getHabitEvents(
                             habitEvent.getCompletedDate().getYear(),
                             habitEvent.getCompletedDate().getMonthValue(),
-                            habitEvent.getCompletedDate().getDayOfMonth(),
-                                habitEvent
+                            habitEvent.getCompletedDate().getDayOfMonth()
                         );
                     }
 
                     @Override
                     public void onError(Exception taskException) {
-
+                        Log.e("DELETE ERROR", taskException.toString());
                     }
                 });
             }
         });
-
-//        db.collection("Habits").document(user.getUid()).collection("HabitEvents")
-//                .document(habitEvent.getDocId())
-//                .addSnapshotListener((docSnapshot, e) -> {
-//                    getHabitEvents(
-//                            habitEvent.getCompletedDate().getYear(),
-//                            habitEvent.getCompletedDate().getMonthValue(),
-//                            habitEvent.getCompletedDate().getDayOfMonth()
-//                    );
-//        });
-
         return view;
     }
 
@@ -146,6 +147,7 @@ public class HabitEventListAdapter extends ArrayAdapter<HabitEvent> {
      * sets attributes of the habit in the habit event list
      */
     public void setAttributes(HabitEvent habitEvent) {
+        // Add comment only if there is one
         if (!habitEvent.getComment().equals("")) {
             habitEventComment_text.setText(habitEvent.getComment());
         }else{
@@ -154,6 +156,7 @@ public class HabitEventListAdapter extends ArrayAdapter<HabitEvent> {
 
         recordDateHabitEvent.setText(getDateText(habitEvent.getCreateDate()));
 
+        // Add completed Date only if there is one
         if (habitEvent.getCompletedDate() != null) {
             completedDateHabitEvent.setText(getDateText(habitEvent.getCompletedDate()));
             Drawable drawable = ContextCompat.getDrawable(context, R.drawable.ic_baseline_check_circle_outline_24);
@@ -165,12 +168,14 @@ public class HabitEventListAdapter extends ArrayAdapter<HabitEvent> {
             completedDateDescription.setVisibility(View.GONE);
         }
 
+        // Add location only if there is one
         if (habitEvent.getLocation().length() != 0) {
             habitEventLocation_text.setText(habitEvent.getLocation());
         }else{
             habitEventLocation_text.setVisibility(View.GONE);
         }
 
+        // If there is an image, create a new task to download it
         if (habitEvent.getImageStorageNamePrefix().length() != 0){
             new DownloadImageTask(habitEventImage).execute(habitEvent.getImageStorageNamePrefix());
         }else{
@@ -185,7 +190,6 @@ public class HabitEventListAdapter extends ArrayAdapter<HabitEvent> {
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
     public String getDateText(LocalDate date) {
-        // Add 1900 to year, as the getYear function returns year - 1900
         return (date.getYear()) + "-" +
                 (date.getMonth()) + "-" + date.getDayOfMonth();
     }
@@ -195,6 +199,7 @@ public class HabitEventListAdapter extends ArrayAdapter<HabitEvent> {
      * a "dummy" habit event that say there are no habit events
      */
     public void showNoHabitEventsToday(ImageView deleteHabit) {
+        // Since we don't have an information to show, hide all elements except for title
         habitEventHabitTitle_text.setVisibility(View.VISIBLE);
         habitEventComment_text.setVisibility(View.GONE);
         habitEventImage.setVisibility(View.GONE);
@@ -217,7 +222,7 @@ public class HabitEventListAdapter extends ArrayAdapter<HabitEvent> {
      * @param day the day of the habit Event
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void getHabitEvents(int year, int month, int day, HabitEvent habitEvent) {
+    public void getHabitEvents(int year, int month, int day) {
         HabitEventsController habitEventsController = HabitEventsController.getInstance();
 
         habitEventsController.loadHabitEvents(user.getUid(), day, month, year, habitList, new OnHabitEventsRetrieved() {
@@ -234,7 +239,7 @@ public class HabitEventListAdapter extends ArrayAdapter<HabitEvent> {
                     }
                 }
 
-                // if no habit events were added add a dummy habie event to show that no habit events were added
+                // if no habit events were added add a dummy habit event to show that no habit events were added
                 if (habitEventList.getCount() == 0) {
                     HabitEvent dummyHabitEvent = new HabitEvent();
                     dummyHabitEvent.setComment("Sent By Developer -> No Habits Today");

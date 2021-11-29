@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
@@ -25,6 +26,7 @@ import java.util.Calendar;
 
 public class HabitsTodayFragment extends Fragment {
 
+    private TextView habitsTodayListPrompt_textView;
     private HabitList habitList;
     private ArrayAdapter<Habit> habitListAdapter;
     private ListView habitsTodayListView;
@@ -47,6 +49,7 @@ public class HabitsTodayFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_habits_today, container, false);
 
         habitsTodayListView = root.findViewById(R.id.habitsToday_listview);
+        habitsTodayListPrompt_textView = root.findViewById(R.id.habitsTodayListPrompt_textView);
 
         habitList = new HabitList();
         habitListAdapter = new HabitListAdapter(requireContext(), habitList);
@@ -54,6 +57,12 @@ public class HabitsTodayFragment extends Fragment {
 
         db.collection("Habits").document(uid).addSnapshotListener((docSnapshot, e) -> {
             HabitListController.convertToHabitList(docSnapshot, habitList);
+
+            if (habitList.getCount() == 0){
+                habitsTodayListPrompt_textView.setVisibility(View.VISIBLE);
+            }else{
+                habitsTodayListPrompt_textView.setVisibility(View.GONE);
+            }
 
             int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
             // if it is sunday, the returned day above is 1, should be changed to 8

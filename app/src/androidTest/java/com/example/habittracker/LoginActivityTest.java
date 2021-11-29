@@ -1,5 +1,7 @@
 package com.example.habittracker;
 
+import android.app.Activity;
+import android.view.View;
 import android.widget.EditText;
 
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -47,7 +49,7 @@ public class LoginActivityTest {
     public void checkRegisterLink() {
         solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
 
-        solo.clickOnText("Create Account");
+        solo.clickOnText("Create");
         solo.assertCurrentActivity("Wrong Activity", RegisterActivity.class);
     }
 
@@ -65,6 +67,8 @@ public class LoginActivityTest {
         // We should be in main activity after signing in
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
 
+        View profile = solo.getView(R.id.navigation_profile);
+        solo.clickOnView(profile);
         // Logout and check to see if we return to LoginActivity
         solo.clickOnButton("Log Out");
         solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);

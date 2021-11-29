@@ -39,6 +39,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.habittracker.controllers.HabitListController;
 import com.example.habittracker.fragments.MapsFragment;
 import com.example.habittracker.R;
 import com.example.habittracker.models.Habit.Habit;
@@ -81,6 +82,8 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
     private Button submitBtn;
     public static final int TAKE_CAMERA = 101;
     public static final int PICK_PHOTO = 102;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    private boolean permissionEnabled = false;
     private Uri uri = null;
     private Uri imageUri = null;
     private long imageStorageNamePrefix;
@@ -88,8 +91,9 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
     private ImageButton addLocationBtn;
     private EditText addLocation_editText;
     private String storageImagePath = "";
-
-    TextView activeDaysText;
+    private LocalDate currentDate;
+    private TextView activeDaysText;
+    //private ZoneId defaultZoneId = ZoneId.systemDefault();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -176,7 +180,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         addLocationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                locationBtnOnClick();
+                checkLocationPermission();
             }
         });
 
@@ -267,10 +271,29 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
                 updatedDate
         );
 
+        //habit.setLastUpdated(updatedDate);
+
+        //currentDate = LocalDate.now();
+        //Date currdate = Date.from(currentDate.atStartOfDay(defaultZoneId).toInstant());
+
+        /*System.out.println(currdate.compareTo(habit.getDateCreated()));
+        if (currdate.compareTo(habit.getDateCreated()) > 0) {
+
+            habit.setStreak(habit.getStreak() + 1);
+        }
+        else {
+            habit.setStreak(0);
+        }*/
+
+        habit.setStreak(habit.getStreak() + 1);
+        HabitListController.getInstance().saveHabit(habit);
+
         HabitEventsController.getInstance().saveHabitEvent(habitEvent);
 
-        onSupportNavigateUp();
-    }
+        //Navigate back to main activity without changing it's state
+        Intent gotoScreenVar = new Intent(this, MainActivity.class);
+        gotoScreenVar.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(gotoScreenVar);    }
 
     /**
      * Get the date in string format of yyyy-dd-mm
@@ -308,6 +331,23 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         }
 
         return out.length() == 0 ? "No active days selected" : out;
+    }
+
+    /**
+     * Checks if current user has FINE ACCESS LOCATION enabled
+     */
+    public void checkLocationPermission() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ) {
+                Log.i("LOCATION CHECK", "PERMISSION GRANTED");
+                locationBtnOnClick();
+            } else {
+                Log.i("LOCATION CHECK", "PERMISSION DENIED");
+                ActivityCompat.requestPermissions(this, new String[]{
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,}, 1);
+            }
+        }
     }
 
     public void checkChanged(boolean b){
@@ -651,6 +691,19 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+            Log.i("ON PERMISSION CHECK", "PERMISSION GRANTED");
+            locationBtnOnClick();
+            permissionEnabled = true;
+        } else {
+            Log.i("ON PERMISSION CHECK", "PERMISSION DENIED");
+            permissionEnabled = false;
+        }
     }
 
     /**

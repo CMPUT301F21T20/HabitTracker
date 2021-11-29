@@ -6,9 +6,6 @@ import android.widget.EditText;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
-import com.example.habittracker.activities.LoginActivity;
-import com.example.habittracker.activities.MainActivity;
-import com.example.habittracker.activities.ViewHabitActivity;
 import com.robotium.solo.Solo;
 
 import org.junit.After;
@@ -16,7 +13,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-public class ViewHabitActivityTest {
+public class ViewHabitEventActivityTest {
     private Solo solo;
 
     /**
@@ -44,57 +41,23 @@ public class ViewHabitActivityTest {
     }
 
     /**
-     * check navigation to view habit activity
+     * check navigation to view new habit event activity
      */
     @Test
-    public void checkViewSelfHabitWithViewHabitActivity() {
+    public void checkNavigateToViewNewHabitEventActivity() {
         // Wait for activity to be pulled up
         solo.sleep(3000);
 
         // Check if we are in Main Activity
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
 
-        // Navigate to Add Activity and check
-
-
-        solo.clickOnText("Test for View");
-        solo.assertCurrentActivity("Wrong Activity", ViewHabitActivity.class);
-
-        solo.goBack();
-        View profile = solo.getView(R.id.navigation_profile);
-        solo.clickOnView(profile);
-        // Logout and check to see if we return to LoginActivity
-        solo.clickOnButton("Log Out");
-
-        solo.sleep(2000);
-        solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
-    }
-
-    /**
-     * check navigation to view habit activity
-     */
-    @Test
-    public void checkViewUserHabitWithViewHabitActivity() {
-        // Wait for activity to be pulled up
-        solo.sleep(3000);
-
-        // Check if we are in Main Activity
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-
-        // Navigate to Add Activity and check
-
-        View users = solo.getView(R.id.navigation_users);
-        solo.clickOnView(users);
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-
-        solo.clickOnText("testcase");
-        solo.assertCurrentActivity("Wrong Activity", UserProfileActivity.class);
-
-        solo.clickOnText("User Habit");
-        solo.assertCurrentActivity("Wrong Activity", ViewHabitActivity.class);
+        View habitEvent = solo.getView((R.id.navigation_habit_events));
+        solo.clickOnView(habitEvent);
+        solo.clickOnText("Test for Habit Event");
+        solo.assertCurrentActivity("Wrong Activity", ViewHabitEventActivity.class);
 
         solo.goBack();
-        solo.goBack();
+
         View profile = solo.getView(R.id.navigation_profile);
         solo.clickOnView(profile);
         // Logout and check to see if we return to LoginActivity

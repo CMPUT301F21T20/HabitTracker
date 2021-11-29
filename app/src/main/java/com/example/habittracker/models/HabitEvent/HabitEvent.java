@@ -9,6 +9,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A class that represents a habit event, implements serilizable to allow to pass into activity thorugh intent
+ */
 public class HabitEvent implements Serializable {
     private Habit habit;
     private String habitEventId;
@@ -21,6 +24,18 @@ public class HabitEvent implements Serializable {
     private LocalDate completedDate;
     private String docId;
 
+    /**
+     * Habit Event Contructor
+     * @param habit the habit associated with habit Event
+     * @param habitEventId the id of the habit event
+     * @param userId the id of the user
+     * @param isCompleted whether we are denoting the habit event as completed
+     * @param imageStorageNamePrefix the url of the image
+     * @param location the location where the habit event was recorded
+     * @param comment the comment of the habit event
+     * @param createDate the date the habit event was created
+     * @param completedDate teh date the habit event was completed
+     */
     public HabitEvent(Habit habit, String habitEventId, String userId, boolean isCompleted,
         String imageStorageNamePrefix, String location, String comment, LocalDate createDate, LocalDate completedDate) {
         this.habit = habit;
@@ -54,6 +69,10 @@ public class HabitEvent implements Serializable {
         habitEvent.put("habitId", this.habit.getHabitId());
         return habitEvent;
     }
+
+    /**
+     * Getters and setters
+     */
 
     public Habit getHabit() {
         return habit;

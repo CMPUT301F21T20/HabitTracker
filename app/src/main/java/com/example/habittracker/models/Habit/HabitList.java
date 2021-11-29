@@ -93,6 +93,11 @@ public class HabitList implements Serializable {
         return Objects.hash(habitList);
     }
 
+
+    /**
+     * Getters and Setters
+     */
+
     public ArrayList<Habit> getHabitList() {
         return habitList;
     }

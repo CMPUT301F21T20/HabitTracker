@@ -1,5 +1,9 @@
 package com.example.habittracker.interfaces;
 
+/**
+ * Interface to handle asynchronous nature
+ * of deleting deleteing a habit event
+ */
 public interface OnHabitEventDeleted {
     /**
      * Funciton to be run when habit events is deleted

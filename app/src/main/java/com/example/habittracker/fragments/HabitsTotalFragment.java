@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
@@ -24,6 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class HabitsTotalFragment extends Fragment {
 
+    private TextView habitsListPrompt_textView;
     private HabitList habitList;
     private ArrayAdapter<Habit> habitListAdapter;
     private ListView habitsListView;
@@ -46,6 +48,7 @@ public class HabitsTotalFragment extends Fragment {
 
         addHabitButton = root.findViewById(R.id.addHabitButton);
         habitsListView = root.findViewById(R.id.habits_listview);
+        habitsListPrompt_textView = root.findViewById(R.id.habitsListPrompt_textView);
 
         habitList = new HabitList();
         habitListAdapter = new HabitListAdapter(requireContext(), habitList);
@@ -55,6 +58,11 @@ public class HabitsTotalFragment extends Fragment {
 
         db.collection("Habits").document(uid).addSnapshotListener((docSnapshot, e) -> {
             HabitListController.convertToHabitList(docSnapshot, habitList);
+            if (habitList.getCount() == 0){
+                habitsListPrompt_textView.setVisibility(View.VISIBLE);
+            }else{
+                habitsListPrompt_textView.setVisibility(View.GONE);
+            }
             habitListAdapter.notifyDataSetChanged();
         });
 
