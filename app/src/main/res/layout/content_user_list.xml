@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView"
-            android:textSize="24sp" />
+            android:textSize="18dp" />
     </RelativeLayout>
     <!--RelativeLayout
         android:layout_width="0dip"

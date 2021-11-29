@@ -237,7 +237,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:theme="@style/SCBSwitch"
-            android:text="Decide Sharing"
+            android:text="Public"
             android:textSize="16dp"/>
 
     </LinearLayout>
@@ -245,9 +245,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="24dp"
         android:gravity="bottom"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="24dp">
 
         <Button
             android:id="@+id/editHabitSubmitButton"

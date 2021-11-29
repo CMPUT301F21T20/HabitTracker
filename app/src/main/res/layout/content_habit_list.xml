@@ -8,27 +8,40 @@
     <RelativeLayout
         android:layout_width="0dip"
         android:layout_height="wrap_content"
-        android:layout_weight="0.5"
+        android:layout_weight="0.9"
         android:layout_gravity="center">
 
         <TextView
             android:id="@+id/habitListTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="6dp"
+            android:text="TextView"
+            android:textStyle="bold"
+            android:textSize="18dp" />
 
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_width="0dip"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.2">
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.1">
 
-        <Button
+<!--        <Button-->
+<!--            android:id="@+id/habitListDeleteButton"-->
+<!--            android:layout_width="80dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="DEL"-->
+<!--            android:focusable="false"/>-->
+        <ImageView
             android:id="@+id/habitListDeleteButton"
-            android:layout_width="80dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="DEL"
-            android:focusable="false"/>
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_baseline_delete_24">
+        </ImageView>
+
+
     </RelativeLayout>
 </LinearLayout>
