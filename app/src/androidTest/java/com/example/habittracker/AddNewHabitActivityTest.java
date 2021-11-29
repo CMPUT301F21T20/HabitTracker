@@ -48,7 +48,7 @@ public class AddNewHabitActivityTest {
      * check navigation to add new habit activity
      */
     @Test
-    public void checkNavigateToAddHabitActivity() {
+    public void checkNavigateToAddNewHabitActivity() {
         // Wait for activity to be pulled up
         solo.sleep(3000);
 
@@ -72,16 +72,16 @@ public class AddNewHabitActivityTest {
     }
 
     /**
-     * Test adding a city
+     * Test adding a Habit
      */
     @Test
-    public void checkAddCity() {
+    public void checkAddHabit() {
         // Wait for activity to be pulled up
         solo.sleep(3000);
 
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
         ListView habitList = (ListView) solo.getView(R.id.habits_listview);
-        int size = habitList.getAdapter().getCount();
+        int size =habitList.getAdapter().getCount();
         // Navigate to Add Activity and check
         View fab = solo.getView(R.id.addHabitButton);
 

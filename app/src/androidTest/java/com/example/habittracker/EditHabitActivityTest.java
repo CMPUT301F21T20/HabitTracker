@@ -53,22 +53,6 @@ public class EditHabitActivityTest {
         // Check if we are in Main Activity
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
 
-        // Navigate to Add Activity and check
-        View fab = solo.getView(R.id.addHabitButton);
-        solo.clickOnView(fab);
-        solo.assertCurrentActivity("Wrong Activity", AddNewHabitActivity.class);
-
-        solo.enterText((EditText) solo.getView(R.id.addHabitTitle), "Test for Edit");
-        solo.enterText((EditText) solo.getView(R.id.addHabitReason), "Test Reason");
-
-        solo.clickOnButton("PICK DATE");
-        solo.setDatePicker(0, 2015, 8, 8);
-        solo.clickOnButton("OK");
-
-        solo.clickOnButton("SAVE CHANGES");
-
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-
         solo.clickOnText("Test for Edit");
         solo.clickOnButton("Edit HABIT");
         solo.assertCurrentActivity("Wrong Activity", EditHabitActivity.class);

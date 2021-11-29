@@ -308,7 +308,6 @@ public class HabitEventFragment extends Fragment {
             @Override
             public void onHabitEventsRetrieved(HabitEventList newHabitEventList) {
                 habitEventsList.clear();
-
                 // Because habits event docs are organized by month, we need to iterate through all retrieved
                 // habits and check if date match today
                 for (int i = 0; i < newHabitEventList.getCount(); i++) {
