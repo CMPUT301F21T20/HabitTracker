@@ -25,16 +25,14 @@
             android:text="H-Log"
             android:textColor="@color/colorPrimary"
             android:textSize="48sp"
-            android:textStyle="bold"
-            android:typeface="serif" />
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=" Sign in to continue"
             android:textStyle="italic"
-            android:layout_marginTop="8dp"
-            android:typeface="serif">
+            android:layout_marginTop="8dp">
         </TextView>
     </LinearLayout>
 
