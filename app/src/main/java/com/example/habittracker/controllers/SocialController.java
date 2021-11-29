@@ -29,6 +29,7 @@ public class SocialController {
         this.db = FirebaseFirestore.getInstance();
         this.user = FirebaseAuth.getInstance().getCurrentUser();
 
+        // TODO: change this (pass username instead?)
         db.collection("Users").document(this.user.getUid())
             .get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
@@ -198,7 +199,8 @@ public class SocialController {
         Map<String, Object> followerData = new HashMap<>();
 
         // update the current users followers in user profile
-        followerData.put("followerSince", saveDate);
+        followerData.put("since", saveDate);
+        followerData.put("username", request.getUserName());
         follower.put(request.getUserId(), followerData);
         mapping.put("followers", follower);
         dbRequest("Users", user.getUid(), mapping);
@@ -208,7 +210,8 @@ public class SocialController {
         followerData.clear();
 
         // update the target users (user who request to follow current user) following map
-        followerData.put("followingSince", saveDate);
+        followerData.put("since", saveDate);
+        followerData.put("username", username);
         follower.put(user.getUid(), followerData);
         mapping.put("following", follower);
         dbRequest("Users", request.getUserId(), mapping);

@@ -49,8 +49,14 @@ public class UsersListController {
                         (String) userData.get("username"),
                         (String) userData.get("info")
                 );
-                convertToFollowList((Map<String, Map<String, Object>>) userData.get("followers"), user.getFollowers());
-                convertToFollowList((Map<String, Map<String, Object>>) userData.get("following"), user.getFollowing());
+                if (userData.get("followers") != null) {
+                    convertToFollowList((Map<String, Map<String, Object>>) userData.get("followers"),
+                            user.getFollowers());
+                }
+                if (userData.get("following") != null) {
+                    convertToFollowList((Map<String, Map<String, Object>>) userData.get("following"),
+                            user.getFollowing());
+                }
                 usersList.addUser(user);
             }
             Log.d("Firestore", "Retrieved habit data");
@@ -68,10 +74,14 @@ public class UsersListController {
                 user.setUid(doc.getId());
                 user.setUsername((String) userData.get("username"));
                 user.setInfo((String) userData.get("info"));
-                convertToFollowList((Map<String, Map<String, Object>>) userData.get("followers"),
-                        user.getFollowers());
-                convertToFollowList((Map<String, Map<String, Object>>) userData.get("following"),
-                        user.getFollowing());
+                if (userData.get("followers") != null) {
+                    convertToFollowList((Map<String, Map<String, Object>>) userData.get("followers"),
+                            user.getFollowers());
+                }
+                if (userData.get("following") != null) {
+                    convertToFollowList((Map<String, Map<String, Object>>) userData.get("following"),
+                            user.getFollowing());
+                }
             }
             Log.d("Firestore", "Retrieved habit data");
         } else {

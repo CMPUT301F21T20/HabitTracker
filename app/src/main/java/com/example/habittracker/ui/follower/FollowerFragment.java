@@ -4,74 +4,48 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.habittracker.R;
-import com.example.habittracker.controllers.HabitListController;
-import com.example.habittracker.controllers.SocialController;
-import com.example.habittracker.models.Request;
-import com.example.habittracker.models.RequestMap;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.example.habittracker.adapters.FollowersAdapter;
+import com.example.habittracker.controllers.UsersListController;
+import com.example.habittracker.models.Follow.Follow;
+import com.example.habittracker.models.Follow.FollowList;
+import com.example.habittracker.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.Date;
 
 public class FollowerFragment extends Fragment {
 
-    private FollowerViewModel followerViewModel;
     private FirebaseFirestore db;
+    private User user;
+    private ArrayAdapter<Follow> followListAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         db = FirebaseFirestore.getInstance();
 
-
         // follower
-        followerViewModel =
-                new ViewModelProvider(this).get(FollowerViewModel.class);
         View root = inflater.inflate(R.layout.fragment_follower, container, false);
         final ListView followerListView = root.findViewById(R.id.following_list);
-//        followerListView.setAdapter();
+        followListAdapter = new FollowersAdapter(requireContext(), user.getFollowers());
+        followerListView.setAdapter(followListAdapter);
 
-
-        // requests
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        Date date = new Date();
-        RequestMap reqMap = new RequestMap();
 
-        db.collection("Requests").document(uid).addSnapshotListener((docSnapshot, e) -> {
-            SocialController.convertToRequestMap(docSnapshot, reqMap);
-//            RequestListAdapter.notifyDataSetChanged();
-        });
+        user = new User();
 
         db.collection("Users").document(uid).addSnapshotListener((docSnapshot, e) -> {
-//            SocialController.convertToRequestMap(docSnapshot, reqMap);
-//            RequestListAdapter.notifyDataSetChanged();
+            UsersListController.convertToUser(docSnapshot, user);
+            followListAdapter.notifyDataSetChanged();
         });
 
-
         return root;
-
     }
 }
-
-// LEAVE FOR TESTING FOR NOW
-// ID: pSppEsNfvcVMTf5W7BqDm9cY8gm1
-// Name: Bobby
-// email: 12345678@gmail.com
-// pass: Password123
-
-
-// ID: 8VcwCcLISLMizCUfL08Tfqa4uWG3
-// Name: Billy
-// email: 87654321@gmail.com
-// pass: Password123
