@@ -97,8 +97,8 @@ public class HabitEventListAdapter extends ArrayAdapter<HabitEvent> {
         habitEventHabitTitle_text.setVisibility(View.VISIBLE);
         habitEventComment_text.setVisibility(View.VISIBLE);
         habitEventImage.setVisibility(View.VISIBLE);
-        recordDateDescription.setVisibility(View.VISIBLE);
-        recordDateHabitEvent.setVisibility(View.VISIBLE);
+        recordDateDescription.setVisibility(View.GONE);
+        recordDateHabitEvent.setVisibility(View.GONE);
         completedDateDescription.setVisibility(View.VISIBLE);
         completedDateHabitEvent.setVisibility(View.VISIBLE);
         habitEventLocation_text.setVisibility(View.VISIBLE);

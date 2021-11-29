@@ -80,8 +80,8 @@ public class ViewHabitEventActivity extends AppCompatActivity {
         habitText.setVisibility(View.VISIBLE);
         dateCompletedTitle.setVisibility(View.VISIBLE);
         dateCompletedText.setVisibility(View.VISIBLE);
-        dateRecordedTitle.setVisibility(View.VISIBLE);
-        dateRecordedText.setVisibility(View.VISIBLE);
+        dateRecordedTitle.setVisibility(View.GONE);
+        dateRecordedText.setVisibility(View.GONE);
         pictureTitle.setVisibility(View.VISIBLE);
         picture.setVisibility(View.VISIBLE);
         locationTitle.setVisibility(View.VISIBLE);
