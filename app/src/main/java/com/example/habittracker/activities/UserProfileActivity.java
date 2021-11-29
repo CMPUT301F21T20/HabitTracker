@@ -97,21 +97,21 @@ public class UserProfileActivity extends AppCompatActivity {
         });
 
 
-        LinearLayout followerBtn = findViewById(R.id.FollowersButton);
-        followerBtn.setOnClickListener(view -> {
-            // open followers activity
-            Intent i = new Intent(getApplicationContext(), FollowersActivity.class);
-            i.putExtra("User", user);
-            startActivity(i);
-        });
-
-        LinearLayout followingBtn = findViewById(R.id.FollowingButton);
-        followingBtn.setOnClickListener(view -> {
-            // open following activity
-            Intent i = new Intent(getApplicationContext(), FollowingActivity.class);
-            i.putExtra("User", user);
-            startActivity(i);
-        });
+//        LinearLayout followerBtn = findViewById(R.id.FollowersButton);
+//        followerBtn.setOnClickListener(view -> {
+//            // open followers activity
+//            Intent i = new Intent(getApplicationContext(), FollowersActivity.class);
+//            i.putExtra("User", user);
+//            startActivity(i);
+//        });
+//
+//        LinearLayout followingBtn = findViewById(R.id.FollowingButton);
+//        followingBtn.setOnClickListener(view -> {
+//            // open following activity
+//            Intent i = new Intent(getApplicationContext(), FollowingActivity.class);
+//            i.putExtra("User", user);
+//            startActivity(i);
+//        });
 
         // only load habits if the currently logged in user follows the user whose profile they are
         // attempting to view
