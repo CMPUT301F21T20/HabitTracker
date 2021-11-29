@@ -28,6 +28,9 @@ public class LoginActivity extends AppCompatActivity {
     TextView RegisterPageBtn;
     FirebaseAuth fAuth;
 
+    /**
+     * Handles functionality when acticity is created
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +83,7 @@ public class LoginActivity extends AppCompatActivity {
                 });
             }
         });
+
         RegisterPageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
