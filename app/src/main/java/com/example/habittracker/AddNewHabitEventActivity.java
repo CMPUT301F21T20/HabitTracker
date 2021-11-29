@@ -39,8 +39,8 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.habittracker.models.Habit;
-import com.example.habittracker.models.HabitEvent;
+import com.example.habittracker.models.Habit.Habit;
+import com.example.habittracker.models.HabitEvent.HabitEvent;
 import com.example.habittracker.controllers.HabitEventsController;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -57,7 +57,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;

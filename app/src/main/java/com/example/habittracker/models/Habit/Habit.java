@@ -1,4 +1,4 @@
-package com.example.habittracker.models;
+package com.example.habittracker.models.Habit;
 
 import java.io.Serializable;
 import java.util.ArrayList;

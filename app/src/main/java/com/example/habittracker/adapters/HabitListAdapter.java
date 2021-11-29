@@ -13,8 +13,8 @@ import androidx.annotation.Nullable;
 
 import com.example.habittracker.R;
 import com.example.habittracker.controllers.HabitListController;
-import com.example.habittracker.models.Habit;
-import com.example.habittracker.models.HabitList;
+import com.example.habittracker.models.Habit.Habit;
+import com.example.habittracker.models.Habit.HabitList;
 
 /**
  * Adapter for HabitList, provide access to HabitList data, shows a list of habits

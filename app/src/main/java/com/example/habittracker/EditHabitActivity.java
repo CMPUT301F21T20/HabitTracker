@@ -13,7 +13,7 @@ import android.widget.ToggleButton;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 
-import com.example.habittracker.models.Habit;
+import com.example.habittracker.models.Habit.Habit;
 import com.example.habittracker.controllers.HabitListController;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

@@ -1,7 +1,6 @@
 package com.example.habittracker.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +13,8 @@ import androidx.annotation.Nullable;
 
 import com.example.habittracker.R;
 import com.example.habittracker.controllers.SocialController;
-import com.example.habittracker.models.Request;
-import com.example.habittracker.models.RequestMap;
+import com.example.habittracker.models.Request.Request;
+import com.example.habittracker.models.Request.RequestMap;
 
 public class RequestAdapter extends ArrayAdapter<Request> {
     private Context context;

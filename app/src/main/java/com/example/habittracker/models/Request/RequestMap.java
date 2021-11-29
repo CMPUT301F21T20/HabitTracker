@@ -1,4 +1,6 @@
-package com.example.habittracker.models;
+package com.example.habittracker.models.Request;
+
+import com.example.habittracker.models.Request.Request;
 
 import java.util.ArrayList;
 import java.util.HashMap;

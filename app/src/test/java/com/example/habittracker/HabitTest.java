@@ -1,6 +1,6 @@
 package com.example.habittracker;
 
-import com.example.habittracker.models.Habit;
+import com.example.habittracker.models.Habit.Habit;
 
 import org.junit.Before;
 import org.junit.Test;

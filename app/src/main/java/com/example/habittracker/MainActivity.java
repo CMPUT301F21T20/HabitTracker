@@ -18,7 +18,7 @@ import com.example.habittracker.controllers.HabitEventsController;
 import com.example.habittracker.controllers.HabitListController;
 import com.example.habittracker.controllers.SocialController;
 import com.example.habittracker.controllers.UsersListController;
-import com.example.habittracker.models.User;
+import com.example.habittracker.models.User.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

@@ -11,14 +11,11 @@ import android.widget.ListView;
 import androidx.fragment.app.Fragment;
 import com.example.habittracker.adapters.RequestAdapter;
 import com.example.habittracker.controllers.SocialController;
-import com.example.habittracker.models.Request;
-import com.example.habittracker.models.RequestMap;
+import com.example.habittracker.models.Request.Request;
+import com.example.habittracker.models.Request.RequestMap;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.ArrayList;
 
 public class RequestFragment extends Fragment {
 

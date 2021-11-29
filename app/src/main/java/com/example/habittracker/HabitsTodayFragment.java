@@ -13,8 +13,8 @@ import android.widget.ListView;
 import androidx.fragment.app.Fragment;
 
 import com.example.habittracker.adapters.HabitListAdapter;
-import com.example.habittracker.models.Habit;
-import com.example.habittracker.models.HabitList;
+import com.example.habittracker.models.Habit.Habit;
+import com.example.habittracker.models.Habit.HabitList;
 import com.example.habittracker.controllers.HabitListController;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;

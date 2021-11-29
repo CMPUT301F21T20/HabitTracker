@@ -1,4 +1,4 @@
-package com.example.habittracker.models;
+package com.example.habittracker.models.Request;
 
 import android.os.Build;
 

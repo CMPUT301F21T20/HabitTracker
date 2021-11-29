@@ -1,7 +1,8 @@
-package com.example.habittracker.models;
+package com.example.habittracker.models.HabitEvent;
+
+import com.example.habittracker.models.Habit.Habit;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.Date;

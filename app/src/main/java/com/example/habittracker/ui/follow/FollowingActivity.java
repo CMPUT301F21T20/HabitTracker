@@ -3,12 +3,10 @@ package com.example.habittracker.ui.follow;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.habittracker.R;
@@ -16,15 +14,12 @@ import com.example.habittracker.UserProfileActivity;
 import com.example.habittracker.adapters.FollowersAdapter;
 import com.example.habittracker.controllers.UsersListController;
 import com.example.habittracker.models.Follow.Follow;
-import com.example.habittracker.models.User;
-import com.example.habittracker.models.UsersList;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.example.habittracker.models.User.User;
+import com.example.habittracker.models.User.UsersList;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 

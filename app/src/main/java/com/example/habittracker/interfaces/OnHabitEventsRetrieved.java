@@ -1,6 +1,6 @@
 package com.example.habittracker.interfaces;
 
-import com.example.habittracker.models.HabitEventList;
+import com.example.habittracker.models.HabitEvent.HabitEventList;
 
 public interface OnHabitEventsRetrieved {
     /**

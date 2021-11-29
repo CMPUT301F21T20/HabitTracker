@@ -1,4 +1,4 @@
-package com.example.habittracker.models;
+package com.example.habittracker.models.User;
 
 import com.example.habittracker.models.Follow.Follow;
 import com.example.habittracker.models.Follow.FollowList;

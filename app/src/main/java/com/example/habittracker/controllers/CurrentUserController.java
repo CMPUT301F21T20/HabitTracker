@@ -1,6 +1,6 @@
 package com.example.habittracker.controllers;
 
-import com.example.habittracker.models.User;
+import com.example.habittracker.models.User.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;

@@ -5,15 +5,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import androidx.fragment.app.Fragment;
 
 import com.example.habittracker.adapters.HabitListAdapter;
-import com.example.habittracker.models.Habit;
-import com.example.habittracker.models.HabitList;
+import com.example.habittracker.models.Habit.Habit;
+import com.example.habittracker.models.Habit.HabitList;
 import com.example.habittracker.controllers.HabitListController;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;

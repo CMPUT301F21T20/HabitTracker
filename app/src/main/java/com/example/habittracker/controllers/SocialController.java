@@ -2,9 +2,8 @@ package com.example.habittracker.controllers;
 
 import android.util.Log;
 
-import com.example.habittracker.models.Request;
-import com.example.habittracker.models.RequestMap;
-import com.example.habittracker.models.User;
+import com.example.habittracker.models.Request.Request;
+import com.example.habittracker.models.Request.RequestMap;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

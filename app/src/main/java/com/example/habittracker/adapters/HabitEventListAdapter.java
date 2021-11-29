@@ -1,8 +1,6 @@
 package com.example.habittracker.adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.Log;
@@ -12,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,23 +17,16 @@ import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
 import com.example.habittracker.R;
-import com.example.habittracker.models.DownloadImageTask;
-import com.example.habittracker.models.HabitEvent;
-import com.example.habittracker.models.HabitEventList;
-import com.example.habittracker.models.HabitList;
+import com.example.habittracker.DownloadImageTask;
+import com.example.habittracker.models.HabitEvent.HabitEvent;
+import com.example.habittracker.models.HabitEvent.HabitEventList;
+import com.example.habittracker.models.Habit.HabitList;
 import com.example.habittracker.controllers.HabitEventsController;
 import com.example.habittracker.interfaces.OnHabitEventDeleted;
 import com.example.habittracker.interfaces.OnHabitEventsRetrieved;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.time.LocalDate;
 

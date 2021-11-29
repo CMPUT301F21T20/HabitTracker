@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import android.widget.Button;
@@ -24,8 +23,8 @@ import androidx.fragment.app.Fragment;
 import com.example.habittracker.R;
 import com.example.habittracker.UserProfileActivity;
 import com.example.habittracker.adapters.UsersListAdapter;
-import com.example.habittracker.models.User;
-import com.example.habittracker.models.UsersList;
+import com.example.habittracker.models.User.User;
+import com.example.habittracker.models.User.UsersList;
 import com.example.habittracker.controllers.UsersListController;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

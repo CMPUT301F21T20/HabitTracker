@@ -1,28 +1,20 @@
 package com.example.habittracker.ui.requests;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.habittracker.R;
 import com.example.habittracker.adapters.FollowersAdapter;
 import com.example.habittracker.controllers.UsersListController;
 import com.example.habittracker.models.Follow.Follow;
-import com.example.habittracker.models.User;
+import com.example.habittracker.models.User.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 

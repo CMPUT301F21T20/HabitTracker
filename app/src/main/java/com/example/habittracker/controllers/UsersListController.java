@@ -4,18 +4,14 @@ import android.util.Log;
 
 import com.example.habittracker.models.Follow.Follow;
 import com.example.habittracker.models.Follow.FollowList;
-import com.example.habittracker.models.Habit;
-import com.example.habittracker.models.HabitList;
-import com.example.habittracker.models.User;
-import com.example.habittracker.models.UsersList;
-import com.example.habittracker.models.User;
+import com.example.habittracker.models.User.User;
+import com.example.habittracker.models.User.UsersList;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 public class UsersListController {
