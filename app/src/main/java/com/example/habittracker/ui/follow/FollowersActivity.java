@@ -39,6 +39,7 @@ public class FollowersActivity extends AppCompatActivity {
         User intentUser = (User) intent.getSerializableExtra("User");
         if (intentUser != null) {
             // user was passed in intent so don't start snapshot listener
+
         } else {
             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
