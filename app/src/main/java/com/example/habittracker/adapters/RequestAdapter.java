@@ -1,7 +1,6 @@
 package com.example.habittracker.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.habittracker.R;
-import com.example.habittracker.ViewHabitActivity;
 import com.example.habittracker.controllers.SocialController;
-import com.example.habittracker.models.Habit;
 import com.example.habittracker.models.Request;
 import com.example.habittracker.models.RequestMap;
 
@@ -46,7 +43,7 @@ public class RequestAdapter extends ArrayAdapter<Request> {
             username.setText(request.getUserName());
             Button acceptRequestButton = view.findViewById(R.id.acceptRequestButton);
             Button refuseRequestButton = view.findViewById(R.id.refuseRequestButton);
-            refuseRequestButton.setVisibility(View.VISIBLE);
+            TextView requestInfo_textView = view.findViewById(R.id.requestInfo_textView);
             acceptRequestButton.setOnClickListener(v -> {
                 try {
                     request.setStatus(request.accepted);
@@ -55,8 +52,9 @@ public class RequestAdapter extends ArrayAdapter<Request> {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                acceptRequestButton.setText("Accepted");
+                acceptRequestButton.setVisibility(View.GONE);
                 refuseRequestButton.setVisibility(View.GONE);
+                requestInfo_textView.setVisibility(View.VISIBLE);
             });
 
             refuseRequestButton.setOnClickListener(v -> {
@@ -67,6 +65,10 @@ public class RequestAdapter extends ArrayAdapter<Request> {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                acceptRequestButton.setVisibility(View.GONE);
+                refuseRequestButton.setVisibility(View.GONE);
+                requestInfo_textView.setText("REFUSED");
+                requestInfo_textView.setVisibility(View.VISIBLE);
             });
         } catch (Exception e) {
             e.printStackTrace();
