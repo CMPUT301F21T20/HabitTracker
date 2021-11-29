@@ -73,7 +73,7 @@
                     android:layout_height="100dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="45dp"
-                    android:src="@drawable/common_google_signin_btn_icon_dark" />
+                    android:src="@drawable/ic_profile_black_24dp" />
 
                 <TextView
                     android:id="@+id/userProfileName"
@@ -82,7 +82,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="10dp"
                     android:textColor="#fff"
-                    android:textSize="21sp"
+                    android:textSize="30sp"
                     android:textStyle="bold" />
             </LinearLayout>
             <androidx.cardview.widget.CardView
@@ -172,7 +172,7 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="295dp"
+                android:layout_marginTop="300dp"
 
                 android:text="Follow" />
         </RelativeLayout>
