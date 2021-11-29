@@ -20,6 +20,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.habittracker.LoginActivity;
 import com.example.habittracker.R;
 import com.example.habittracker.ui.follow.FollowersActivity;
+import com.example.habittracker.ui.follow.FollowingActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -60,13 +61,17 @@ public class ProfileFragment extends Fragment {
         });
 
         LinearLayout followerBtn = root.findViewById(R.id.FollowersButton);
-        followerBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // open followers activity
-                Intent i = new Intent(requireContext(), FollowersActivity.class);
-                startActivity(i);
-            }
+        followerBtn.setOnClickListener(view -> {
+            // open followers activity
+            Intent i = new Intent(requireContext(), FollowersActivity.class);
+            startActivity(i);
+        });
+
+        LinearLayout followingBtn = root.findViewById(R.id.FollowingButton);
+        followingBtn.setOnClickListener(view -> {
+            // open following activity
+            Intent i = new Intent(requireContext(), FollowingActivity.class);
+            startActivity(i);
         });
 
         DocumentReference docRef = db.collection("Users").document(fUser.getUid());

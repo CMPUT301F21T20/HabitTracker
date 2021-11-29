@@ -123,6 +123,10 @@
         <activity
             android:name=".ui.follow.FollowersActivity"
             android:label="Show a users followers"/>
+
+        <activity
+            android:name=".ui.follow.FollowingActivity"
+            android:label="Show a users following"/>
     </application>
 
 </manifest>
