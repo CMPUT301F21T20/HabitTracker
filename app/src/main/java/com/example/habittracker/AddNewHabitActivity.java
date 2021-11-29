@@ -56,6 +56,7 @@ public class AddNewHabitActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
+        // Retrieve all view elements
         addHabit_back_icon = findViewById(R.id.addHabit_back_icon);
         editTitle = findViewById(R.id.addHabitTitle);
         editReason = findViewById(R.id.addHabitReason);
@@ -136,9 +137,6 @@ public class AddNewHabitActivity extends AppCompatActivity {
                 HabitListController controller = HabitListController.getInstance();
                 Boolean success = controller.saveHabit(habit);
 
-                if (!success) {
-                    // TODO: alert user to try again later;
-                }
 
                 finish();
             }

@@ -65,6 +65,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
+/**
+ * This class hold functionality for when adding a Habit event
+ */
 public class AddNewHabitEventActivity extends AppCompatActivity {
     private ImageView addHabitEvent_back_icon;
     private Habit habit;
@@ -213,6 +216,9 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * This function uploads the habit Event to firestore
+     */
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void uploadHabitEvent() {
         FirebaseUser user;
@@ -333,7 +339,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
     }
 
     /**
-     * Checks if current user has FINE ACCESS LOCATION enabled
+     * This function checks if location is enabled
      */
     public void checkLocationPermission() {
         if (Build.VERSION.SDK_INT >= 23) {
@@ -349,6 +355,10 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         }
     }
 
+    /**
+    * This funciton will run when the value of the done switch is changed
+    * @param b the value of the switch
+    */
     public void checkChanged(boolean b){
         if (b) {
             // set edittext as date today
@@ -399,6 +409,9 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Handles what happens when we click on the camera button
+     */
     public void cameraBtnOnClick() {
         // create File object to store the output photo in app cache of the CD card
         File outputImage;
@@ -433,6 +446,11 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         AddNewHabitEventActivity.this.startActivityForResult(intent, TAKE_CAMERA);
     }
 
+    /**
+     * Creates and returns an imageFile object
+     * @return the image file
+     * @throws IOException
+     */
     private File getImageFile() throws IOException {
         String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageName = FirebaseAuth.getInstance().getCurrentUser().getUid() + "_" + timestamp;
@@ -442,6 +460,9 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         return imageFile;
     }
 
+    /**
+     * Handles what happens when we click on the album button
+     */
     public void albumBtnOnClick(){
         // dynamically apply permission of read/write the disk
         if (ContextCompat.checkSelfPermission(AddNewHabitEventActivity.this,
@@ -456,6 +477,10 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Image handling for android KitKat versions
+     * @param data the data to handle
+     */
     @TargetApi(19)
     private void handleImageOnKitKat(Intent data) {
         String imagePath = null;
@@ -493,6 +518,12 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         displayImage(imagePath);
     }
 
+    /**
+     * Return the path of an image
+     * @param uri the uri object to get path from
+     * @param selection which image is selected
+     * @return the path
+     */
     private String getImagePath(Uri uri, String selection) {
         String path = null;
         // obtain real path of photo from Uri and selection
@@ -506,6 +537,10 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         return path;
     }
 
+    /**
+     * Display an image given a path
+     * @param imagePath the path of the image
+     */
     private void displayImage(String imagePath) {
         if (imagePath != null) {
             BitmapFactory.Options options = new BitmapFactory.Options();
@@ -518,6 +553,9 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Deletes the current photo
+     */
     public void deletePhoto(){
         Drawable d = ContextCompat.getDrawable(AddNewHabitEventActivity.this, R.drawable.ic_baseline_photo_filter_24);
         d.setColorFilter(0x89000000, PorterDuff.Mode.MULTIPLY);
@@ -527,6 +565,10 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         storageImagePath = "";
     }
 
+    /**
+     * Enlarges the current photo to show all
+     * @return true
+     */
     public boolean enlargePhoto(){
 
         // set size with original aspect ratio
@@ -537,6 +579,10 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Narrow the current photo to show less
+     * @return true
+     */
     public boolean narrowPhoto(){
         // the layout height for photo in the layout file
         int dpValue = 100;
@@ -546,6 +592,9 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Handles functionality after clicking on location button
+     */
     public void locationBtnOnClick(){
         MapsFragment mapsFragment = new MapsFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -560,9 +609,6 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
             case TAKE_CAMERA:
                 if (resultCode == RESULT_OK) {
                     try {
-                        // display the photo
-//                        imageBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
-//                        photoAdded.setImageBitmap(imageBitmap);
                         BitmapFactory.Options options = new BitmapFactory.Options();
                         options.inPreferredConfig= Bitmap.Config.RGB_565;
                         imageBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri),null,options);
@@ -593,6 +639,12 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Checks if there are any errors in the input
+     * @param isCompleted The switch to check
+     * @param completedDate_editText the text to check
+     * @return whether there was an error
+     */
     public boolean errorCheck(SwitchCompat isCompleted, EditText completedDate_editText){
         boolean completedDate_editTextError = false;
         boolean isCompleted_error = false;
@@ -657,12 +709,22 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         return completedDate_editTextError;
     }
 
+    /**
+     * Get extention type of file
+     * @param uri the uri to check
+     * @return the type
+     */
     public String getFileExtension(Uri uri){
         ContentResolver contentResolver = getContentResolver();
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
         return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
     }
 
+    /**
+     * Upload and download an image from firestore
+     * @param uid the current user id
+     * @return true or false
+     */
     public boolean uploadImage(String uid){
         if (imageUri != null){
             imageStorageNamePrefix = System.currentTimeMillis();
