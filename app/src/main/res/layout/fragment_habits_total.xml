@@ -30,6 +30,18 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/habitsListPrompt_textView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="72dp"
+        android:gravity="center"
+        android:text="Add Habits to Start"
+        android:textStyle="bold"
+        android:textSize="18dp"
+        android:visibility="gone">
+    </TextView>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addHabitButton"
         android:layout_width="wrap_content"
