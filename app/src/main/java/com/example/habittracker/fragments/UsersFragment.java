@@ -156,7 +156,7 @@ public class UsersFragment extends Fragment {
                 usersList.addUser(updatedUserList.getUser(0));
                 userListAdapter.notifyDataSetChanged();
             } else {
-                searchBar.setError("Incorrect username");
+                searchBar.setError("Username does not exist");
                 return;
             }
         });

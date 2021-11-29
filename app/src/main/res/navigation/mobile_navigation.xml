@@ -26,7 +26,7 @@
     <fragment
         android:id="@+id/navigation_request"
         android:name="com.example.habittracker.fragments.RequestFragment"
-        android:label="@string/title_following"
+        android:label="@string/title_request"
         tools:layout="@layout/fragment_request" />
 
     <fragment

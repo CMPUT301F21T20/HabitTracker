@@ -15,7 +15,7 @@
     <item
         android:id="@+id/navigation_request"
         android:icon="@drawable/ic_following_black_24dp"
-        android:title="@string/title_following" />
+        android:title="@string/title_request" />
 
     <item
         android:id="@+id/navigation_users"
