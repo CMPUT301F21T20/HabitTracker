@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:clipToPadding="false"
-    tools:context=".ViewHabitEventActivity">
+    tools:context=".activities.ViewHabitEventActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/main_APL"

@@ -1,20 +1,22 @@
 package com.example.habittracker;
 
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
+
+import com.example.habittracker.activities.AddNewHabitActivity;
+import com.example.habittracker.activities.LoginActivity;
+import com.example.habittracker.activities.MainActivity;
+import com.example.habittracker.activities.ViewHabitActivity;
 import com.robotium.solo.Solo;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.Assert;
 
 public class MainActivityTest {
     private Solo solo;
