@@ -24,23 +24,11 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.5">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/habitListDeleteButton"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/habitListViewButton"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:text="View" />
-
-            <Button
-                android:id="@+id/habitListDeleteButton"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:text="DEL" />
-        </LinearLayout>
+            android:text="DEL"
+            android:focusable="false"/>
     </RelativeLayout>
 </LinearLayout>
