@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -60,6 +61,16 @@ public class HabitsTotalFragment extends Fragment {
             habitListAdapter.notifyDataSetChanged();
         });
 
+        habitsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
+
+                Habit habit = (Habit) habitList.getHabit(position);
+                openViewHabitActivity(habit);
+
+            }
+        });
+
         return root;
     }
 
@@ -69,5 +80,16 @@ public class HabitsTotalFragment extends Fragment {
     public void openAddHabitActivity() {
         Intent intent = new Intent(requireContext(), AddNewHabitActivity.class);
         startActivity(intent);
+    }
+
+    /**
+     * Opens the view habit activity
+     * @param habit the habit to display information about
+     */
+    public void openViewHabitActivity(Habit habit) {
+        Intent i = new Intent(requireContext(), ViewHabitActivity.class);
+        i.putExtra("Habit", habit);
+        i.putExtra("pActivity", "HabitsTotal");
+        startActivity(i);
     }
 }

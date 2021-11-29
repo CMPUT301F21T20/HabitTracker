@@ -1,10 +1,12 @@
 package com.example.habittracker;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -77,6 +79,27 @@ public class HabitsTodayFragment extends Fragment {
             habitListAdapter.notifyDataSetChanged();
         });
 
+        habitsTodayListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
+
+                Habit habit = (Habit) habitList.getHabit(position);
+                openViewHabitActivity(habit);
+
+            }
+        });
+
         return root;
+    }
+
+    /**
+     * Opens the view habit activity
+     * @param habit the habit to display information about
+     */
+    public void openViewHabitActivity(Habit habit) {
+        Intent i = new Intent(requireContext(), ViewHabitActivity.class);
+        i.putExtra("Habit", habit);
+        i.putExtra("pActivity", "HabitsTotal");
+        startActivity(i);
     }
 }

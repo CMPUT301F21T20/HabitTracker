@@ -14,8 +14,8 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.habittracker.R;
 import com.example.habittracker.adapters.HabitsViewPagerAdapter;
-import com.example.habittracker.mediator.TabLayoutMediators;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 public class HomeFragment extends Fragment {
     private HomeViewModel homeViewModel;
@@ -35,7 +35,7 @@ public class HomeFragment extends Fragment {
         HabitsViewPagerAdapter habitsViewPagerAdapter = new HabitsViewPagerAdapter(this);
         habits_ViewPager2.setAdapter(habitsViewPagerAdapter);
         habits_ViewPager2.setPageTransformer(new ScaleInTransformer());
-        new TabLayoutMediators(habits_TabLayout, habits_ViewPager2, true,new TabLayoutMediators.TabConfigurationStrategy() {
+        new TabLayoutMediator(habits_TabLayout, habits_ViewPager2, true,new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
                 tab.setText(tabs[position]);

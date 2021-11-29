@@ -237,7 +237,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:theme="@style/SCBSwitch"
-            android:text="Decide Sharing"
+            android:text="Public"
             android:textSize="16dp"/>
 
     </LinearLayout>
