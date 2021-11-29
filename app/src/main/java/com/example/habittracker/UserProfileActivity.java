@@ -28,6 +28,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private HabitList showHabitList;
     private ArrayAdapter<Habit> habitListAdapter;
     private ListView habitsListView;
+    private TextView UserProfileNoHabit_textView;
     private FirebaseFirestore db;
     private Context thisContext;
 
@@ -44,6 +45,7 @@ public class UserProfileActivity extends AppCompatActivity {
         user = (User) intent.getSerializableExtra("User");
         userProfile_back_icon = findViewById(R.id.viewHabit_back_icon);
         name = findViewById(R.id.userProfileName);
+        UserProfileNoHabit_textView = findViewById(R.id.UserProfileNoHabit_textView);
         habitsListView = findViewById(R.id.userHabits_listview);
         name.setText(user.getUsername());
         habitList = new HabitList();
@@ -54,8 +56,9 @@ public class UserProfileActivity extends AppCompatActivity {
         db.collection("Habits").document(user.getUid()).addSnapshotListener((docSnapshot, e) -> {
             HabitListController.convertToHabitList(docSnapshot, habitList);
             for (int i = 0; i < habitList.getCount(); i++) {
+                UserProfileNoHabit_textView.setVisibility(View.GONE);
                 Habit habit = habitList.getHabit(i);
-                if (habit.getCanShare() == true){
+                if (habit.getCanShare()){
                     showHabitList.addHabit(habit);
                 }
             }
