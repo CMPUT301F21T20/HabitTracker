@@ -6,9 +6,11 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -48,6 +50,7 @@ public class UserProfileActivity extends AppCompatActivity {
         // reference the following link if unsure on how to do this:
         // https://stackoverflow.com/questions/2736389/how-to-pass-an-object-from-one-activity-to-another-on-android
         user = (User) intent.getSerializableExtra("User");
+        boolean follower = intent.getBooleanExtra("follower", false);
         userProfile_back_icon = findViewById(R.id.viewHabit_back_icon);
         name = findViewById(R.id.userProfileName);
         habitsListView = findViewById(R.id.userHabits_listview);
@@ -56,6 +59,23 @@ public class UserProfileActivity extends AppCompatActivity {
         showHabitList = new HabitList();
         habitListAdapter = new UserHabitListAdapter(this, showHabitList);
         habitsListView.setAdapter(habitListAdapter);
+        Button followBtn = findViewById(R.id.followButton);
+
+        Log.i(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>.", Boolean.toString(follower));
+        if (follower) {
+            followBtn.setText("Unfollow");
+        } else {
+            followBtn.setText("Follow");
+        }
+
+        followBtn.setOnClickListener(view -> {
+            if (follower) {
+
+            } else {
+
+            }
+        });
+
 
         LinearLayout followerBtn = findViewById(R.id.FollowersButton);
         followerBtn.setOnClickListener(view -> {

@@ -35,6 +35,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+
 
 public class UsersFragment extends Fragment {
 
@@ -76,7 +78,16 @@ public class UsersFragment extends Fragment {
 
         UsersListView.setOnItemClickListener((arg0, view, position, id) -> {
             User user = (User) usersList.getUser(position);
-            openUserProfileActivity(user);
+            ArrayList<String> followerUids = user.getFollowers().getFollowUids();
+
+            Intent intent = new Intent(requireContext(), UserProfileActivity.class);
+            // if the uid of the current user is in the followers list of the clicked user
+            // then add follower: true to intent so that unfollow button is shown on profile
+            if (followerUids.contains(fUser.getUid())) {
+                intent.putExtra("follower", true);
+            }
+            intent.putExtra("User", user);
+            startActivity(intent);
         });
 
         UsersList userListCopy = new UsersList();

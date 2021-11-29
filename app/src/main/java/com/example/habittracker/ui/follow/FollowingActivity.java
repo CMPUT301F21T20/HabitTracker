@@ -84,6 +84,7 @@ public class FollowingActivity extends AppCompatActivity {
 
             Intent tempIntent = new Intent(getApplicationContext(), UserProfileActivity.class);
             tempIntent.putExtra("User", tempUser);
+            tempIntent.putExtra("follower", true);
             startActivity(tempIntent);
         });
 
