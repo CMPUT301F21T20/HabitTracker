@@ -49,26 +49,16 @@ public class HabitsTotalFragment extends Fragment {
         habitListAdapter = new HabitListAdapter(requireContext(), habitList);
         habitsListView.setAdapter(habitListAdapter);
 
-        addHabitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openAddHabitActivity();
-            }
-        });
+        addHabitButton.setOnClickListener(v -> openAddHabitActivity());
 
         db.collection("Habits").document(uid).addSnapshotListener((docSnapshot, e) -> {
             HabitListController.convertToHabitList(docSnapshot, habitList);
             habitListAdapter.notifyDataSetChanged();
         });
 
-        habitsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
-
-                Habit habit = (Habit) habitList.getHabit(position);
-                openViewHabitActivity(habit);
-
-            }
+        habitsListView.setOnItemClickListener((arg0, view, position, id) -> {
+            Habit habit = (Habit) habitList.getHabit(position);
+            openViewHabitActivity(habit);
         });
 
         return root;
