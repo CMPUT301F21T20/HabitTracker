@@ -48,13 +48,13 @@ public class HabitList {
         return habitList.get(index);
     }
 
-    public Habit getHabit(String habitId) {
+    public Habit getHabit(String habitId) throws Exception {
         for (Habit habit : habitList) {
             if (habit.getHabitId().equals(habitId)) {
                 return habit;
             }
         }
-        return new Habit();
+        throw new Exception("Habit does not exist");
     }
 
     /**

@@ -86,7 +86,11 @@ public class ViewHabitActivity extends AppCompatActivity {
         db.collection("Habits").document(habit.getUserId()).addSnapshotListener((docSnapshot, e) -> {
             HabitList newHabitList = new HabitList();
             HabitListController.convertToHabitList(docSnapshot, newHabitList);
-            updateAttributes(newHabitList.getHabit(habit.getHabitId()));
+            try {
+                updateAttributes(newHabitList.getHabit(habit.getHabitId()));
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
         });
     }
 

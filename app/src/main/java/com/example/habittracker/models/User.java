@@ -1,27 +1,27 @@
 package com.example.habittracker.models;
 
-
-import android.util.Log;
-
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.example.habittracker.models.Follow.Follow;
+import com.example.habittracker.models.Follow.FollowList;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * User class hold the user information and load user data from firestore
  */
 public class User implements Serializable {
-    private final String uid;
-    private final String username;
-    private final String info;
-    private final Map<String, Map<String, Object>> followers;
-    private final Map<String, Map<String, Object>> following;
+    private String uid;
+    private String username;
+    private String info;
+    private final FollowList followers;
+    private final FollowList following;
+
+    public User() {
+        this.followers = new FollowList("followers");
+        this.following = new FollowList("following");
+    }
 
     /**
      * Initialize user with UUID, load user data from firestore
@@ -33,12 +33,12 @@ public class User implements Serializable {
         this.uid = uid;
         this.username = username;
         this.info = info;
-        this.followers = new HashMap<>();
-        this.following = new HashMap<>();
+        this.followers = new FollowList("followers");
+        this.following = new FollowList("following");
     }
 
-    public User(String uid, String username, String info, Map<String, Map<String, Object>> followers,
-                Map<String, Map<String, Object>> following) {
+    public User(String uid, String username, String info, FollowList followers,
+                FollowList following) {
         this.uid = uid;
         this.username = username;
         this.info = info;
@@ -57,28 +57,31 @@ public class User implements Serializable {
         return uid;
     }
 
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
     public String getUsername() {
         return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getInfo() {
         return info;
     }
 
-    public Map<String, Map<String, Object>> setFollowers() {
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    public FollowList getFollowers() {
         return followers;
     }
 
-    public Map<String, Map<String, Object>> setFollowing() {
+    public FollowList getFollowing() {
         return following;
     }
-
-    public Map<String, Map<String, Object>> getFollowers() {
-        return followers;
-    }
-
-    public Map<String, Map<String, Object>> getFollowing() {
-        return following;
-    }
-
 }

@@ -25,7 +25,7 @@ public class UsersListAdapter extends ArrayAdapter<User> {
     private Context context;
     private UsersList usersList;
 
-    public UsersListAdapter(@NonNull Context context,UsersList usersList) {
+    public UsersListAdapter(@NonNull Context context, UsersList usersList) {
         super(context, 0, usersList.getUsersList());
         this.context = context;
         this.usersList = usersList;

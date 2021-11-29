@@ -46,7 +46,11 @@ public class HabitEventsController {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         HabitEventList habitEventList = new HabitEventList();
-                        convertToHabitEventList(task, habitEventList, habitList);
+                        try {
+                            convertToHabitEventList(task, habitEventList, habitList);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         listener.onHabitListRetrieved(habitList);
                     } else {
                         Log.d("Firestore", "Error getting documents: ", task.getException());
@@ -54,7 +58,7 @@ public class HabitEventsController {
                 });
     }
 
-    public static void convertToHabitEventList(Task<QuerySnapshot> successfulTask, HabitEventList heList, HabitList habitList) {
+    public static void convertToHabitEventList(Task<QuerySnapshot> successfulTask, HabitEventList heList, HabitList habitList) throws Exception {
         heList.clearHabitEventList();
         for (QueryDocumentSnapshot doc : successfulTask.getResult()) {
             Map<String, Object> docData = doc.getData();

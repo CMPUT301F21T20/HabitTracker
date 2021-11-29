@@ -34,14 +34,16 @@ public class FollowerFragment extends Fragment {
 
         db = FirebaseFirestore.getInstance();
 
+
+        // follower
         followerViewModel =
                 new ViewModelProvider(this).get(FollowerViewModel.class);
         View root = inflater.inflate(R.layout.fragment_follower, container, false);
-        final ListView followerList = root.findViewById(R.id.following_list);
-        followerViewModel.getList().observe(getViewLifecycleOwner(), users -> {
-            // update UI
-        });
+        final ListView followerListView = root.findViewById(R.id.following_list);
+//        followerListView.setAdapter();
 
+
+        // requests
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Date date = new Date();
         RequestMap reqMap = new RequestMap();
