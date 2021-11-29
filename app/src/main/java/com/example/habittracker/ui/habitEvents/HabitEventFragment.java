@@ -104,6 +104,7 @@ public class HabitEventFragment extends Fragment {
                 HabitEvent clickedHabitEvent = habitEventsList.get(position);
                 Intent i = new Intent(getContext(), ViewHabitEventActivity.class);
                 i.putExtra("HabitEvent", clickedHabitEvent);
+                i.putExtra("HabitList", habitList);
                 startActivity(i);
             }
         });

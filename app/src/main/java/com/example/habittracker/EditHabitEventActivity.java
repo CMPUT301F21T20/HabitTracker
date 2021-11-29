@@ -39,6 +39,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.habittracker.models.DownloadImageTask;
 import com.example.habittracker.models.Habit;
 import com.example.habittracker.models.HabitEvent;
 import com.example.habittracker.controllers.HabitEventsController;
@@ -128,20 +129,13 @@ public class EditHabitEventActivity extends AppCompatActivity {
         addComment = findViewById(R.id.addComment_editText);
         submitBtn = findViewById(R.id.addHabitEventSubmitBtn);
 
-        completedDate_editText.setFocusable(false);
+        setAttributes();
 
         addHabitEvent_back_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 addHabitEvent_back_icon.setAlpha(0.5f);
                 onSupportNavigateUp();
-            }
-        });
-
-        isCompleted.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                checkChanged(b);
             }
         });
 
@@ -219,55 +213,39 @@ public class EditHabitEventActivity extends AppCompatActivity {
             return;
         }
 
-        if (errorCheck(isCompleted, completedDate_editText)) {
-            return;
-        }
-        try {
-            if (!completedDate_editText.getError().toString().equals("")){
-                return;
-            }
-        }catch (NullPointerException e){
-        }
-
-        Date dateOld = new Date();
-        try {
-            dateOld =  new SimpleDateFormat("yyyy-MM-dd").parse(completedDate_editText.getText().toString());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        LocalDate date = dateOld.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
-        if (!completedDate_editText.getText().toString().equals("")){
-            try {
-                date = LocalDate.parse(completedDate_editText.getText().toString());
-            } catch (Exception e) {
-                completedDate_editText.setError("Cannot parse date");
-                return;
-            }
-        }
-
-        // Local date retrieves a date that is 1 day behind, therefore we need to add one day
-        LocalDate updatedDate = date.plusDays(1);
-
-        HabitEvent habitEvent = new HabitEvent(
-                habit,
-                habitEventId,
-                uid,
-                isCompleted.isChecked(),
-                storageImagePath,
-                addLocation_editText.getText().toString(),
-                addComment.getText().toString(),
-                LocalDate.now().plusDays(1),
-                updatedDate
-        );
+        habitEvent.setImageStorageNamePrefix(storageImagePath);
+        habitEvent.setLocation(addLocation_editText.getText().toString());
+        habitEvent.setComment(addComment.getText().toString());
+        habitEvent.setCompletedDate(habitEvent.getCompletedDate().plusDays(1));
+        habitEvent.setCreateDate(habitEvent.getCreateDate().plusDays(1));
 
         HabitEventsController.getInstance().saveHabitEvent(habitEvent);
 
-        finish();
+        // Navigate back to main activity without changing it's state
+        Intent gotoScreenVar = new Intent(this, MainActivity.class);
+        gotoScreenVar.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(gotoScreenVar);
     }
 
     public void setAttributes() {
         isCompleted.setChecked(habitEvent.isCompleted());
+
+        if (habitEvent.getImageStorageNamePrefix().length() > 0) {
+            new DownloadImageTask(photoAdded).execute(habitEvent.getImageStorageNamePrefix());
+            storageImagePath = habitEvent.getImageStorageNamePrefix();
+        }
+
+        if (habitEvent.getCompletedDate() != null) {
+            completedDate_editText.setText(getDateText(habitEvent.getCompletedDate()));
+        }
+
+        if (habitEvent.getLocation().length() > 0) {
+            addLocation_editText.setText(habitEvent.getLocation());
+        }
+
+        if (habitEvent.getComment().length() > 0) {
+            addComment.setText(habitEvent.getComment());
+        }
     }
 
     /**
@@ -279,6 +257,17 @@ public class EditHabitEventActivity extends AppCompatActivity {
         // Add 1900 to year, as the getYear function returns year - 1900
         return (date.getYear() + 1900) + "-" +
                 (date.getMonth() + 1) + "-" + date.getDate();
+    }
+
+    /**
+     * Get the date in string format of yyyy-dd-mm
+     * @param date the LocalDate to process
+     * @return the formatted string
+     */
+    public String getDateText(LocalDate date) {
+        // Add 1900 to year, as the getYear function returns year - 1900
+        return date.getYear() + "-" +
+                date.getMonthValue() + "-" + date.getDayOfMonth();
     }
 
     /**
@@ -308,55 +297,7 @@ public class EditHabitEventActivity extends AppCompatActivity {
         return out.length() == 0 ? "No active days selected" : out;
     }
 
-    public void checkChanged(boolean b){
-        if (b) {
-            // set edittext as date today
-            completedDate_editText.setFocusableInTouchMode(true);
-            Date date = new Date();
-            String dateText = getDateText(date);
-            completedDate_editText.setText(dateText);
 
-            // check if today matches the planned days
-            int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
-            // if it is sunday, the returned day above is 1, should be changed to 8
-            if (day == 1){
-                day = 8;
-            }
-            // for day, mon is 1, tue is 2, ... , sun is 7
-            day -= 1;
-
-            boolean check = false;
-            boolean isPlanned = false;
-            for (int i = 0; i < 7; i++) {
-                check = String.valueOf(habit.getFrequency().get(i)).equals("1");
-                if (check){
-                    if (day == (i+1)){
-                        isPlanned = true;
-                        break;
-                    }
-                }
-            }
-            if (!isPlanned){
-                completedDate_editText.setError("Date is not within \"" + activeDaysText.getText().toString() + "\"");
-            }
-            boolean isAfter = date.getTime() >= habit.getDateCreated().getTime();
-            if (!isAfter){
-                completedDate_editText.setError("Date should be after started date");
-            }
-        }else{
-            // clear the edittext and forbid editing
-            completedDate_editText.setFocusable(false);
-            if (!completedDate_editText.getText().toString().equals("")){
-                completedDate_editText.setText("");
-            }
-            try {
-                if (!completedDate_editText.getError().toString().equals("")){
-                    completedDate_editText.setError(null);
-                }
-            }catch (NullPointerException e){
-            }
-        }
-    }
 
     public void cameraBtnOnClick() {
         // create File object to store the output photo in app cache of the CD card
@@ -483,6 +424,7 @@ public class EditHabitEventActivity extends AppCompatActivity {
         photoAdded.setImageDrawable(d);
         photoAdded.setBackgroundResource(R.color.grey);
         imageUri = null;
+        storageImagePath = "";
     }
 
     public boolean enlargePhoto(){
@@ -518,9 +460,6 @@ public class EditHabitEventActivity extends AppCompatActivity {
             case TAKE_CAMERA:
                 if (resultCode == RESULT_OK) {
                     try {
-                        // display the photo
-//                        imageBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
-//                        photoAdded.setImageBitmap(imageBitmap);
                         BitmapFactory.Options options = new BitmapFactory.Options();
                         options.inPreferredConfig= Bitmap.Config.RGB_565;
                         imageBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri),null,options);
