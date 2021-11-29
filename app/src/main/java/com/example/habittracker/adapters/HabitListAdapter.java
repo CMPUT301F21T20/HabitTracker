@@ -23,12 +23,20 @@ public class HabitListAdapter extends ArrayAdapter<Habit> {
     private Context context;
     private HabitList habitList;
 
+    /**
+     * Contructor for Habit List Adapter
+     * @param context the context of the app
+     * @param habitList the list of habits to show
+     */
     public HabitListAdapter(@NonNull Context context, HabitList habitList) {
         super(context, 0, habitList.getHabitList());
         this.context = context;
         this.habitList = habitList;
     }
 
+    /**
+     * Configures view of list item
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {

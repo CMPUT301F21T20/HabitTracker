@@ -19,7 +19,6 @@ public class User implements Serializable {
     private final String uid;
     private final String username;
     private final String info;
-//    private HabitList habitList;
 
 
     /**
@@ -35,12 +34,21 @@ public class User implements Serializable {
 
     }
 
+    /**
+     * Returns a Map of the user object that is compatible with firestore
+     * queries
+     * @return The Map of the User Object
+     */
     public Map<String, Object> getUserMap() {
         Map<String, Object> user = new HashMap<>();
         user.put("username", this.username);
         user.put("info", this.info);
         return user;
     }
+
+    /**
+     * Getters and Setters
+     */
 
     public String getUid() {
         return uid;

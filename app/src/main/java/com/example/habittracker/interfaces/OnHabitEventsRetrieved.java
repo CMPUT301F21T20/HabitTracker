@@ -2,6 +2,10 @@ package com.example.habittracker.interfaces;
 
 import com.example.habittracker.models.HabitEventList;
 
+/**
+ * Interface to handle asynchronous nature
+ * of retrieving habit events
+ */
 public interface OnHabitEventsRetrieved {
     /**
      * Funciton to be run when habit events are retrieved
