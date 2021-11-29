@@ -40,7 +40,7 @@ public class FollowingFragment extends Fragment {
         user = new User();
 
         View root = inflater.inflate(R.layout.fragment_follower, container, false);
-        followListView = root.findViewById(R.id.followersUsernameList);
+        followListView = root.findViewById(R.id.following_list);
 
         followListAdapter = new FollowersAdapter(requireContext(), user.getFollowers());
         followListView.setAdapter(followListAdapter);
