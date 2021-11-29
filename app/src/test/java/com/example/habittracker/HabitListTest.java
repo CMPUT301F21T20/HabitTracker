@@ -4,8 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import com.example.habittracker.models.Habit;
-import com.example.habittracker.models.HabitList;
+import com.example.habittracker.models.Habit.Habit;
+import com.example.habittracker.models.Habit.HabitList;
 
 import org.junit.Before;
 import org.junit.Test;

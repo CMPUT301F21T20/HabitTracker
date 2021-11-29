@@ -2,25 +2,23 @@ package com.example.habittracker.controllers;
 
 import android.util.Log;
 
-import com.example.habittracker.models.Habit;
-import com.example.habittracker.models.HabitList;
-import com.example.habittracker.models.User;
-import com.example.habittracker.models.UsersList;
-import com.example.habittracker.models.User;
+import com.example.habittracker.models.Follow.Follow;
+import com.example.habittracker.models.Follow.FollowList;
+import com.example.habittracker.models.User.User;
+import com.example.habittracker.models.User.UsersList;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 /**
  * Controller to handle all user list activiites
  */
 public class UsersListController {
-    private final FirebaseFirestore db;
+    private FirebaseFirestore db;
 
     private static FirebaseAuth fAuth;
 
@@ -29,10 +27,12 @@ public class UsersListController {
     }
 
     private UsersListController() {
-        this.db = FirebaseFirestore.getInstance();
+        connect();
     }
 
-    public static UsersListController getInstance() {return Loader.INSTANCE;}
+    public static UsersListController getInstance() {
+        return Loader.INSTANCE;
+    }
 
 
     public static void convertToUserList(DocumentSnapshot doc, UsersList usersList) {
@@ -41,13 +41,20 @@ public class UsersListController {
         if (doc.exists()) {
             Map<String, Object> userData = doc.getData();
             if (userData != null && !(doc.getId().equals(fUser.getUid()))) {
-                //Log.d("FIRESTORE DATA DEBUG", String.valueOf(userData));
-
-                    User user = new User(doc.getId(), (String) userData.get("username"),
-                            (String) userData.get("info"));
-                    usersList.addUser(user);
-
-
+                User user = new User(
+                        doc.getId(),
+                        (String) userData.get("username"),
+                        (String) userData.get("info")
+                );
+                if (userData.get("followers") != null) {
+                    convertToFollowList((Map<String, Map<String, Object>>) userData.get("followers"),
+                            user.getFollowers());
+                }
+                if (userData.get("following") != null) {
+                    convertToFollowList((Map<String, Map<String, Object>>) userData.get("following"),
+                            user.getFollowing());
+                }
+                usersList.addUser(user);
             }
             Log.d("Firestore", "Retrieved habit data");
         } else {
@@ -55,4 +62,43 @@ public class UsersListController {
         }
     }
 
+    public static void convertToUser(DocumentSnapshot doc, User user) {
+        if (doc.exists()) {
+            Map<String, Object> userData = doc.getData();
+                user.setUid(doc.getId());
+                user.setUsername((String) userData.get("username"));
+                user.setInfo((String) userData.get("info"));
+                if (userData.get("followers") != null) {
+                    convertToFollowList((Map<String, Map<String, Object>>) userData.get("followers"),
+                            user.getFollowers());
+                }
+                if (userData.get("following") != null) {
+                    convertToFollowList((Map<String, Map<String, Object>>) userData.get("following"),
+                            user.getFollowing());
+                }
+
+            Log.d("Firestore", "Retrieved habit data");
+        } else {
+            Log.d("Firestore", "No such document");
+        }
+    }
+
+    private static void convertToFollowList(Map<String, Map<String, Object>> follows, FollowList followList) {
+        followList.clearFollowList();
+        for (Map.Entry<String, Map<String, Object>> entry : follows.entrySet()) {
+            Map<String, Object> followData = (Map<String, Object>) entry.getValue();
+            if (followData.get("since") != null) {
+                Follow follow = new Follow(
+                        entry.getKey().trim(),
+                        (String) followData.get("username"),
+                        ((Timestamp) followData.get("since")).toDate()
+                );
+                followList.addFollow(follow);
+            }
+        }
+    }
+
+    public void connect() {
+        this.db = FirebaseFirestore.getInstance();
+    }
 }

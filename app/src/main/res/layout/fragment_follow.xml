@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.profile.ProfileFragment">
+    tools:context=".fragments.ProfileFragment">
 
 
     <LinearLayout
@@ -36,7 +36,7 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
             <Button
-                android:id="@+id/followButton"
+                android:id="@+id/logOutButton"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:textSize="15sp"

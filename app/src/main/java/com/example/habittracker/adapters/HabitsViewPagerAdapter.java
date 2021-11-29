@@ -7,8 +7,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.example.habittracker.HabitsTodayFragment;
-import com.example.habittracker.HabitsTotalFragment;
+import com.example.habittracker.fragments.HabitsTodayFragment;
+import com.example.habittracker.fragments.HabitsTotalFragment;
 
 /**
  *  This class handles the top navigator on the home page for the sections of our habit
