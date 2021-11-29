@@ -4,8 +4,10 @@ import com.example.habittracker.models.User;
 
 import java.util.ArrayList;
 
+/**
+ * A class that represents a User list
+ */
 public class UsersList {
-
     private ArrayList<User> usersList;
 
     public UsersList(ArrayList<User> usersList) {
@@ -24,24 +26,28 @@ public class UsersList {
         return usersList.size();
     }
 
+    /**
+     * This function adds a user to the list
+     * @param user the user to be added
+     */
     public void addUser(User user) {
         usersList.add(user);
     }
 
-    //public void deleteUser(User user) {
-        //usersList.remove(user);
-   // }
-
     /**
-     * This function will return the specific Habit at the specified index
-     * @param index the index of the Habit
-     * @return the habit at the certain index
+     * This function will return the specific User at the specified index
+     * @param index the index of the User
+     * @return the user at the certain index
      */
     public User getUser(int index) {
         return usersList.get(index);
     }
 
-
+    /**
+     * This function will return the specific User with the specific uid
+     * @param uid the id os the user
+     * @return the user
+     */
     public User getUser(String uid) {
         for (User user : usersList) {
             if (user.getUid().equals(uid)) {
@@ -76,6 +82,10 @@ public class UsersList {
         UsersList that = (UsersList) o;
         return usersList.equals(that.usersList);
     }
+
+    /**
+     * Getters and setters
+     */
 
     public ArrayList<User> getUsersList() {
         return usersList;

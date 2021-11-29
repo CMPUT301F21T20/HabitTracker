@@ -16,7 +16,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * Controller to handle all user list activiites
+ */
 public class UsersListController {
+    private final FirebaseFirestore db;
 
     private static FirebaseAuth fAuth;
 
@@ -29,9 +33,6 @@ public class UsersListController {
     }
 
     public static UsersListController getInstance() {return Loader.INSTANCE;}
-
-    private final FirebaseFirestore db;
-    //private FirebaseAuth fAuth;
 
 
     public static void convertToUserList(DocumentSnapshot doc, UsersList usersList) {

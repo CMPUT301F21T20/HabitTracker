@@ -80,6 +80,8 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
     private Button submitBtn;
     public static final int TAKE_CAMERA = 101;
     public static final int PICK_PHOTO = 102;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    private boolean permissionEnabled = false;
     private Uri uri = null;
     private Uri imageUri = null;
     private long imageStorageNamePrefix;
@@ -175,7 +177,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         addLocationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                locationBtnOnClick();
+                checkLocationPermission();
             }
         });
 
@@ -307,6 +309,23 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         }
 
         return out.length() == 0 ? "No active days selected" : out;
+    }
+
+    /**
+     * Checks if current user has FINE ACCESS LOCATION enabled
+     */
+    public void checkLocationPermission() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED ) {
+                Log.i("LOCATION CHECK", "PERMISSION GRANTED");
+                locationBtnOnClick();
+            } else {
+                Log.i("LOCATION CHECK", "PERMISSION DENIED");
+                ActivityCompat.requestPermissions(this, new String[]{
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,}, 1);
+            }
+        }
     }
 
     public void checkChanged(boolean b){
@@ -650,6 +669,19 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+            Log.i("ON PERMISSION CHECK", "PERMISSION GRANTED");
+            locationBtnOnClick();
+            permissionEnabled = true;
+        } else {
+            Log.i("ON PERMISSION CHECK", "PERMISSION DENIED");
+            permissionEnabled = false;
+        }
     }
 
     /**

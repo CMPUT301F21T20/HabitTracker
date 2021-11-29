@@ -32,25 +32,46 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * Firestore Controller class for Habit Events
+ */
 public class HabitEventsController {
+    private final FirebaseFirestore DB;
+
     private static class Loader {
         static volatile HabitEventsController INSTANCE = new HabitEventsController();
     }
 
+    /**
+     * Singleton Design Pattern: set constructor as private
+     */
     private HabitEventsController() {
         this.DB = FirebaseFirestore.getInstance();
     }
 
+    /**
+     * Gets instance of HabitEventsController Class
+     * @return HabitEventsController instance
+     */
     public static HabitEventsController getInstance() {
         return Loader.INSTANCE;
     }
 
-    private final FirebaseFirestore DB;
-
+    /**
+     * Loads habits events for a certain user with in a certain month
+     * @param uid the user id of the user
+     * @param day the day of the wanted habit events
+     * @param month the month of the wanted habit events
+     * @param year the year of the wanted habit events
+     * @param habitList the list of habits to get the matching habits to the habit events
+     * @param listener the callback listener to be used
+     */
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void loadHabitEvents(String uid, int day, int month, int year, HabitList habitList, OnHabitEventsRetrieved listener) {
         LocalDate docDateName = LocalDate.of(year, month, 2);
         Date legacyDate = Date.from(docDateName.atStartOfDay().toInstant(ZoneOffset.ofHours(18)));
+
+        // filter collections by date
         DB.collection("Users").document(uid).collection("HabitEvents")
                 .whereEqualTo("startDate", legacyDate)
                 .get()
@@ -65,6 +86,13 @@ public class HabitEventsController {
                 });
     }
 
+    /**
+     * Parses information from task and converts it into habit event list
+     * @param successfulTask the task to parse from
+     * @param heList habit event list to update
+     * @param habitList the habit list to get matching habit from
+     * @return
+     */
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static HabitEventList convertToHabitEventList(Task<QuerySnapshot> successfulTask, HabitEventList heList, HabitList habitList) {
         heList.clearHabitEventList();
@@ -123,6 +151,7 @@ public class HabitEventsController {
         LocalDate heDate = habitEvent.getCompletedDate();
         LocalDate docDateName = LocalDate.of(heDate.getYear(), heDate.getMonthValue(), 2);
         Date legacyDate = Date.from(docDateName.atStartOfDay().toInstant(ZoneOffset.ofHours(18)));
+
         // find the correct HabitEvents document
         colRef.whereEqualTo("startDate", legacyDate).limit(1)
                 .get()
