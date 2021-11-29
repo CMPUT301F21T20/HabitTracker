@@ -20,12 +20,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.habittracker.adapters.UserHabitListAdapter;
 import com.example.habittracker.controllers.HabitListController;
+import com.example.habittracker.controllers.SocialController;
 import com.example.habittracker.models.Habit;
 import com.example.habittracker.models.HabitList;
+import com.example.habittracker.models.Request;
 import com.example.habittracker.models.User;
 import com.example.habittracker.ui.follow.FollowersActivity;
 import com.example.habittracker.ui.follow.FollowingActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Date;
 
 public class UserProfileActivity extends AppCompatActivity {
 
@@ -61,7 +65,6 @@ public class UserProfileActivity extends AppCompatActivity {
         habitsListView.setAdapter(habitListAdapter);
         Button followBtn = findViewById(R.id.followButton);
 
-        Log.i(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>.", Boolean.toString(follower));
         if (follower) {
             followBtn.setText("Unfollow");
         } else {
@@ -70,9 +73,10 @@ public class UserProfileActivity extends AppCompatActivity {
 
         followBtn.setOnClickListener(view -> {
             if (follower) {
-
+                SocialController.getInstance().unfollow(user.getUid());
             } else {
-
+                Request request = new Request(user.getUid(), "pending", user.getUsername(), new Date());
+                SocialController.getInstance().saveRequest("outgoing", request);
             }
         });
 
