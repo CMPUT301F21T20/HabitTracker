@@ -2,6 +2,7 @@ package com.example.habittracker.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +68,13 @@ public class RequestFragment extends Fragment {
                        requestMap.deleteRequest("incoming", requestMap.getRequest("incoming", counter));
                     }
                 }
+
+                for (int counter = 0; counter < requestMap.getRequestList("incoming").size(); counter++) {
+                    if (!requestMap.getRequest("incoming", counter).getStatus().trim().equals("Pending")){
+                        requestMap.deleteRequest("incoming", requestMap.getRequest("incoming", counter));
+                    }
+                }
+                Log.d(">>>>>>>>>>>>>>>>>>>>>>>>>", requestMap.getRequest("incoming", 0).getStatus());
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
