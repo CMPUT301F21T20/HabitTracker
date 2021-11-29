@@ -22,6 +22,7 @@ import com.example.habittracker.models.Habit;
 import com.example.habittracker.models.HabitList;
 import com.example.habittracker.models.User;
 import com.example.habittracker.ui.follow.FollowersActivity;
+import com.example.habittracker.ui.follow.FollowingActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class UserProfileActivity extends AppCompatActivity {
@@ -57,22 +58,19 @@ public class UserProfileActivity extends AppCompatActivity {
         habitsListView.setAdapter(habitListAdapter);
 
         LinearLayout followerBtn = findViewById(R.id.FollowersButton);
-        followerBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // open followers activity
-                Intent i = new Intent(getApplicationContext(), FollowersActivity.class);
-                i.putExtra("User", user);
-                startActivity(i);
-            }
+        followerBtn.setOnClickListener(view -> {
+            // open followers activity
+            Intent i = new Intent(getApplicationContext(), FollowersActivity.class);
+            i.putExtra("User", user);
+            startActivity(i);
         });
 
         LinearLayout followingBtn = findViewById(R.id.FollowingButton);
-        followingBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // open following fragment
-            }
+        followingBtn.setOnClickListener(view -> {
+            // open following activity
+            Intent i = new Intent(getApplicationContext(), FollowingActivity.class);
+            i.putExtra("User", user);
+            startActivity(i);
         });
 
         db.collection("Habits").document(user.getUid()).addSnapshotListener((docSnapshot, e) -> {

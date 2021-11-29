@@ -30,20 +30,24 @@ public class FollowingActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         Intent intent = getIntent();
-        user = new User();
+        User intentUser = (User) intent.getSerializableExtra("User");
+        if (intentUser != null) {
+
+        } else {
+            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            user = new User();
+            db.collection("Users").document(uid).addSnapshotListener((docSnapshot, e) -> {
+                UsersListController.convertToUser(docSnapshot, user);
+                followListAdapter.notifyDataSetChanged();
+                Log.d(">>>>>>>>>>>>>>>>>>>>>>>", user.getFollowers().getFollow(0).getUsername());
+            });
+        }
+
 
         // follower
         View root = getLayoutInflater().inflate(R.layout.activity_view_followers, findViewById(android.R.id.content), false);
         final ListView followerListView = root.findViewById(R.id.follower_list);
         followListAdapter = new FollowersAdapter(getApplicationContext(), user.getFollowing());
         followerListView.setAdapter(followListAdapter);
-
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-        db.collection("Users").document(uid).addSnapshotListener((docSnapshot, e) -> {
-            UsersListController.convertToUser(docSnapshot, user);
-            followListAdapter.notifyDataSetChanged();
-            Log.d(">>>>>>>>>>>>>>>>>>>>>>>", user.getFollowers().getFollow(0).getUsername());
-        });
     }
 }

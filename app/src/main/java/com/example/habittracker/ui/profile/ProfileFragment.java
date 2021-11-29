@@ -93,13 +93,12 @@ public class ProfileFragment extends Fragment {
         });
 
         return root;
-
     }
+
     public void logout(View view) {
         FirebaseAuth.getInstance().signOut();
         startActivity(new Intent(thisContext, LoginActivity.class));
         getActivity().finish();
-
     }
 
 
