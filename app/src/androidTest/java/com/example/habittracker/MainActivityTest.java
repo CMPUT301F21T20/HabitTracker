@@ -54,6 +54,8 @@ public class MainActivityTest {
         // Check if we are in Main Activity
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
 
+        View profile = solo.getView(R.id.navigation_profile);
+        solo.clickOnView(profile);
         // Logout and check to see if we return to LoginActivity
         solo.clickOnButton("Log Out");
 
@@ -65,19 +67,32 @@ public class MainActivityTest {
      * check navigation to add new habit activity
      */
     @Test
-    public void checkNavigateToAddHabitActivity() {
+    public void checkNavigationBar() {
         // Wait for activity to be pulled up
         solo.sleep(3000);
 
         // Check if we are in Main Activity
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
 
-        // Navigate to Add Activity and check
-        View fab = solo.getView(R.id.addHabitButton);
-        solo.clickOnView(fab);
-        solo.assertCurrentActivity("Wrong Activity", AddNewHabitActivity.class);
+        // Navigate to habit event page and check
+        View habitEvent = solo.getView(R.id.navigation_habit_events);
+        solo.clickOnView(habitEvent);
+        Assert.assertTrue(solo.searchText("Habit Events"));
 
-        solo.goBack();
+        // Navigate to following page and check
+        View following = solo.getView(R.id.navigation_request);
+        solo.clickOnView(following);
+        Assert.assertTrue(solo.searchText("Following"));
+
+        // Navigate to user page and check
+        View users = solo.getView(R.id.navigation_users);
+        solo.clickOnView(users);
+        Assert.assertTrue(solo.searchText("Users"));
+
+        // Navigate to profile page and check
+        View profile = solo.getView(R.id.navigation_profile);
+        solo.clickOnView(profile);
+        Assert.assertTrue(solo.searchText("Profile"));
 
         // Logout and check to see if we return to LoginActivity
         solo.clickOnButton("Log Out");
@@ -86,30 +101,6 @@ public class MainActivityTest {
         solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
     }
 
-    /**
-     * check navigation to add view habit activity
-     */
-    @Test
-    public void checkNavigateToViewHabitActivity() {
-        // Wait for activity to be pulled up
-        solo.sleep(3000);
-
-        // Check if we are in Main Activity
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-
-        // Navigate to Add Activity and check
-
-        solo.clickOnButton("View");
-        solo.assertCurrentActivity("Wrong Activity", ViewHabitActivity.class);
-
-        solo.goBack();
-
-        // Logout and check to see if we return to LoginActivity
-        solo.clickOnButton("Log Out");
-
-        solo.sleep(2000);
-        solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
-    }
 
     /**
      * Closes the activity after each test

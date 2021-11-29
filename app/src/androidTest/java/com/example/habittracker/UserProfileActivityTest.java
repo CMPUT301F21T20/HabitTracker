@@ -6,6 +6,7 @@ import android.widget.EditText;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
+import com.example.habittracker.ui.users.UsersFragment;
 import com.robotium.solo.Solo;
 
 import org.junit.After;
@@ -13,10 +14,18 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.util.UUID;
+public class UserProfileActivityTest {
 
-public class RegisterActivityTest {
     private Solo solo;
+
+    /**
+     * Signs into to the test user's account
+     */
+    public void signIn() {
+        solo.enterText((EditText) solo.getView(R.id.email), "test_acc@gmail.com");
+        solo.enterText((EditText) solo.getView(R.id.password), "123456");
+        solo.clickOnButton("SIGN IN");
+    }
 
     @Rule
     public ActivityTestRule<LoginActivity> rule =
@@ -29,40 +38,31 @@ public class RegisterActivityTest {
     @Before
     public void setUp() throws Exception{
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
+        // First sign in
+        signIn();
     }
 
     /**
-     * check if navigate to register activity works
+     * check navigation to view habit activity
      */
     @Test
-    public void checkNavigateToRegister() {
-        solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
+    public void checkNavigateToUSerProfileActivity() {
+        // Wait for activity to be pulled up
+        solo.sleep(3000);
 
-        solo.clickOnText("Create");
-        solo.assertCurrentActivity("Wrong Activity", RegisterActivity.class);
-    }
-
-    @Test
-    public void CheckRegisterButton() {
-        solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
-
-        solo.clickOnText("Create");
-        solo.assertCurrentActivity("Wrong Activity", RegisterActivity.class);
-
-        // create a unique email for testing purposes
-        String uniqueEmail = UUID.randomUUID().toString() + "@gmail.com";
-
-        solo.enterText((EditText) solo.getView(R.id.fullName), "Test Account");
-        solo.enterText((EditText) solo.getView(R.id.email), uniqueEmail);
-        solo.enterText((EditText) solo.getView(R.id.password), "123456");
-
-        solo.clickOnButton("Sign Up");
-
-        solo.sleep(5000);
-
-        // Should be in Main Activity after signing up
+        // Check if we are in Main Activity
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
 
+        // Navigate to Add Activity and check
+
+        View users = solo.getView(R.id.navigation_users);
+        solo.clickOnView(users);
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+
+        solo.clickOnText("testcase");
+        solo.assertCurrentActivity("Wrong Activity", UserProfileActivity.class);
+
+        solo.goBack();
         View profile = solo.getView(R.id.navigation_profile);
         solo.clickOnView(profile);
         // Logout and check to see if we return to LoginActivity

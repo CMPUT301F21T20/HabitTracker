@@ -9,11 +9,13 @@ import androidx.test.rule.ActivityTestRule;
 import com.robotium.solo.Solo;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-public class ViewHabitActivityTest {
+public class MapsActivityTest {
+
     private Solo solo;
 
     /**
@@ -41,23 +43,27 @@ public class ViewHabitActivityTest {
     }
 
     /**
-     * check navigation to view habit activity
+     * check navigation to maps activity
      */
     @Test
-    public void checkViewSelfHabitWithViewHabitActivity() {
+    public void checkNavigateToMapsActivity() {
         // Wait for activity to be pulled up
         solo.sleep(3000);
 
         // Check if we are in Main Activity
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
 
-        // Navigate to Add Activity and check
 
-
-        solo.clickOnText("Test for View");
-        solo.assertCurrentActivity("Wrong Activity", ViewHabitActivity.class);
+        solo.clickOnText("Test for Habit Event");
+        solo.clickOnButton("NEW HABIT EVENT");
+        View map = solo.getView(R.id.addLocationBtn);
+        solo.clickOnView(map);
+        Assert.assertTrue(solo.searchText("Confirm"));
 
         solo.goBack();
+        solo.goBack();
+        solo.goBack();
+
         View profile = solo.getView(R.id.navigation_profile);
         solo.clickOnView(profile);
         // Logout and check to see if we return to LoginActivity
@@ -68,30 +74,34 @@ public class ViewHabitActivityTest {
     }
 
     /**
-     * check navigation to view habit activity
+     * check navigation to maps activity
      */
     @Test
-    public void checkViewUserHabitWithViewHabitActivity() {
+    public void checkAddNewLocation() {
         // Wait for activity to be pulled up
         solo.sleep(3000);
 
         // Check if we are in Main Activity
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
 
-        // Navigate to Add Activity and check
 
-        View users = solo.getView(R.id.navigation_users);
-        solo.clickOnView(users);
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+        solo.clickOnText("Test for Habit Event");
+        solo.clickOnButton("NEW HABIT EVENT");
+        View map = solo.getView(R.id.addLocationBtn);
+        solo.clickOnView(map);
 
-        solo.clickOnText("testcase");
-        solo.assertCurrentActivity("Wrong Activity", UserProfileActivity.class);
+        solo.sleep(2000);
+        solo.clickOnButton("Confirm");
+        solo.assertCurrentActivity("Wrong Activity", AddNewHabitEventActivity.class);
+        Assert.assertTrue(solo.searchText("USA"));
 
-        solo.clickOnText("User Habit");
+        View done = solo.getView(R.id.isHabitCompleted);
+        solo.clickOnView(done);
+        solo.clickOnButton("SAVE CHANGES");
         solo.assertCurrentActivity("Wrong Activity", ViewHabitActivity.class);
 
         solo.goBack();
-        solo.goBack();
+
         View profile = solo.getView(R.id.navigation_profile);
         solo.clickOnView(profile);
         // Logout and check to see if we return to LoginActivity
@@ -100,6 +110,7 @@ public class ViewHabitActivityTest {
         solo.sleep(2000);
         solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
     }
+
 
     /**
      * Closes the activity after each test
