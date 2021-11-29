@@ -684,7 +684,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
 
                 boolean check = false;
                 boolean isPlanned = false;
-                boolean isAfter = date.getTime() >= habit.getDateCreated().getTime();
+                boolean isAfter = true;
                 for (int i = 0; i < 7; i++) {
                     check = String.valueOf(habit.getFrequency().get(i)).equals("1");
                     if (check && day == (i+1)) {
