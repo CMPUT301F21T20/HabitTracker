@@ -31,6 +31,10 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -38,14 +42,13 @@ import java.time.LocalDate;
 
 public class HabitEventListAdapter extends ArrayAdapter<HabitEvent> {
     private FirebaseUser user;
+    private FirebaseFirestore db;
     private HabitEventsController habitEventsController;
 
     private View view;
     private Context context;
     private HabitEventList habitEventList;
-    private HabitEvent habitEvent;
     private HabitList habitList;
-    private String username;
 
     private TextView habitEventHabitTitle_text;
     private TextView habitEventComment_text;
@@ -56,13 +59,11 @@ public class HabitEventListAdapter extends ArrayAdapter<HabitEvent> {
     private TextView completedDateHabitEvent;
     private TextView habitEventLocation_text;
     private ImageView isHabitCompletedImage;
-    private ImageView deleteHabit;
 
     public HabitEventListAdapter(@NonNull Context context, HabitEventList habitEventList, String username, HabitList habitList) {
         super(context, 0, habitEventList.getHabitEventList());
         this.context = context;
         this.habitEventList = habitEventList;
-        this.username = username;
         this.habitList = habitList;
     }
 
@@ -77,8 +78,9 @@ public class HabitEventListAdapter extends ArrayAdapter<HabitEvent> {
         }
 
         user = FirebaseAuth.getInstance().getCurrentUser();
+        db = FirebaseFirestore.getInstance();
 
-        habitEvent = habitEventList.get(position);
+        HabitEvent habitEvent = habitEventList.get(position);
         habitEventsController = HabitEventsController.getInstance();
 
         habitEventHabitTitle_text = view.findViewById(R.id.habitEventHabitTitle_text);
@@ -90,27 +92,70 @@ public class HabitEventListAdapter extends ArrayAdapter<HabitEvent> {
         completedDateHabitEvent = view.findViewById(R.id.completedDateHabitEvent);
         habitEventLocation_text = view.findViewById(R.id.habitEventLocation_text);
         isHabitCompletedImage = view.findViewById(R.id.isHabitCompletedImage);
-        deleteHabit = view.findViewById(R.id.deletehabitEvent);
-
-        // If there was no habit events on a certain day display a dummy habit event that shows no habit events today
-        if (habitEvent.getComment().equals("Sent By Developer -> No Habits Today")) {
-            showNoHabitEventsToday();
-            return view;
-        }
+        ImageView deleteHabit = view.findViewById(R.id.deletehabitEvent);
 
         habitEventHabitTitle_text.setVisibility(View.VISIBLE);
         habitEventComment_text.setVisibility(View.VISIBLE);
         habitEventImage.setVisibility(View.VISIBLE);
-        recordDateDescription.setVisibility(View.VISIBLE);
-        recordDateHabitEvent.setVisibility(View.VISIBLE);
+        recordDateDescription.setVisibility(View.GONE);
+        recordDateHabitEvent.setVisibility(View.GONE);
         completedDateDescription.setVisibility(View.VISIBLE);
         completedDateHabitEvent.setVisibility(View.VISIBLE);
         habitEventLocation_text.setVisibility(View.VISIBLE);
         isHabitCompletedImage.setVisibility(View.VISIBLE);
         deleteHabit.setVisibility(View.VISIBLE);
 
+        // If there was no habit events on a certain day display a dummy habit event that shows no habit events today
+        if (habitEvent.getComment().equals("Sent By Developer -> No Habits Today")) {
+            showNoHabitEventsToday(deleteHabit);
+            return view;
+        }
+
         habitEventHabitTitle_text.setText(habitEvent.getHabit().getTitle());
 
+        setAttributes(habitEvent);
+
+        deleteHabit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("CLICKED", "CLICKED");
+                deleteHabit.setAlpha(0.5f);
+                habitEventsController.deleteHabitEventWithCallback(habitEvent, new OnHabitEventDeleted() {
+                    @Override
+                    public void onHabitEventDeleted() {
+                        getHabitEvents(
+                            habitEvent.getCompletedDate().getYear(),
+                            habitEvent.getCompletedDate().getMonthValue(),
+                            habitEvent.getCompletedDate().getDayOfMonth(),
+                                habitEvent
+                        );
+                    }
+
+                    @Override
+                    public void onError(Exception taskException) {
+
+                    }
+                });
+            }
+        });
+
+//        db.collection("Habits").document(user.getUid()).collection("HabitEvents")
+//                .document(habitEvent.getDocId())
+//                .addSnapshotListener((docSnapshot, e) -> {
+//                    getHabitEvents(
+//                            habitEvent.getCompletedDate().getYear(),
+//                            habitEvent.getCompletedDate().getMonthValue(),
+//                            habitEvent.getCompletedDate().getDayOfMonth()
+//                    );
+//        });
+
+        return view;
+    }
+
+    /**
+     * sets attributes of the habit in the habit event list
+     */
+    public void setAttributes(HabitEvent habitEvent) {
         if (!habitEvent.getComment().equals("")) {
             habitEventComment_text.setText(habitEvent.getComment());
         }else{
@@ -141,30 +186,6 @@ public class HabitEventListAdapter extends ArrayAdapter<HabitEvent> {
         }else{
             habitEventImage.setVisibility(View.GONE);
         }
-
-        deleteHabit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                deleteHabit.setAlpha(0.5f);
-                habitEventsController.deleteHabitEventWithCallback(habitEvent, new OnHabitEventDeleted() {
-                    @Override
-                    public void onHabitEventDeleted() {
-                        getHabitEvents(
-                            habitEvent.getCompletedDate().getYear(),
-                            habitEvent.getCompletedDate().getMonthValue(),
-                            habitEvent.getCompletedDate().getDayOfMonth()
-                        );
-                    }
-
-                    @Override
-                    public void onError(Exception taskException) {
-
-                    }
-                });
-            }
-        });
-
-        return view;
     }
 
     /**
@@ -183,7 +204,7 @@ public class HabitEventListAdapter extends ArrayAdapter<HabitEvent> {
      * If there were no habits on a certain day show this by providing
      * a "dummy" habit event that say there are no habit events
      */
-    public void showNoHabitEventsToday() {
+    public void showNoHabitEventsToday(ImageView deleteHabit) {
         habitEventHabitTitle_text.setVisibility(View.VISIBLE);
         habitEventComment_text.setVisibility(View.GONE);
         habitEventImage.setVisibility(View.GONE);
@@ -206,7 +227,7 @@ public class HabitEventListAdapter extends ArrayAdapter<HabitEvent> {
      * @param day the day of the habit Event
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void getHabitEvents(int year, int month, int day) {
+    public void getHabitEvents(int year, int month, int day, HabitEvent habitEvent) {
         HabitEventsController habitEventsController = HabitEventsController.getInstance();
 
         habitEventsController.loadHabitEvents(user.getUid(), day, month, year, habitList, new OnHabitEventsRetrieved() {
@@ -239,4 +260,5 @@ public class HabitEventListAdapter extends ArrayAdapter<HabitEvent> {
             }
         });
     }
+
 }
