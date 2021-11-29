@@ -21,8 +21,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Calendar;
 
+/**
+ * This class hold functionality for habits today showing
+ */
 public class HabitsTodayFragment extends Fragment {
-
     private HabitList habitList;
     private ArrayAdapter<Habit> habitListAdapter;
     private ListView habitsTodayListView;

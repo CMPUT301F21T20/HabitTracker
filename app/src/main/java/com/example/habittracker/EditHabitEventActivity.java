@@ -65,6 +65,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
+/**
+ * This class hold functionality for when editing a habit event
+ */
 public class EditHabitEventActivity extends AppCompatActivity {
     private ImageView addHabitEvent_back_icon;
     private Habit habit;
@@ -198,6 +201,9 @@ public class EditHabitEventActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * This function uploads the habit Event to firestore
+     */
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void uploadHabitEvent() {
         FirebaseUser user;
@@ -227,6 +233,9 @@ public class EditHabitEventActivity extends AppCompatActivity {
         startActivity(gotoScreenVar);
     }
 
+    /**
+     * THis function sets the attributes of all items in the view
+     */
     public void setAttributes() {
         isCompleted.setChecked(habitEvent.isCompleted());
 
@@ -297,8 +306,9 @@ public class EditHabitEventActivity extends AppCompatActivity {
         return out.length() == 0 ? "No active days selected" : out;
     }
 
-
-
+    /**
+     * Handles what happens when we click on the camera button
+     */
     public void cameraBtnOnClick() {
         // create File object to store the output photo in app cache of the CD card
         File outputImage;
@@ -333,6 +343,11 @@ public class EditHabitEventActivity extends AppCompatActivity {
         EditHabitEventActivity.this.startActivityForResult(intent, TAKE_CAMERA);
     }
 
+    /**
+     * Creates and returns an imageFile object
+     * @return the image file
+     * @throws IOException
+     */
     private File getImageFile() throws IOException {
         String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageName = FirebaseAuth.getInstance().getCurrentUser().getUid() + "_" + timestamp;
@@ -342,6 +357,9 @@ public class EditHabitEventActivity extends AppCompatActivity {
         return imageFile;
     }
 
+    /**
+     * Handles what happens when we click on the album button
+     */
     public void albumBtnOnClick(){
         // dynamically apply permission of read/write the disk
         if (ContextCompat.checkSelfPermission(EditHabitEventActivity.this,
@@ -356,6 +374,10 @@ public class EditHabitEventActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Image handling for android KitKat versions
+     * @param data the data to handle
+     */
     @TargetApi(19)
     private void handleImageOnKitKat(Intent data) {
         String imagePath = null;
@@ -393,6 +415,12 @@ public class EditHabitEventActivity extends AppCompatActivity {
         displayImage(imagePath);
     }
 
+    /**
+     * Return the path of an image
+     * @param uri the uri object to get path from
+     * @param selection which image is selected
+     * @return the path
+     */
     private String getImagePath(Uri uri, String selection) {
         String path = null;
         // obtain real path of photo from Uri and selection
@@ -406,6 +434,10 @@ public class EditHabitEventActivity extends AppCompatActivity {
         return path;
     }
 
+    /**
+     * Display an image given a path
+     * @param imagePath the path of the image
+     */
     private void displayImage(String imagePath) {
         if (imagePath != null) {
             BitmapFactory.Options options = new BitmapFactory.Options();
@@ -418,6 +450,9 @@ public class EditHabitEventActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Deletes the current photo
+     */
     public void deletePhoto(){
         Drawable d = ContextCompat.getDrawable(EditHabitEventActivity.this, R.drawable.ic_baseline_photo_filter_24);
         d.setColorFilter(0x89000000, PorterDuff.Mode.MULTIPLY);
@@ -427,6 +462,10 @@ public class EditHabitEventActivity extends AppCompatActivity {
         storageImagePath = "";
     }
 
+    /**
+     * Enlarges the current photo to show all
+     * @return true
+     */
     public boolean enlargePhoto(){
 
         // set size with original aspect ratio
@@ -437,6 +476,10 @@ public class EditHabitEventActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Narrow the current photo to show less
+     * @return true
+     */
     public boolean narrowPhoto(){
         // the layout height for photo in the layout file
         int dpValue = 100;
@@ -446,6 +489,9 @@ public class EditHabitEventActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Handles functionality after clicking on location button
+     */
     public void locationBtnOnClick(){
         MapsFragment mapsFragment = new MapsFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -490,6 +536,12 @@ public class EditHabitEventActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Checks if there are any errors in the input
+     * @param isCompleted The switch to check
+     * @param completedDate_editText the text to check
+     * @return whether there was an error
+     */
     public boolean errorCheck(SwitchCompat isCompleted, EditText completedDate_editText){
         boolean completedDate_editTextError = false;
         boolean isCompleted_error = false;
@@ -560,6 +612,11 @@ public class EditHabitEventActivity extends AppCompatActivity {
         return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
     }
 
+    /**
+     * Upload and download an image from firestore
+     * @param uid the current user id
+     * @return true or false
+     */
     public boolean uploadImage(String uid){
         if (imageUri != null){
             imageStorageNamePrefix = System.currentTimeMillis();
