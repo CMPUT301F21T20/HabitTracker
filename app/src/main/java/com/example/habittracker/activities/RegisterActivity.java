@@ -33,6 +33,9 @@ public class RegisterActivity extends AppCompatActivity {
     FirebaseAuth fAuth;
 
 
+    /**
+     * Handles functionality when activity is created
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,12 +79,13 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            // create a map of the current user's setting to upload to firestore
                             Map<String, Object> newUser = new HashMap<>();
                             newUser.put("username", fullName);
                             newUser.put("info", "");
-
                             newUser.put("following", null);
                             newUser.put("followers", null);
+
                             try {
                                 // create user document
                                 FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -106,7 +110,6 @@ public class RegisterActivity extends AppCompatActivity {
                                             Log.w("Firestore", "Error writing document", e);
                                         });
                             } catch (Exception error) {
-                                // TODO: retry?
                                 Log.w("Firestore", error);
                             }
 
@@ -120,6 +123,7 @@ public class RegisterActivity extends AppCompatActivity {
                 });
             }
         });
+
         LoginPageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

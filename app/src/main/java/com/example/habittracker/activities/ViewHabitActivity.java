@@ -45,6 +45,9 @@ public class ViewHabitActivity extends AppCompatActivity {
     //private ZoneId defaultZoneId = ZoneId.systemDefault();
 
 
+    /**
+     * Handles functionality when activity is created
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +72,9 @@ public class ViewHabitActivity extends AppCompatActivity {
         streak = findViewById(R.id.viewStreakText);
         //highestStreak = findViewById(R.id.viewLongestStreakText);
 
+        /**
+         * We ran out of time to fully implement this, we went with a simpler approach
+         */
         /*int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
         // if it is sunday, the returned day above is 1, should be changed to 8
         if (day == 1){
@@ -137,6 +143,7 @@ public class ViewHabitActivity extends AppCompatActivity {
 
         addHabitEventBtn.setOnClickListener(view -> openAddHabitEventActivity());
 
+        // Create a listener to update values when a habit is updated in firestore
         db.collection("Habits").document(habit.getUserId()).addSnapshotListener((docSnapshot, e) -> {
             HabitList newHabitList = new HabitList();
             HabitListController.convertToHabitList(docSnapshot, newHabitList);
@@ -147,6 +154,7 @@ public class ViewHabitActivity extends AppCompatActivity {
             }
         });
 
+        // Since we are reusing the other habit event adapter hide these
         if (activity.equals("UserProfile")) {
             editHabitBtn.setVisibility(View.INVISIBLE);
             addHabitEventBtn.setVisibility(View.INVISIBLE);
