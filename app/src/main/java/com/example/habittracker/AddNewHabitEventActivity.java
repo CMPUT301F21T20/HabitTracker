@@ -88,8 +88,9 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
     private ImageButton addLocationBtn;
     private EditText addLocation_editText;
     private String storageImagePath = "";
-
-    TextView activeDaysText;
+    private LocalDate currentDate;
+    private TextView activeDaysText;
+    //private ZoneId defaultZoneId = ZoneId.systemDefault();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -267,7 +268,21 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
                 updatedDate
         );
 
-        habit.setStreak(habit.getStreak()+1);
+        //habit.setLastUpdated(updatedDate);
+
+        //currentDate = LocalDate.now();
+        //Date currdate = Date.from(currentDate.atStartOfDay(defaultZoneId).toInstant());
+
+        /*System.out.println(currdate.compareTo(habit.getDateCreated()));
+        if (currdate.compareTo(habit.getDateCreated()) > 0) {
+
+            habit.setStreak(habit.getStreak() + 1);
+        }
+        else {
+            habit.setStreak(0);
+        }*/
+
+        habit.setStreak(habit.getStreak() + 1);
         HabitListController.getInstance().saveHabit(habit);
 
         HabitEventsController.getInstance().saveHabitEvent(habitEvent);

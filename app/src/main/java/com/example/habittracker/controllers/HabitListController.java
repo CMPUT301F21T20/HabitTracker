@@ -11,7 +11,10 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -75,23 +78,35 @@ public class HabitListController {
                     if (habitData.get("dateCreated") == null) {
                         continue;
                     }
-
+                    Habit habit;
                     if (habitData.get("streak") != null || habitData.get("highestStreak") != null){
                         streakString = String.valueOf(habitData.get("streak"));
                         highestStreakString = String.valueOf(habitData.get("highestStreak"));
-                    Habit habit = new Habit(entry.getKey(), doc.getId(), (String) habitData.get("title"),
+                        habit = new Habit(entry.getKey(), doc.getId(), (String) habitData.get("title"),
                             (String) habitData.get("reason"), ((Timestamp) habitData.get("dateCreated")).toDate(),
                             (ArrayList<Integer>) habitData.get("frequency"), (boolean) habitData.get("canShare"), Integer.valueOf(streakString), Integer.valueOf(highestStreakString));
-                    habitList.addHabit(habit);
+
                     }
                     else {
                         streak = 0;
                         highestStreak = 0;
-                        Habit habit = new Habit(entry.getKey(), doc.getId(), (String) habitData.get("title"),
+                        habit = new Habit(entry.getKey(), doc.getId(), (String) habitData.get("title"),
                                 (String) habitData.get("reason"), ((Timestamp) habitData.get("dateCreated")).toDate(),
                                 (ArrayList<Integer>) habitData.get("frequency"), (boolean) habitData.get("canShare"), streak, highestStreak);
-                        habitList.addHabit(habit);
+
                     }
+                    /*LocalDate date;
+                    if(habitData.get("lastUpdated") == null){
+                        date = null;
+                    }
+                    else{
+                        Timestamp timestamp = (Timestamp) habitData.get("lastUpdated");
+                        Date dt = timestamp.toDate();
+                        date = dt.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                        //date = date.plusDays(1);
+                    }
+                    habit.setLastUpdated(date);*/
+                    habitList.addHabit(habit);
                 }
 
             }

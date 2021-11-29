@@ -1,6 +1,8 @@
 package com.example.habittracker.models;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -19,6 +21,8 @@ public class Habit implements Serializable {
     private boolean canShare;  // Accessibility for other users
     private int streak;
     private int highestStreak;
+    private LocalDate lastUpdated;
+    private ZoneId defaultZoneId = ZoneId.systemDefault();
 
 
 
@@ -43,9 +47,12 @@ public class Habit implements Serializable {
         this.canShare = canShare;
         this.streak = streak;
         this.highestStreak = highestStreak;
+        this.lastUpdated = null;
     }
 
     public Habit() {}
+
+
 
     /**
      * Return a Map of the habit class, useful for firestore methods.
@@ -62,6 +69,13 @@ public class Habit implements Serializable {
         habit.put("canShare", this.canShare);
         habit.put("streak", this.streak);
         habit.put("highestStreak", this.highestStreak);
+        if (this.lastUpdated == null){
+        habit.put("lastUpdated", this.lastUpdated);
+        }
+        else {
+            Date date = Date.from(this.lastUpdated.atStartOfDay(defaultZoneId).toInstant());
+            habit.put("lastUpdated", date);
+        }
         return habit;
     }
 
@@ -142,5 +156,12 @@ public class Habit implements Serializable {
         this.highestStreak = highestStreak;
     }
 
+    public LocalDate getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(LocalDate lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
 
 }

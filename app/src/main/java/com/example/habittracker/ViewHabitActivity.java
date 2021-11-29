@@ -14,7 +14,11 @@ import com.example.habittracker.models.HabitList;
 import com.example.habittracker.controllers.HabitListController;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 
@@ -35,6 +39,10 @@ public class ViewHabitActivity extends AppCompatActivity {
     private String activity;
     private TextView streak;
     private TextView highestStreak;
+    private int counter;
+    //private LocalDate currentDate;
+    //private ZoneId defaultZoneId = ZoneId.systemDefault();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +66,41 @@ public class ViewHabitActivity extends AppCompatActivity {
         editHabitBtn = findViewById(R.id.editHabitBtn);
         addHabitEventBtn = findViewById(R.id.addHabitEventBtn);
         streak = findViewById(R.id.viewStreakText);
-        highestStreak = findViewById(R.id.viewLongestStreakText);
+        //highestStreak = findViewById(R.id.viewLongestStreakText);
+
+        /*int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+        // if it is sunday, the returned day above is 1, should be changed to 8
+        if (day == 1){
+            day = 8;
+        }
+        // for day, mon is 1, tue is 2, ... , sun is 7
+        day -= 1;
+        if (day == 0){
+            day = 7;
+        }
+
+        currentDate = LocalDate.now();
+        currentDate = currentDate.minusDays(1);
+        Date date = Date.from(currentDate.atStartOfDay(defaultZoneId).toInstant());
+
+        System.out.println(currentDate);
+        if(habit.getLastUpdated() == null){
+            habit.setStreak(0);
+        }
+        if(habit.getLastUpdated() != null) {
+            System.out.println((habit.getLastUpdated()));
+            System.out.println(date);
+            if (String.valueOf(habit.getFrequency().get(day - 1)).equals("1") && !(habit.getLastUpdated().equals(date))) {
+                System.out.println("I am here progress");
+
+                if (habit.getHighestStreak() < habit.getStreak()) {
+                    habit.setHighestStreak(habit.getStreak());
+                }
+                //habit.setStreak(0);
+
+            }
+        }*/
+
 
 
         titleText.setText(habit.getTitle());
@@ -66,7 +108,8 @@ public class ViewHabitActivity extends AppCompatActivity {
         startDateText.setText(getDateText(habit.getDateCreated()));
         activeDaysText.setText(getDaysText(habit.getFrequency()));
         streak.setText(String.valueOf(habit.getStreak()));
-        highestStreak.setText(String.valueOf(habit.getHighestStreak()));
+        //highestStreak.setText(String.valueOf(habit.getHighestStreak()));
+
 
         if (habit.getCanShare()){
             viewSharedText.setText("SHARED");
@@ -131,7 +174,7 @@ public class ViewHabitActivity extends AppCompatActivity {
         for (int i = 0; i < 7; i++) {
             // Was getting error when comparing integer values, cast to String as a work around
             boolean check = String.valueOf(frequency.get(i)).equals("1");
-
+            if (check) counter += 1;
             if (check && out.length() == 0) {
                 // If this is the first day we are adding, don't want comma in front
                 out += mapping[i];
@@ -176,6 +219,7 @@ public class ViewHabitActivity extends AppCompatActivity {
      * @param newHabit the habit to update attributes to
      */
     public void updateAttributes(Habit newHabit) {
+
         habit = newHabit;
         titleText.setText(habit.getTitle());
         reasonText.setText(habit.getReason());
