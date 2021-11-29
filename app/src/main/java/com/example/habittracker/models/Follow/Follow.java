@@ -1,10 +1,10 @@
 package com.example.habittracker.models.Follow;
 
-import androidx.annotation.NonNull;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Follow {
+public class Follow implements Serializable {
 
     private final String uid;
     private final String username;

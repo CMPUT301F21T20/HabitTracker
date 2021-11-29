@@ -26,7 +26,7 @@ public class FollowingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_followers);
+        setContentView(R.layout.activity_view_following);
         db = FirebaseFirestore.getInstance();
 
         Intent intent = getIntent();
@@ -46,7 +46,7 @@ public class FollowingActivity extends AppCompatActivity {
 
         // follower
         View root = getLayoutInflater().inflate(R.layout.activity_view_followers, findViewById(android.R.id.content), false);
-        final ListView followerListView = root.findViewById(R.id.follower_list);
+        final ListView followerListView = root.findViewById(R.id.following_list);
         followListAdapter = new FollowersAdapter(getApplicationContext(), user.getFollowing());
         followerListView.setAdapter(followListAdapter);
     }
