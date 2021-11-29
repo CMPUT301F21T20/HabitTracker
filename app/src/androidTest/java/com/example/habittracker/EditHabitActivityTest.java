@@ -2,7 +2,6 @@ package com.example.habittracker;
 
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ListView;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
@@ -15,9 +14,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.util.List;
+public class EditHabitActivityTest {
 
-public class AddNewHabitActivityTest {
     private Solo solo;
 
     /**
@@ -48,7 +46,7 @@ public class AddNewHabitActivityTest {
      * check navigation to add new habit activity
      */
     @Test
-    public void checkNavigateToAddHabitActivity() {
+    public void checkNavigateToEditHabitActivity() {
         // Wait for activity to be pulled up
         solo.sleep(3000);
 
@@ -60,36 +58,7 @@ public class AddNewHabitActivityTest {
         solo.clickOnView(fab);
         solo.assertCurrentActivity("Wrong Activity", AddNewHabitActivity.class);
 
-        solo.goBack();
-
-        View profile = solo.getView(R.id.navigation_profile);
-        solo.clickOnView(profile);
-        // Logout and check to see if we return to LoginActivity
-        solo.clickOnButton("Log Out");
-
-        solo.sleep(2000);
-        solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
-    }
-
-    /**
-     * Test adding a city
-     */
-    @Test
-    public void checkAddCity() {
-        // Wait for activity to be pulled up
-        solo.sleep(3000);
-
-        // Check if we are in Main Activity
-        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
-        ListView habitList = (ListView) solo.getView(R.id.habits_listview);
-        int size = habitList.getAdapter().getCount();
-
-        // Navigate to Add Activity and check
-        View fab = solo.getView(R.id.addHabitButton);
-        solo.clickOnView(fab);
-        solo.assertCurrentActivity("Wrong Activity", AddNewHabitActivity.class);
-
-        solo.enterText((EditText) solo.getView(R.id.addHabitTitle), "Test Add");
+        solo.enterText((EditText) solo.getView(R.id.addHabitTitle), "Test for Edit");
         solo.enterText((EditText) solo.getView(R.id.addHabitReason), "Test Reason");
 
         solo.clickOnButton("PICK DATE");
@@ -100,14 +69,54 @@ public class AddNewHabitActivityTest {
 
         solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
 
-        int newSize = habitList.getAdapter().getCount();
-        // Check to see if habit was added to list
-        Assert.assertEquals(newSize, size+1);
+        solo.clickOnText("Test for Edit");
+        solo.clickOnButton("Edit HABIT");
+        solo.assertCurrentActivity("Wrong Activity", EditHabitActivity.class);
 
-        //solo.clickOnButton("DEL");
+
+        solo.clickOnButton("SAVE CHANGES");
+        solo.assertCurrentActivity("Wrong Activity", ViewHabitActivity.class);
+
+        solo.goBack();
 
         View profile = solo.getView(R.id.navigation_profile);
         solo.clickOnView(profile);
+
+        // Logout and check to see if we return to LoginActivity
+        solo.clickOnButton("Log Out");
+
+        solo.sleep(2000);
+        solo.assertCurrentActivity("Wrong Activity", LoginActivity.class);
+    }
+
+    /**
+     * check navigation to add new habit activity
+     */
+    @Test
+    public void checkEditHabitToEditHabitActivity() {
+        // Wait for activity to be pulled up
+        solo.sleep(3000);
+
+        // Check if we are in Main Activity
+        solo.assertCurrentActivity("Wrong Activity", MainActivity.class);
+
+
+        solo.clickOnText("Test for Edit");
+        solo.clickOnButton("Edit HABIT");
+        solo.assertCurrentActivity("Wrong Activity", EditHabitActivity.class);
+
+        solo.enterText((EditText) solo.getView(R.id.editHabitReason), " Edit");
+
+
+        solo.clickOnButton("SAVE CHANGES");
+        solo.assertCurrentActivity("Wrong Activity", ViewHabitActivity.class);
+        Assert.assertTrue(solo.searchText("Test Reason Edit"));
+
+        solo.goBack();
+
+        View profile = solo.getView(R.id.navigation_profile);
+        solo.clickOnView(profile);
+
         // Logout and check to see if we return to LoginActivity
         solo.clickOnButton("Log Out");
 
