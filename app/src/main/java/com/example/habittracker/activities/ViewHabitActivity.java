@@ -72,6 +72,9 @@ public class ViewHabitActivity extends AppCompatActivity {
         streak = findViewById(R.id.viewStreakText);
         //highestStreak = findViewById(R.id.viewLongestStreakText);
 
+        /**
+         * We ran out of time to fully implement this, we went with a simpler approach
+         */
         /*int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
         // if it is sunday, the returned day above is 1, should be changed to 8
         if (day == 1){
