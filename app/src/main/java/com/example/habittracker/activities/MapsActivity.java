@@ -33,8 +33,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Handles funcitonality of diplaying the Maps activity
+ */
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
-
     private GoogleMap mMap;
     private com.example.habittracker.databinding.ActivityMapsBinding binding;
     private String filterAddress = "";
@@ -46,6 +48,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private double userLat;
     private double userLong;
 
+    /**
+     * Handles functionality when activity is created
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +85,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
+    /**
+     * Get the location as a string
+     */
     public void formatLocation() {
         Geocoder geocoder = new Geocoder(getBaseContext(), Locale.CANADA);
         try {
@@ -120,6 +128,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 5));
     }
 
+    /**
+     * Gets the user's current location
+     */
     public void getLocation(){
         LocationManager locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
 
@@ -152,6 +163,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 && ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
+
         currentLocation = locationManager.getLastKnownLocation(provider);
         userLat = currentLocation.getLatitude();
         userLong = currentLocation.getLongitude();
@@ -159,6 +171,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 "Longitude\t: " + (String.format("%+10.2f", userLong)),Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Update the location textview with the current location
+     */
     public void setLocationTextView(){
         formatLocation();
         updatedLocation_textView.setText(filterAddress);

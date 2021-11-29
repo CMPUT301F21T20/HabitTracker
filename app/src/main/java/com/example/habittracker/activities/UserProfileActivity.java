@@ -32,8 +32,10 @@ import org.w3c.dom.Text;
 
 import java.util.Date;
 
+/**
+ * Handles functionality of viewing a user profile
+ */
 public class UserProfileActivity extends AppCompatActivity {
-
     private ImageView userProfile_back_icon;
     private User user;
     private TextView name;
@@ -44,6 +46,9 @@ public class UserProfileActivity extends AppCompatActivity {
     private TextView UserProfileNoHabit_textView;
     private FirebaseFirestore db;
 
+    /**
+     * Handles functionality when activity is created
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +84,7 @@ public class UserProfileActivity extends AppCompatActivity {
         }
 
         followBtn.setOnClickListener(view -> {
+            // If following the user, unfollow them otherwise follow them on click
             if (follower) {
                 SocialController.getInstance().unfollow(user.getUid());
                 Toast.makeText(UserProfileActivity.this, "User unfollowed", Toast.LENGTH_SHORT).show();
@@ -138,6 +144,10 @@ public class UserProfileActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Handles clicking on a habit in the habit list
+     * @param habit
+     */
     public void openViewHabitActivity(Habit habit) {
         Intent i = new Intent(this, ViewHabitActivity.class);
         i.putExtra("Habit", habit);
@@ -145,6 +155,10 @@ public class UserProfileActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    /**
+     * Handles clicking on the back button in the header
+     * @return false if not working
+     */
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();

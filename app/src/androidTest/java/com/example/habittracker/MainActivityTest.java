@@ -14,6 +14,7 @@ import com.example.habittracker.activities.ViewHabitActivity;
 import com.robotium.solo.Solo;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

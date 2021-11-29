@@ -22,6 +22,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.time.LocalDate;
 
+/**
+ * This activity is for viewing a habit
+ */
 public class ViewHabitEventActivity extends AppCompatActivity {
     private ImageView viewHabitEvent_back_icon;
     private TextView habitTile;
@@ -45,6 +48,9 @@ public class ViewHabitEventActivity extends AppCompatActivity {
     private FirebaseFirestore db;
 
 
+    /**
+     * Handles functionality when activity is created
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
