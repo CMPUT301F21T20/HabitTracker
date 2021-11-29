@@ -108,12 +108,12 @@ public class EditHabitEventActivity extends AppCompatActivity {
 
         // View the related habit
         TextView titleText = findViewById(R.id.viewHabitTitle_habitEvent);
-        TextView reasonText = findViewById(R.id.viewHabitReason_habitEvent);
+        //TextView reasonText = findViewById(R.id.viewHabitReason_habitEvent);
         TextView startDateText = findViewById(R.id.viewHabitDateText_habitEvent);
         activeDaysText = findViewById(R.id.viewActiveDaysText_habitEvent);
 
         titleText.setText(habit.getTitle());
-        reasonText.setText(habit.getReason());
+        //reasonText.setText(habit.getReason());
         startDateText.setText(getDateText(habit.getDateCreated()));
         activeDaysText.setText(getDaysText(habit.getFrequency()));
 
