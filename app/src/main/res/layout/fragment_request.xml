@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/habitsToday_fragment_container"
-    tools:context=".HabitsTodayFragment">
+    android:id="@+id/request_fragment_container"
+    tools:context=".RequestFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,26 +19,12 @@
         android:weightSum="10">
 
         <ListView
-            android:id="@+id/habitsToday_listview"
+            android:id="@+id/request_listview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp"
             android:layout_weight="7">
         </ListView>
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/habitsTodayListPrompt_textView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="72dp"
-        android:gravity="center"
-        android:text="Add Habits to Start"
-        android:textStyle="bold"
-        android:textSize="18dp"
-        android:visibility="gone">
-    </TextView>
 
 </FrameLayout>
