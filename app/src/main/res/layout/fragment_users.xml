@@ -28,6 +28,7 @@
                 android:layout_width="287dp"
                 android:layout_height="wrap_content"
                 android:hint="Enter username"
+                android:maxLines="1"
                 android:textSize="24dp">
 
             </EditText>
