@@ -26,8 +26,7 @@ public class SocialController {
     }
 
     private SocialController() {
-        this.db = FirebaseFirestore.getInstance();
-        this.user = FirebaseAuth.getInstance().getCurrentUser();
+        connect();
     }
 
     public static SocialController getInstance() {
@@ -35,9 +34,8 @@ public class SocialController {
     }
 
     //Firestore instance
-    private final FirebaseFirestore db;
-    private final FirebaseUser user;
-    private String username;
+    private FirebaseFirestore db;
+    private FirebaseUser user;
 
     /**
      * This function takes a Firestore Requests document snapshot and populates the given requests
@@ -86,11 +84,8 @@ public class SocialController {
      * document. Inverted request just means flipping the type, user ID, and username.
      * @param type
      * @param request The request to save
-     * @return A bool indicating failure or success
      */
-    public Boolean saveRequest(String type, Request request) {
-        AtomicBoolean success = new AtomicBoolean(false);
-
+    public void saveRequest(String type, Request request) {
         // create needed maps
         Map<String, Object> userRequestMap = new HashMap<>();
         Map<String, Map<String, Object>> mapping = new HashMap<>();
@@ -98,6 +93,10 @@ public class SocialController {
         // update the doc of the user who is submitting the change
         userRequestMap.put(request.getUserId(), request.getRequestMap());
         mapping.put(type, userRequestMap);
+        Log.d("SocialController (saveRequest::status)", request.getStatus());
+        Log.d("SocialController (saveRequest::targert UID)", request.getUserId());
+        Log.d("SocialController (saveRequest::target username)", request.getUserName());
+        Log.d("SocialController (saveRequest::current UID)", user.getUid());
         dbRequest("Requests", user.getUid(), mapping);
 
         // clear maps
@@ -106,14 +105,16 @@ public class SocialController {
 
         // update the doc of the user who is subject to the change
         Request flippedRequest = flipRequest(request);
+        Log.d("FlippedRequest (saveRequest::status)", flippedRequest.getStatus());
+        Log.d("FlippedRequest (saveRequest::targert UID)", flippedRequest.getUserId());
+        Log.d("FlippedRequest (saveRequest::target username)", flippedRequest.getUserName());
+        Log.d("FillpedRequest (saveRequest::doc UID)", request.getUserId());
         userRequestMap.put(flippedRequest.getUserId(), flippedRequest.getRequestMap());
         mapping.put(flipType(type), userRequestMap);
         dbRequest("Requests", request.getUserId(), mapping);
 
         // A status of 'Accepted' and type of 'incoming' means the user has accepted a follow request
         if (request.getStatus().equals("Accepted") && type.equals("incoming")) this.follow(request);
-
-        return success.get();
     }
 
     /**
@@ -193,7 +194,7 @@ public class SocialController {
 
         // update the target users (user who request to follow current user) following map
         followerData.put("since", saveDate);
-        followerData.put("username", username);
+        followerData.put("username", CurrentUserController.getInstance().getUser().getUsername());
         follower.put(user.getUid(), followerData);
         mapping.put("following", follower);
         dbRequest("Users", request.getUserId(), mapping);
@@ -259,6 +260,11 @@ public class SocialController {
                     Log.d("Firestore", "DocumentSnapshot successfully updated!");
                 })
                 .addOnFailureListener(e -> Log.w("Firestore", "Error updating document", e));
+    }
+
+    public void connect() {
+        this.db = FirebaseFirestore.getInstance();
+        this.user = FirebaseAuth.getInstance().getCurrentUser();
     }
 }
 

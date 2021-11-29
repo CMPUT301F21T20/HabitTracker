@@ -14,6 +14,10 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.habittracker.controllers.CurrentUserController;
+import com.example.habittracker.controllers.HabitEventsController;
+import com.example.habittracker.controllers.HabitListController;
+import com.example.habittracker.controllers.SocialController;
+import com.example.habittracker.controllers.UsersListController;
 import com.example.habittracker.models.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -60,13 +64,16 @@ public class MainActivity extends AppCompatActivity {
         navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
             @Override
             public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
-                if (destination.getId() == R.id.navigation_habit_events){
+                if (destination.getId() == R.id.navigation_habit_events) {
                     MainActivity.this.findViewById(R.id.main_toolbar).setVisibility(View.GONE);
                 }
             }
         });
 
-        CurrentUserController cont = CurrentUserController.getInstance();
+        CurrentUserController.getInstance().connect();
+        SocialController.getInstance().connect();
+        HabitListController.getInstance().connect();
+        HabitEventsController.getInstance().connect();
+        UsersListController.getInstance().connect();
     }
-
 }

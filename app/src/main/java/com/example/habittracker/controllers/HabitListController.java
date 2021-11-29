@@ -26,7 +26,7 @@ public class HabitListController {
     }
 
     private HabitListController() {
-        this.db = FirebaseFirestore.getInstance();
+        connect();
     }
 
     public static HabitListController getInstance() {
@@ -34,7 +34,7 @@ public class HabitListController {
     }
 
     //Firestore instance
-    private final FirebaseFirestore db;
+    private FirebaseFirestore db;
 
     /**
      * Loads all the habits from a specific Habits document in Firestore and returns an instance
@@ -130,5 +130,9 @@ public class HabitListController {
                 })
                 .addOnFailureListener(e -> Log.w("Firestore", "Error updating document", e));
         return success.get();
+    }
+
+    public void connect() {
+        this.db = FirebaseFirestore.getInstance();
     }
 }

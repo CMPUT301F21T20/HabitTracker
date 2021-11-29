@@ -27,14 +27,14 @@ public class UsersListController {
     }
 
     private UsersListController() {
-        this.db = FirebaseFirestore.getInstance();
+        connect();
     }
 
     public static UsersListController getInstance() {
         return Loader.INSTANCE;
     }
 
-    private final FirebaseFirestore db;
+    private FirebaseFirestore db;
 
     public static void convertToUserList(DocumentSnapshot doc, UsersList usersList) {
         fAuth = FirebaseAuth.getInstance();
@@ -97,5 +97,9 @@ public class UsersListController {
                 followList.addFollow(follow);
             }
         }
+    }
+
+    public void connect() {
+        this.db = FirebaseFirestore.getInstance();
     }
 }

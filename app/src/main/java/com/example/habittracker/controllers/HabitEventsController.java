@@ -38,14 +38,14 @@ public class HabitEventsController {
     }
 
     private HabitEventsController() {
-        this.DB = FirebaseFirestore.getInstance();
+        connect();
     }
 
     public static HabitEventsController getInstance() {
         return Loader.INSTANCE;
     }
 
-    private final FirebaseFirestore DB;
+    private FirebaseFirestore DB;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void loadHabitEvents(String uid, int day, int month, int year, HabitList habitList, OnHabitEventsRetrieved listener) {
@@ -220,6 +220,10 @@ public class HabitEventsController {
                 })
                 .addOnFailureListener(e -> Log.w("Firestore", "Error updating document", e));
 
+    }
+
+    public void connect() {
+        this.DB = FirebaseFirestore.getInstance();
     }
 
 }

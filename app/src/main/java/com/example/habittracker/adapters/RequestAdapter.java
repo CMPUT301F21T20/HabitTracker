@@ -38,7 +38,6 @@ public class RequestAdapter extends ArrayAdapter<Request> {
 
         try {
             Request request = requestMap.getRequest("incoming", position);
-            Log.d("TESTINGREQUESTESds", request.getUserId());
             TextView username = view.findViewById(R.id.username);
             username.setText(request.getUserName());
             Button acceptRequestButton = view.findViewById(R.id.acceptRequestButton);

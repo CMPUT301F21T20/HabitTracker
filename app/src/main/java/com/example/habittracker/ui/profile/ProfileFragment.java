@@ -19,6 +19,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.habittracker.LoginActivity;
 import com.example.habittracker.R;
+import com.example.habittracker.controllers.CurrentUserController;
 import com.example.habittracker.ui.follow.FollowersActivity;
 import com.example.habittracker.ui.follow.FollowingActivity;
 import com.google.android.gms.tasks.OnCompleteListener;

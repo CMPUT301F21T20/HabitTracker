@@ -4,6 +4,7 @@ import com.example.habittracker.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 
 public class CurrentUserController {
 
@@ -16,20 +17,29 @@ public class CurrentUserController {
     }
 
     private CurrentUserController() {
+        connect();
+    }
+
+    private FirebaseFirestore db;
+    private FirebaseUser fUser;
+    private User user;
+    private ListenerRegistration listener;
+
+    public User getUser() {
+        return this.user;
+    }
+
+    public void connect() {
+        if (listener != null) {
+            listener.remove();
+        }
+
         this.db = FirebaseFirestore.getInstance();
         this.fUser = FirebaseAuth.getInstance().getCurrentUser();
         this.user = new User();
 
-        db.collection("Users").document(fUser.getUid()).addSnapshotListener(((documentSnapshot, e) -> {
+        listener = db.collection("Users").document(fUser.getUid()).addSnapshotListener(((documentSnapshot, e) -> {
             UsersListController.convertToUser(documentSnapshot, user);
         }));
-    }
-
-    private final FirebaseFirestore db;
-    private final FirebaseUser fUser;
-    private User user;
-
-    public User getUser() {
-        return this.user;
     }
 }

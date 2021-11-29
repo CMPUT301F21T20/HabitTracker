@@ -80,7 +80,7 @@ public class RegisterActivity extends AppCompatActivity {
                             newUser.put("info", "");
 
                             newUser.put("following", null);
-                            newUser.put("follower", null);
+                            newUser.put("followers", null);
                             try {
                                 // create user document
                                 FirebaseFirestore db = FirebaseFirestore.getInstance();
