@@ -4,13 +4,14 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
 /**
  * List of all habits for a selected user
  */
-public class HabitList {
+public class HabitList implements Serializable {
 
     // Use ArrayList to match up the required uploading type of firestone
     private ArrayList<Habit> habitList;

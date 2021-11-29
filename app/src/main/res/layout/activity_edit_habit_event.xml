@@ -1,9 +1,334 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EditHabitEventActivity">
+    tools:context=".EditHabitEventActivity"
+    android:clipToPadding="false">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/main_APL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/addHabitEvent_toolbar"
+                android:background="@color/colorPrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="?attr/actionBarTheme"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="0dp"
+                app:title="Edit Habit Event"
+                app:titleTextColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginLeft="56dp" />
+
+
+            <ImageView
+                android:id="@+id/addHabitEvent_back_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toStartOf="@id/addHabitEvent_toolbar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:src="@drawable/ic_baseline_arrow_back_24"
+                app:tint="@color/white">
+
+            </ImageView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:id="@+id/LL1_addHabitEvent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="16dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:text="Habit Name"
+            android:textColor="@color/black"
+            android:textFontWeight="400"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/viewHabitTitle_habitEvent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="7dp"
+            android:fontFamily="sans-serif-black"
+            android:text="Not implemented yet..."
+            android:textFontWeight="400"
+            android:textSize="16dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:text="Reasons"
+            android:textColor="@color/black"
+            android:textFontWeight="400"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/viewHabitReason_habitEvent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="7dp"
+            android:fontFamily="sans-serif-black"
+            android:text="Not implemented yet..."
+            android:textFontWeight="400"
+            android:textSize="16dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:text="Start Date"
+            android:textColor="@color/black"
+            android:textFontWeight="400"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/viewHabitDateText_habitEvent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="7dp"
+            android:fontFamily="sans-serif-black"
+            android:text="Not implemented yet..."
+            android:textFontWeight="400"
+            android:textSize="16dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:text="Active Days"
+            android:textColor="@color/black"
+            android:textFontWeight="400"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/viewActiveDaysText_habitEvent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="7dp"
+            android:fontFamily="sans-serif-black"
+            android:text="Not implemented yet..."
+            android:textFontWeight="400"
+            android:textSize="16dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/LL2_addHabitEvent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/LL1_addHabitEvent"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black">
+        </TableRow>
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/SV1_addHabitEvent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/LL2_addHabitEvent"
+        android:paddingHorizontal="16dp"
+        android:layout_marginBottom="80dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="10">
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/isHabitCompleted"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:theme="@style/SCBSwitch"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:text="Done"
+                    android:textSize="16dp"
+                    android:layout_weight="3.5"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Date Done :"
+                    android:layout_weight="3.5"
+                    android:fontFamily="sans-serif-black"
+                    android:textFontWeight="400"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"
+                    android:gravity="center">
+                </TextView>
+
+                <EditText
+                    android:id="@+id/completedDate_editText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="0dp"
+                    android:hint="yyyy-mm-dd"
+                    android:editable="false"
+                    android:gravity="center"
+                    android:layout_weight="3">
+                </EditText>
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Photo (Optional)"
+                    android:textColor="@color/black"
+                    android:textSize="16dp">
+                </TextView>
+
+                <ImageButton
+                    android:id="@+id/deletePhotoBtn"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="end"
+                    android:layout_marginRight="68dp"
+                    android:src="@drawable/ic_baseline_delete_24">
+                </ImageButton>
+
+                <ImageButton
+                    android:id="@+id/addPhotoBtn_fromCamera"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="end"
+                    android:layout_marginRight="34dp"
+                    android:src="@drawable/ic_baseline_photo_camera_24">
+                </ImageButton>
+
+                <ImageButton
+                    android:id="@+id/addPhotoBtn_fromAlbum"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="end"
+                    android:src="@drawable/ic_baseline_photo_24">
+                </ImageButton>
+            </FrameLayout>
+
+            <ImageView
+                android:id="@+id/HabitImageView1"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginTop="12dp"
+                android:background="#A9A9A9"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_baseline_photo_filter_24">
+            </ImageView>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Location (Optional)"
+                    android:textColor="@color/black"
+                    android:textSize="16dp">
+                </TextView>
+
+                <ImageButton
+                    android:id="@+id/addLocationBtn"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="end"
+                    android:src="@drawable/ic_baseline_location_on_24">
+                </ImageButton>
+            </FrameLayout>
+
+            <EditText
+                android:id="@+id/addLocation_editText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:editable="false"
+                android:hint="No location added yet..."
+                android:maxLines="2" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Comment (Optional)"
+                android:textColor="@color/black"
+                android:textSize="16dp" />
+
+            <EditText
+                android:id="@+id/addComment_editText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="No comment added yet..."
+                android:maxLength="20"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        android:gravity="bottom"
+        android:orientation="vertical">
+        <Button
+            android:id="@+id/addHabitEventSubmitBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="SAVE CHANGES"
+            android:textSize="18dp"
+            android:background="@drawable/button_gradient"
+            app:backgroundTint="@null"
+            android:textColor="#ffffff" />
+    </LinearLayout>
+
+
+    <FrameLayout
+        android:id="@+id/FL1_addHabitEventL1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginBottom="0dp"></FrameLayout>
+
+</RelativeLayout>

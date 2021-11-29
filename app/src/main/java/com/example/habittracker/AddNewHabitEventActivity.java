@@ -268,7 +268,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
 
         HabitEventsController.getInstance().saveHabitEvent(habitEvent);
 
-        finish();
+        onSupportNavigateUp();
     }
 
     /**
@@ -484,6 +484,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         photoAdded.setImageDrawable(d);
         photoAdded.setBackgroundResource(R.color.grey);
         imageUri = null;
+        storageImagePath = "";
     }
 
     public boolean enlargePhoto(){
