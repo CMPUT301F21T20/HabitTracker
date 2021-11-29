@@ -48,11 +48,14 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class HabitEventFragment extends Fragment {
     private View rootView;
@@ -65,6 +68,7 @@ public class HabitEventFragment extends Fragment {
 
     private FirebaseUser user;
     private FirebaseFirestore db;
+    private Map<String, String> docIds;
 
     private String username;
     private int yearSet;
@@ -90,6 +94,8 @@ public class HabitEventFragment extends Fragment {
 
         getUsername();
 
+        setDateToday(eventPickDate_TextView);
+
         eventPickDate_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,9 +110,15 @@ public class HabitEventFragment extends Fragment {
                 HabitEvent clickedHabitEvent = habitEventsList.get(position);
                 Intent i = new Intent(getContext(), ViewHabitEventActivity.class);
                 i.putExtra("HabitEvent", clickedHabitEvent);
+                i.putExtra("HabitList", habitList);
                 startActivity(i);
             }
         });
+
+        // Initialize new HashMap containg all docids of the current user's
+        // habit events. We will use these to create individual listeners for
+        // all the documents
+        docIds = new HashMap<String, String>();
 
         db.collection("Habits").document(user.getUid()).collection("HabitEvents").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -221,6 +233,56 @@ public class HabitEventFragment extends Fragment {
         datePickerDialog.show();
     }
 
+    public void setListeners() {
+        db.collection("Users").document(user.getUid()).collection("HabitEvents")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            docIds.clear();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("TEST TASK", document.getId());
+                                docIds.put(document.getId(), document.getId());
+                            }
+                            Log.d("TEST", docIds.toString() + " size: " + docIds.size());
+                            for (String docId : docIds.keySet()) {
+                                db.collection("Users").document(user.getUid())
+                                        .collection("HabitEvents").document(docId)
+                                        .addSnapshotListener((docSnapshot, e) -> {
+                                            Log.i("EVENT IND DOC", "Event happened on doc " + docId);
+                                            getHabitEvents(yearSet, monthSet, daySet);
+                                        });
+                            }
+
+                        } else {
+                            Log.d("ERROR", "Error getting documents: ", task.getException());
+                        }
+                    }
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            docIds.clear();
+//                            Log.d("TEST Task", task.getResult().getDocuments().toString());
+//                            for (DocumentSnapshot document : task.getResult().getDocuments()) {
+//                                docIds.put(document.getId(), document.getId());
+//                            }
+//                            Log.d("TEST", docIds.toString() + " size: " + docIds.size());
+//                            for (String docId : docIds.keySet()) {
+//                                db.collection("Habits").document(user.getUid())
+//                                        .collection("HabitEvents").document(docId)
+//                                        .addSnapshotListener((docSnapshot, e) -> {
+//                                            Log.i("EVENT IND DOC", "Event happened on doc " + docId);
+//                                            getHabitEvents(yearSet, monthSet, daySet);
+//                                        });
+//                            }
+//                        } else {
+//                            Log.d("ERROR", "Error getting documents: ", task.getException());
+//                        }
+//                    }
+                });
+    }
+
     /**
      * Get the date in string format of yyyy-dd-mm
      * @param date the date to process
@@ -252,6 +314,7 @@ public class HabitEventFragment extends Fragment {
                 for (int i = 0; i < newHabitEventList.getCount(); i++) {
                     LocalDate checkDate = newHabitEventList.get(i).getCompletedDate();
                     if (checkDate.getDayOfMonth() == day) {
+                        Log.i("ADDING", checkDate.toString());
                         habitEventsList.addHabitEvent(newHabitEventList.get(i));
                     }
                 }
@@ -288,6 +351,7 @@ public class HabitEventFragment extends Fragment {
                 getHabitEvents(yearSet,monthSet,daySet);
                 habitEventsAdapter = new HabitEventListAdapter(requireContext(), habitEventsList, username, habitList);
                 listView.setAdapter(habitEventsAdapter);
+                setListeners();
             }
 
             @Override

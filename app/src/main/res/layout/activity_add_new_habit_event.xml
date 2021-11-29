@@ -50,137 +50,107 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <LinearLayout
-        android:id="@+id/LL1_addHabitEvent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="?attr/actionBarSize"
-        android:paddingHorizontal="16dp"
-        android:paddingTop="16dp"
-        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-black"
-            android:text="Habit Name"
-            android:textColor="@color/black"
-            android:textFontWeight="400"
-            android:textSize="16dp" />
 
-        <TextView
-            android:id="@+id/viewHabitTitle_habitEvent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="7dp"
-            android:fontFamily="sans-serif-black"
-            android:text="Not implemented yet..."
-            android:textFontWeight="400"
-            android:textSize="16dp"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-black"
-            android:text="Reasons"
-            android:textColor="@color/black"
-            android:textFontWeight="400"
-            android:textSize="16dp" />
-
-        <TextView
-            android:id="@+id/viewHabitReason_habitEvent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="7dp"
-            android:fontFamily="sans-serif-black"
-            android:text="Not implemented yet..."
-            android:textFontWeight="400"
-            android:textSize="16dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-black"
-            android:text="Start Date"
-            android:textColor="@color/black"
-            android:textFontWeight="400"
-            android:textSize="16dp" />
-
-        <TextView
-            android:id="@+id/viewHabitDateText_habitEvent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="7dp"
-            android:fontFamily="sans-serif-black"
-            android:text="Not implemented yet..."
-            android:textFontWeight="400"
-            android:textSize="16dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-black"
-            android:text="Active Days"
-            android:textColor="@color/black"
-            android:textFontWeight="400"
-            android:textSize="16dp" />
-
-        <TextView
-            android:id="@+id/viewActiveDaysText_habitEvent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="7dp"
-            android:fontFamily="sans-serif-black"
-            android:text="Not implemented yet..."
-            android:textFontWeight="400"
-            android:textSize="16dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-black"
-            android:text="Shared"
-            android:textColor="@color/black"
-            android:textFontWeight="400"
-            android:textSize="16dp" />
-
-        <TextView
-            android:id="@+id/viewSharedText_habitEvent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="7dp"
-            android:fontFamily="sans-serif-black"
-            android:text="Not implemented yet..."
-            android:textFontWeight="400"
-            android:textSize="16dp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/LL2_addHabitEvent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/LL1_addHabitEvent"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp">
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/black">
-        </TableRow>
-    </LinearLayout>
 
     <ScrollView
         android:id="@+id/SV1_addHabitEvent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/LL2_addHabitEvent"
+        android:layout_below="@+id/main_APL"
         android:paddingHorizontal="16dp"
         android:layout_marginBottom="80dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/LL1_addHabitEvent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:paddingHorizontal="16dp"
+                android:paddingTop="16dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-black"
+                    android:text="Habit Name"
+                    android:textColor="@color/black"
+                    android:textFontWeight="400"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/viewHabitTitle_habitEvent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="7dp"
+                    android:fontFamily="sans-serif-black"
+                    android:text="Not implemented yet..."
+                    android:textFontWeight="400"
+                    android:textSize="16dp"/>
+
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-black"
+                    android:text="Start Date"
+                    android:textColor="@color/black"
+                    android:textFontWeight="400"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/viewHabitDateText_habitEvent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="7dp"
+                    android:fontFamily="sans-serif-black"
+                    android:text="Not implemented yet..."
+                    android:textFontWeight="400"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-black"
+                    android:text="Active Days"
+                    android:textColor="@color/black"
+                    android:textFontWeight="400"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/viewActiveDaysText_habitEvent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="7dp"
+                    android:fontFamily="sans-serif-black"
+                    android:text="Not implemented yet..."
+                    android:textFontWeight="400"
+                    android:textSize="16dp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/LL2_addHabitEvent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/LL1_addHabitEvent"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/black">
+                </TableRow>
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -345,7 +315,6 @@
         android:layout_marginTop="0dp"
         android:layout_marginEnd="0dp"
         android:layout_marginRight="0dp"
-        android:layout_marginBottom="0dp">
-    </FrameLayout>
+        android:layout_marginBottom="0dp"></FrameLayout>
 
 </RelativeLayout>

@@ -105,19 +105,19 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
 
         // View the related habit
         TextView titleText = findViewById(R.id.viewHabitTitle_habitEvent);
-        TextView reasonText = findViewById(R.id.viewHabitReason_habitEvent);
+        //TextView reasonText = findViewById(R.id.viewHabitReason_habitEvent);
         TextView startDateText = findViewById(R.id.viewHabitDateText_habitEvent);
         activeDaysText = findViewById(R.id.viewActiveDaysText_habitEvent);
-        TextView sharedText = findViewById(R.id.viewSharedText_habitEvent);
+        //TextView sharedText = findViewById(R.id.viewSharedText_habitEvent);
 
         titleText.setText(habit.getTitle());
-        reasonText.setText(habit.getReason());
+        //reasonText.setText(habit.getReason());
         startDateText.setText(getDateText(habit.getDateCreated()));
         activeDaysText.setText(getDaysText(habit.getFrequency()));
         if (habit.getCanShare()){
-            sharedText.setText("SHARED");
+           // sharedText.setText("SHARED");
         }else{
-            sharedText.setText("NOT SHARED");
+           // sharedText.setText("NOT SHARED");
         }
 
 
@@ -268,7 +268,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
 
         HabitEventsController.getInstance().saveHabitEvent(habitEvent);
 
-        finish();
+        onSupportNavigateUp();
     }
 
     /**
@@ -484,6 +484,7 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         photoAdded.setImageDrawable(d);
         photoAdded.setBackgroundResource(R.color.grey);
         imageUri = null;
+        storageImagePath = "";
     }
 
     public boolean enlargePhoto(){

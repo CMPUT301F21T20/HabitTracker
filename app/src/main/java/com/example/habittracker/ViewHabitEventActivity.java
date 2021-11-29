@@ -6,13 +6,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.habittracker.adapters.HabitEventListAdapter;
+import com.example.habittracker.controllers.HabitEventsController;
+import com.example.habittracker.interfaces.OnHabitEventsRetrieved;
 import com.example.habittracker.models.DownloadImageTask;
 import com.example.habittracker.models.HabitEvent;
+import com.example.habittracker.models.HabitEventList;
+import com.example.habittracker.models.HabitList;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.time.LocalDate;
 
@@ -31,7 +40,12 @@ public class ViewHabitEventActivity extends AppCompatActivity {
     private TextView commentTitle;
     private TextView commentText;
     private Button editHabitEventButton;
+
     private HabitEvent habitEvent;
+    private HabitList habitList;
+
+    private FirebaseUser user;
+    private FirebaseFirestore db;
 
 
     @Override
@@ -40,7 +54,12 @@ public class ViewHabitEventActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_habit_event);
 
         Intent intent = getIntent();
+
         habitEvent = (HabitEvent) intent.getSerializableExtra("HabitEvent");
+        habitList = (HabitList) intent.getSerializableExtra("HabitList");
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        db = FirebaseFirestore.getInstance();
 
         viewHabitEvent_back_icon = findViewById(R.id.viewHabitEvent_back_icon);
         habitTile = findViewById(R.id.habitEvent_habitTitle);
@@ -61,8 +80,8 @@ public class ViewHabitEventActivity extends AppCompatActivity {
         habitText.setVisibility(View.VISIBLE);
         dateCompletedTitle.setVisibility(View.VISIBLE);
         dateCompletedText.setVisibility(View.VISIBLE);
-        dateRecordedTitle.setVisibility(View.VISIBLE);
-        dateRecordedText.setVisibility(View.VISIBLE);
+        dateRecordedTitle.setVisibility(View.GONE);
+        dateRecordedText.setVisibility(View.GONE);
         pictureTitle.setVisibility(View.VISIBLE);
         picture.setVisibility(View.VISIBLE);
         locationTitle.setVisibility(View.VISIBLE);
@@ -70,6 +89,28 @@ public class ViewHabitEventActivity extends AppCompatActivity {
         commentTitle.setVisibility(View.VISIBLE);
         commentText.setVisibility(View.VISIBLE);
 
+        setAttributes();
+
+        viewHabitEvent_back_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewHabitEvent_back_icon.setAlpha(0.5f);
+                finish();
+            }
+        });
+
+        editHabitEventButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navigateToEditHabitEvent();
+            }
+        });
+    }
+
+    /**
+     * Sets fields of the view
+     */
+    public void setAttributes() {
         habitText.setText(habitEvent.getHabit().getTitle());
 
         if (habitEvent.getCompletedDate() != null) {
@@ -101,22 +142,6 @@ public class ViewHabitEventActivity extends AppCompatActivity {
             commentTitle.setVisibility(View.GONE);
             commentText.setVisibility(View.GONE);
         }
-
-
-        viewHabitEvent_back_icon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                viewHabitEvent_back_icon.setAlpha(0.5f);
-                finish();
-            }
-        });
-
-        editHabitEventButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navigateToEditHabitEvent();
-            }
-        });
     }
 
     /**
