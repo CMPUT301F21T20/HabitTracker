@@ -37,15 +37,15 @@ public class FollowingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_following);
         db = FirebaseFirestore.getInstance();
         back_icon = findViewById(R.id.viewHabit_back_icon);
+        user = new User();
         final ListView followerListView = findViewById(R.id.following_list);
 
         Intent intent = getIntent();
         User intentUser = (User) intent.getSerializableExtra("User");
         if (intentUser != null) {
-            // TODO
+            followListAdapter = new FollowersAdapter(getApplicationContext(), intentUser.getFollowing());
+            followerListView.setAdapter(followListAdapter);
         } else {
-            user = new User();
-
             followListAdapter = new FollowersAdapter(getApplicationContext(), user.getFollowing());
             followerListView.setAdapter(followListAdapter);
 

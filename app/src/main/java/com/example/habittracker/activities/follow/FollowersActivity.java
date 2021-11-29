@@ -46,7 +46,8 @@ public class FollowersActivity extends AppCompatActivity {
         User intentUser = (User) intent.getSerializableExtra("User");
         if (intentUser != null) {
             // user was passed in intent so don't start snapshot listener
-
+            followListAdapter = new FollowersAdapter(getApplicationContext(), intentUser.getFollowers());
+            followerListView.setAdapter(followListAdapter);
         } else {
             followListAdapter = new FollowersAdapter(getApplicationContext(), user.getFollowers());
             followerListView.setAdapter(followListAdapter);
