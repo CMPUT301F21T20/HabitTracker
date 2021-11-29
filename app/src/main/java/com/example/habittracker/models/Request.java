@@ -16,9 +16,9 @@ public class Request {
     private Date createdDate;
 
     // If enum doesn't works, use string with following constants
-    private static final String pending = "Pending";
-    private static final String accepted = "Accepted";
-    private static final String refused = "Rejected";
+    public static final String pending = "Pending";
+    public static final String accepted = "Accepted";
+    public static final String rejected = "Rejected";
 
     public Request(String userId, String status, String username, Date createdDate) {
         this.userId = userId;
@@ -42,7 +42,7 @@ public class Request {
     }
 
     public void setStatus(String status) throws Exception {
-        if (status.equals(pending) || status.equals(accepted) || status.equals(refused)) {
+        if (status.equals(pending) || status.equals(accepted) || status.equals(rejected)) {
             this.status = status;
         } else {
             throw new Exception("Status must be one of 'Pending', 'Accepted', or 'Rejected'.");
