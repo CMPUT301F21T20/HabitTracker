@@ -22,7 +22,6 @@ import com.example.habittracker.models.Habit;
 import com.example.habittracker.models.HabitList;
 import com.example.habittracker.models.User;
 import com.example.habittracker.ui.follow.FollowersActivity;
-import com.example.habittracker.ui.follow.FollowersFragment;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class UserProfileActivity extends AppCompatActivity {

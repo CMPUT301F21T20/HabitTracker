@@ -44,6 +44,7 @@ public class FollowersActivity extends AppCompatActivity {
         db.collection("Users").document(uid).addSnapshotListener((docSnapshot, e) -> {
             UsersListController.convertToUser(docSnapshot, user);
             followListAdapter.notifyDataSetChanged();
+            Log.d(">>>>>>>>>>>>>>>>>>>>>>>", user.getFollowers().getFollow(0).getUsername());
         });
     }
 }

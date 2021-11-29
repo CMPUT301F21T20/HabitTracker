@@ -90,12 +90,14 @@ public class UsersListController {
         followList.clearFollowList();
         for (Map.Entry<String, Map<String, Object>> entry : follows.entrySet()) {
             Map<String, Object> followData = (Map<String, Object>) entry.getValue();
-            Follow follow = new Follow(
-                    entry.getKey(),
-                    (String) followData.get("username"),
-                    ((Timestamp) followData.get("since")).toDate()
-            );
-            followList.addFollow(follow);
+            if (followData.get("since") != null) {
+                Follow follow = new Follow(
+                        entry.getKey(),
+                        (String) followData.get("username"),
+                        ((Timestamp) followData.get("since")).toDate()
+                );
+                followList.addFollow(follow);
+            }
         }
     }
 }
