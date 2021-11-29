@@ -1,4 +1,4 @@
-package com.example.habittracker.ui.following;
+package com.example.habittracker.ui.requests;
 
 import android.content.Context;
 import android.content.Intent;
@@ -27,7 +27,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 
-public class FollowingFragment extends Fragment {
+public class RequestFragment extends Fragment {
 
     private FirebaseFirestore db;
     private User user;

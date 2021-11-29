@@ -1,4 +1,4 @@
-package com.example.habittracker.ui.following;
+package com.example.habittracker.ui.requests;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

@@ -168,7 +168,7 @@
             </androidx.cardview.widget.CardView>
 
             <Button
-                android:id="@+id/logOutButton"
+                android:id="@+id/followButton"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"

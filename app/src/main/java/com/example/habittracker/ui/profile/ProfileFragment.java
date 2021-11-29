@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,6 +19,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.habittracker.LoginActivity;
 import com.example.habittracker.R;
+import com.example.habittracker.ui.follow.FollowersActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -54,6 +56,16 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 logout(view);
+            }
+        });
+
+        LinearLayout followerBtn = root.findViewById(R.id.FollowersButton);
+        followerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // open followers activity
+                Intent i = new Intent(requireContext(), FollowersActivity.class);
+                startActivity(i);
             }
         });
 

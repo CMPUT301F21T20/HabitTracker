@@ -25,13 +25,13 @@
 
     <fragment
         android:id="@+id/navigation_following"
-        android:name="com.example.habittracker.ui.following.FollowingFragment"
+        android:name="com.example.habittracker.ui.requests.RequestFragment"
         android:label="@string/title_following"
         tools:layout="@layout/fragment_following_list" />
 
     <fragment
         android:id="@+id/navigation_follower"
-        android:name="com.example.habittracker.ui.follower.FollowerFragment"
+        android:name="com.example.habittracker.ui.follow.FollowersFragment"
         android:label="@string/title_follower"
         tools:layout="@layout/fragment_follower" />
 

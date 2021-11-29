@@ -36,7 +36,7 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
             <Button
-                android:id="@+id/followButton"
+                android:id="@+id/logOutButton"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:textSize="15sp"

@@ -66,11 +66,8 @@ public class UsersListController {
     }
 
     public static void convertToUser(DocumentSnapshot doc, User user) {
-        fAuth = FirebaseAuth.getInstance();
-        FirebaseUser fUser = fAuth.getCurrentUser();
         if (doc.exists()) {
             Map<String, Object> userData = doc.getData();
-            if (userData != null && !(doc.getId().equals(fUser.getUid()))) {
                 user.setUid(doc.getId());
                 user.setUsername((String) userData.get("username"));
                 user.setInfo((String) userData.get("info"));
@@ -82,7 +79,7 @@ public class UsersListController {
                     convertToFollowList((Map<String, Map<String, Object>>) userData.get("following"),
                             user.getFollowing());
                 }
-            }
+
             Log.d("Firestore", "Retrieved habit data");
         } else {
             Log.d("Firestore", "No such document");

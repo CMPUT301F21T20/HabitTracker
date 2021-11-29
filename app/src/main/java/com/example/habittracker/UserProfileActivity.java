@@ -1,5 +1,8 @@
 package com.example.habittracker;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -17,6 +21,8 @@ import com.example.habittracker.controllers.HabitListController;
 import com.example.habittracker.models.Habit;
 import com.example.habittracker.models.HabitList;
 import com.example.habittracker.models.User;
+import com.example.habittracker.ui.follow.FollowersActivity;
+import com.example.habittracker.ui.follow.FollowersFragment;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class UserProfileActivity extends AppCompatActivity {
@@ -50,6 +56,25 @@ public class UserProfileActivity extends AppCompatActivity {
         showHabitList = new HabitList();
         habitListAdapter = new UserHabitListAdapter(this, showHabitList);
         habitsListView.setAdapter(habitListAdapter);
+
+        LinearLayout followerBtn = findViewById(R.id.FollowersButton);
+        followerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // open followers activity
+                Intent i = new Intent(getApplicationContext(), FollowersActivity.class);
+                i.putExtra("User", user);
+                startActivity(i);
+            }
+        });
+
+        LinearLayout followingBtn = findViewById(R.id.FollowingButton);
+        followingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // open following fragment
+            }
+        });
 
         db.collection("Habits").document(user.getUid()).addSnapshotListener((docSnapshot, e) -> {
             HabitListController.convertToHabitList(docSnapshot, habitList);

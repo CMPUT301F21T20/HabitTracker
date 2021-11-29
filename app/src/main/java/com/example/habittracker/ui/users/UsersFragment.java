@@ -76,10 +76,8 @@ public class UsersFragment extends Fragment {
         UsersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View view, int position, long id) {
-
                 User user = (User) usersList.getUser(position);
                 openUserProfileActivity(user);
-
             }
         });
 

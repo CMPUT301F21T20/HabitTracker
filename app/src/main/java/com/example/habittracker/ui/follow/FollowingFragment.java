@@ -1,4 +1,4 @@
-package com.example.habittracker.ui.following;
+package com.example.habittracker.ui.follow;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -6,17 +6,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.habittracker.R;
+import com.example.habittracker.ui.requests.FollowViewModel;
 
-public class FollowFragment extends Fragment {
+public class FollowingFragment extends Fragment {
 
     private FollowViewModel followViewModel;
     private Button followButton;

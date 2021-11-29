@@ -1,5 +1,7 @@
 package com.example.habittracker.models.Follow;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 
 public class FollowList {

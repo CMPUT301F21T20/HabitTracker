@@ -1,4 +1,4 @@
-package com.example.habittracker.ui.follower;
+package com.example.habittracker.ui.follow;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,7 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 
-public class FollowerFragment extends Fragment {
+public class FollowersFragment extends Fragment {
 
     private FirebaseFirestore db;
     private User user;

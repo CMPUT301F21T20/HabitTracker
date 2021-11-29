@@ -119,6 +119,10 @@
             android:name=".UserProfileActivity"
             android:label="Show a user profile">
         </activity>
+
+        <activity
+            android:name=".ui.follow.FollowersActivity"
+            android:label="Show a users followers"/>
     </application>
 
 </manifest>
