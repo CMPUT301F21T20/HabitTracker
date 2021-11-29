@@ -15,7 +15,10 @@ import com.example.habittracker.models.Request;
 import com.example.habittracker.models.RequestMap;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
 
 public class RequestFragment extends Fragment {
 
@@ -61,6 +64,15 @@ public class RequestFragment extends Fragment {
 
         db.collection("Requests").document(uid).addSnapshotListener((docSnapshot, e) -> {
             SocialController.convertToRequestMap(docSnapshot, requestMap);
+            try {
+                for (int counter = 0; counter < requestMap.getRequestList("incoming").size(); counter++) {
+                    if (!requestMap.getRequest("incoming", counter).getStatus().trim().equals("Pending")){
+                       requestMap.deleteRequest("incoming", requestMap.getRequest("incoming", counter));
+                    }
+                }
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
             requestListAdapter.notifyDataSetChanged();
         });
         return root;
