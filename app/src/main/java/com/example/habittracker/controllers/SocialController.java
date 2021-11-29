@@ -18,13 +18,21 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-
+/**
+ * Controller to handle all social activiites
+ */
 public class SocialController {
+    private final FirebaseFirestore db;
+    private final FirebaseUser user;
+    private String username;
 
     private static class Loader {
         static volatile SocialController INSTANCE = new SocialController();
     }
 
+    /**
+     * Singleton Design Pattern: set constructor as private
+     */
     private SocialController() {
         this.db = FirebaseFirestore.getInstance();
         this.user = FirebaseAuth.getInstance().getCurrentUser();
@@ -47,14 +55,13 @@ public class SocialController {
         });
     }
 
+    /**
+     * Gets instance of SocialController Class
+     * @return SocialController instance
+     */
     public static SocialController getInstance() {
         return SocialController.Loader.INSTANCE;
     }
-
-    //Firestore instance
-    private final FirebaseFirestore db;
-    private final FirebaseUser user;
-    private String username;
 
     /**
      * This function takes a Firestore Requests document snapshot and populates the given requests
@@ -254,12 +261,21 @@ public class SocialController {
         dbRequest("Requests", userIdToUnfollow, mapping);
     }
 
-
+    /**
+     * Flips type for following type
+     * @param type the current type
+     * @return the new type
+     */
     private static String flipType(String type) {
         if (type.equals("incoming")) return "outgoing";
         else return "incoming";
     }
 
+    /**
+     * Returns a clone for a request object
+     * @param request the request to be cloned
+     * @return the cloned request
+     */
     private Request flipRequest(Request request) {
         Request clone = request.cloneRequest();
         clone.setUserId(user.getUid());
@@ -267,6 +283,12 @@ public class SocialController {
         return clone;
     }
 
+    /**
+     * Given data, update the databse with the date
+     * @param colId the id of the collection
+     * @param docId the id of the document
+     * @param data the data to be saved
+     */
     private void dbRequest(String colId, String docId, Map<String, Map<String, Object>> data) {
         db.collection(colId).document(docId)
                 .set(data, SetOptions.merge())

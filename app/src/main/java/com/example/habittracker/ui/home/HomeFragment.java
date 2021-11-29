@@ -35,6 +35,7 @@ public class HomeFragment extends Fragment {
         HabitsViewPagerAdapter habitsViewPagerAdapter = new HabitsViewPagerAdapter(this);
         habits_ViewPager2.setAdapter(habitsViewPagerAdapter);
         habits_ViewPager2.setPageTransformer(new ScaleInTransformer());
+
         new TabLayoutMediator(habits_TabLayout, habits_ViewPager2, true,new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
@@ -95,6 +96,9 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    /**
+     * Runs when we leave the current fragment
+     */
     @Override
     public void onStop() {
         super.onStop();
@@ -102,6 +106,9 @@ public class HomeFragment extends Fragment {
         habits_ViewPager2.setVisibility(View.GONE);
     }
 
+    /**
+     * Runs when we resume the current fragment
+     */
     @Override
     public void onResume() {
         super.onResume();
