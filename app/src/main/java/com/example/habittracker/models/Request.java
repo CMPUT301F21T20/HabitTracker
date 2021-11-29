@@ -9,13 +9,19 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * This class represents a single incoming or outgoing follow request. An incoming follow request
+ * means another user has request to follow you and an outgoing request means you are trying to
+ * follow someone else. There are 3 possible states of a request: 1. 'Pending' if a request as been
+ * neither accepted or rejected, 2. 'Rejected', and 3. 'Accepted'.
+ */
 public class Request {
+
     private String userId;
     private String status;
     private String userName;
     private Date createdDate;
 
-    // If enum doesn't works, use string with following constants
     public static final String pending = "Pending";
     public static final String accepted = "Accepted";
     public static final String rejected = "Rejected";
@@ -26,8 +32,6 @@ public class Request {
         this.userName = username;
         this.createdDate = createdDate;
     }
-
-    public Request() {}
 
     public String getUserId() {
         return userId;
