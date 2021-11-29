@@ -32,6 +32,7 @@ public class ViewHabitActivity extends AppCompatActivity {
     private TextView viewSharedText;
     private Button editHabitBtn;
     private Button addHabitEventBtn;
+    private String activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,7 @@ public class ViewHabitActivity extends AppCompatActivity {
         // reference the following link if unsure on how to do this:
         // https://stackoverflow.com/questions/2736389/how-to-pass-an-object-from-one-activity-to-another-on-android
         habit = (Habit) intent.getSerializableExtra("Habit");
+        activity = (String) intent.getSerializableExtra("pActivity");
 
         viewHabit_back_icon = findViewById(R.id.viewHabit_back_icon);
         titleText = findViewById(R.id.viewHabitTitle);
@@ -93,6 +95,11 @@ public class ViewHabitActivity extends AppCompatActivity {
                 exception.printStackTrace();
             }
         });
+
+        if (activity.equals("UserProfile")) {
+            editHabitBtn.setVisibility(View.INVISIBLE);
+            addHabitEventBtn.setVisibility(View.INVISIBLE);
+        }
     }
 
     /**
