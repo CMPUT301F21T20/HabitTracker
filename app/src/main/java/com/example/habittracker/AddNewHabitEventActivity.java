@@ -14,6 +14,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -30,6 +31,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
@@ -51,10 +53,12 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -76,11 +80,13 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
     private Button submitBtn;
     public static final int TAKE_CAMERA = 101;
     public static final int PICK_PHOTO = 102;
-    private Uri uri;
+    private Uri uri = null;
     private Uri imageUri = null;
+    private long imageStorageNamePrefix;
     private Bitmap imageBitmap;
     private ImageButton addLocationBtn;
     private EditText addLocation_editText;
+    private String storageImagePath = "";
 
     TextView activeDaysText;
 
@@ -185,67 +191,84 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         });
 
         submitBtn.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-                FirebaseUser user;
-                String uid;
-                String imageUri_String = "";
-                habitEventId = UUID.randomUUID().toString();
-
-                user = FirebaseAuth.getInstance().getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    uid = user.getUid();
-                } else {
-                    Toast.makeText(AddNewHabitEventActivity.this,"Failed to retrieve userId",Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                errorCheck(isCompleted, completedDate_editText);
-                try {
-                    if (!completedDate_editText.getError().toString().equals("")){
-                        return;
-                    }
-                }catch (NullPointerException e){
-                }
-
+                imageUri = uri;
+                Log.i("IN ONCLICK", String.valueOf(imageUri));
                 if (imageUri != null) {
-                    boolean success = uploadImage(uid);
+                    boolean success = uploadImage(FirebaseAuth.getInstance().getCurrentUser().getUid());
                     if (!success){
                         Toast.makeText(AddNewHabitEventActivity.this,"Failed to upload image",Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    imageUri_String = imageUri.toString();
+                } else {
+                    uploadHabitEvent();
                 }
-
-                LocalDate date = null;
-
-                if (!completedDate_editText.getText().toString().equals("")){
-                    try {
-                        date = LocalDate.parse(completedDate_editText.getText().toString());
-                    } catch (Exception e) {
-                        completedDate_editText.setError("Cannot parse date");
-                        return;
-                    }
-                }
-
-                HabitEvent habitEvent = new HabitEvent(
-                        habit,
-                        habitEventId,
-                        uid,
-                        isCompleted.isChecked(),
-                        imageUri_String,
-                        addLocation_editText.getText().toString(),
-                        addComment.getText().toString(),
-                        LocalDateTime.now(),
-                        date
-                );
-
-                HabitEventsController.getInstance().saveHabitEvent(habitEvent);
-
-                finish();
             }
         });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void uploadHabitEvent() {
+        FirebaseUser user;
+        String uid;
+        habitEventId = UUID.randomUUID().toString();
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            // User is signed in
+            uid = user.getUid();
+        } else {
+            Toast.makeText(AddNewHabitEventActivity.this,"Failed to retrieve userId",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (errorCheck(isCompleted, completedDate_editText)) {
+            return;
+        }
+        try {
+            if (!completedDate_editText.getError().toString().equals("")){
+                return;
+            }
+        }catch (NullPointerException e){
+        }
+
+        Date dateOld = new Date();
+        try {
+            dateOld =  new SimpleDateFormat("yyyy-MM-dd").parse(completedDate_editText.getText().toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        LocalDate date = dateOld.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        if (!completedDate_editText.getText().toString().equals("")){
+            try {
+                date = LocalDate.parse(completedDate_editText.getText().toString());
+            } catch (Exception e) {
+                completedDate_editText.setError("Cannot parse date");
+                return;
+            }
+        }
+
+        // Local date retrieves a date that is 1 day behind, therefore we need to add one day
+        LocalDate updatedDate = date.plusDays(1);
+
+        HabitEvent habitEvent = new HabitEvent(
+                habit,
+                habitEventId,
+                uid,
+                isCompleted.isChecked(),
+                storageImagePath,
+                addLocation_editText.getText().toString(),
+                addComment.getText().toString(),
+                LocalDate.now().plusDays(1),
+                updatedDate
+        );
+
+        HabitEventsController.getInstance().saveHabitEvent(habitEvent);
+
+        finish();
     }
 
     /**
@@ -336,9 +359,14 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         }
     }
 
-    public void cameraBtnOnClick(){
+    public void cameraBtnOnClick() {
         // create File object to store the output photo in app cache of the CD card
-        File outputImage = new File(getExternalCacheDir(), "output_image.jpg");
+        File outputImage;
+        try {
+            outputImage = getImageFile();
+        } catch (Exception e) {
+            outputImage = new File(getExternalCacheDir(), "output_image.jpg");
+        }
 
         try {
             if (outputImage.exists()) {
@@ -357,10 +385,21 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
             uri = Uri.fromFile(outputImage);
         }
 
+        uri = FileProvider.getUriForFile(AddNewHabitEventActivity.this, "com.example.habittracker.fileprovider", outputImage);
+
         // start the camera program
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         AddNewHabitEventActivity.this.startActivityForResult(intent, TAKE_CAMERA);
+    }
+
+    private File getImageFile() throws IOException {
+        String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageName = FirebaseAuth.getInstance().getCurrentUser().getUid() + "_" + timestamp;
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+
+        File imageFile = File.createTempFile(imageName, ".jpg", storageDir);
+        return imageFile;
     }
 
     public void albumBtnOnClick(){
@@ -448,18 +487,6 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
     }
 
     public boolean enlargePhoto(){
-        // set size to square
-//        ViewTreeObserver vto = photoAdded.getViewTreeObserver();
-//        vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-//            @Override
-//            public boolean onPreDraw() {
-//                int width = photoAdded.getMeasuredWidth();
-//                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-//                        width);
-//                photoAdded.setLayoutParams(params);
-//                return true;
-//            }
-//        });
 
         // set size with original aspect ratio
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
@@ -525,53 +552,68 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
         }
     }
 
-    public void errorCheck(SwitchCompat isCompleted, EditText completedDate_editText){
-//        boolean completedDate_editTextError = false;
+    public boolean errorCheck(SwitchCompat isCompleted, EditText completedDate_editText){
+        boolean completedDate_editTextError = false;
+        boolean isCompleted_error = false;
+
+        if (!isCompleted.isChecked()) {
+            isCompleted.setError("Please Denote as Completed");
+            isCompleted_error = true;
+        }
+
+        if (completedDate_editText.getText().toString().length() == 0){
+            completedDate_editText.setError("Date is required");
+            completedDate_editTextError = true;
+        }
+
+        if (isCompleted_error || completedDate_editTextError) {
+            return true;
+        }
 
         if (isCompleted.isChecked()){
-            if (completedDate_editText.getText().toString().length() == 0){
-                completedDate_editText.setError("Date is required");
-//                completedDate_editTextError = true;
-            }else{
-                String datePattern = "^\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])$";
-                String s = completedDate_editText.getText().toString();
-                if (!completedDate_editText.getText().toString().matches(datePattern)){
-                    completedDate_editText.setError("Unacceptable date format");
-//                    completedDate_editTextError = true;
-                }else{
-                    // check if the day matches the planned days
-                    Date date = null;
-                    try {
-                        date = new SimpleDateFormat("yyyy-MM-dd").parse(completedDate_editText.getText().toString());
-                    } catch (ParseException e) {
-                    }
-                    int day = date.getDay();
-                    if (day == 0){
-                        day = 7;
-                    }
+            String datePattern = "^\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])$";
+            String s = completedDate_editText.getText().toString();
 
-                    boolean check = false;
-                    boolean isPlanned = false;
-                    boolean isAfter = date.getTime() >= habit.getDateCreated().getTime();
-                    for (int i = 0; i < 7; i++) {
-                        check = String.valueOf(habit.getFrequency().get(i)).equals("1");
-                        if (check){
-                            if (day == (i+1)){
-                                isPlanned = true;
-                                break;
-                            }
-                        }
-                    }
-                    if (!isPlanned){
-                        completedDate_editText.setError("Date is not within \"" + activeDaysText.getText().toString() + "\"");
-                    }
-                    if (!isAfter){
-                        completedDate_editText.setError("Date should be after started date");
+            if (!completedDate_editText.getText().toString().matches(datePattern)){
+                completedDate_editText.setError("Unacceptable date format");
+                completedDate_editTextError = true;
+            } else {
+                // check if the day matches the planned days
+                Date date = null;
+                try {
+                    date = new SimpleDateFormat("yyyy-MM-dd").parse(completedDate_editText.getText().toString());
+                } catch (ParseException e) { }
+
+                int day = date.getDay();
+                if (day == 0){
+                    day = 7;
+                }
+
+                boolean check = false;
+                boolean isPlanned = false;
+                boolean isAfter = date.getTime() >= habit.getDateCreated().getTime();
+                for (int i = 0; i < 7; i++) {
+                    check = String.valueOf(habit.getFrequency().get(i)).equals("1");
+                    if (check && day == (i+1)) {
+                        isPlanned = true;
+                        break;
                     }
                 }
+
+                if (!isPlanned) {
+                    completedDate_editText.setError("Date is not within \"" + activeDaysText.getText().toString() + "\"");
+                    completedDate_editTextError = true;
+                }
+
+                if (!isAfter) {
+                    completedDate_editText.setError("Date should be after started date");
+                    completedDate_editTextError = true;
+                }
             }
+
         }
-//        return completedDate_editTextError;
+
+        return completedDate_editTextError;
     }
 
     public String getFileExtension(Uri uri){
@@ -582,17 +624,24 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
 
     public boolean uploadImage(String uid){
         if (imageUri != null){
+            imageStorageNamePrefix = System.currentTimeMillis();
+            if (!getFileExtension(imageUri).equals("jpg")){
+                return false;
+            }
             StorageReference fileRef = FirebaseStorage.getInstance().getReference().child("HabitEventImages_" + uid)
-                    .child(System.currentTimeMillis() + "." + getFileExtension(imageUri));
+                    .child(imageStorageNamePrefix + "." + getFileExtension(imageUri));
             fileRef.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                     fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @RequiresApi(api = Build.VERSION_CODES.O)
                         @Override
                         public void onSuccess(Uri uri) {
                             String url = uri.toString();
-                            Log.d("DownloadUrl", url);
+                            Log.d("DOWNLOADURL", url);
+                            storageImagePath = url;
                             Toast.makeText(AddNewHabitEventActivity.this, "Image upload successfully", Toast.LENGTH_SHORT).show();
+                            uploadHabitEvent();
                         }
                     });
                 }

@@ -13,19 +13,20 @@ public class HabitEvent implements Serializable {
     private String habitEventId;
     private String userId;
     private boolean isCompleted;
-    private String imageUri;
+    private String imageStorageNamePrefix;
     private String location;
     private String comment;
-    private LocalDateTime createDate;
+    private LocalDate createDate;
     private LocalDate completedDate;
+    private String docId;
 
     public HabitEvent(Habit habit, String habitEventId, String userId, boolean isCompleted,
-                      String imageUri, String location, String comment, LocalDateTime createDate, LocalDate completedDate) {
+        String imageStorageNamePrefix, String location, String comment, LocalDate createDate, LocalDate completedDate) {
         this.habit = habit;
         this.habitEventId = habitEventId;
         this.userId = userId;
         this.isCompleted = isCompleted;
-        this.imageUri = imageUri;
+        this.imageStorageNamePrefix = imageStorageNamePrefix;
         this.location = location;
         this.comment = comment;
         this.createDate = createDate;
@@ -42,10 +43,10 @@ public class HabitEvent implements Serializable {
     public Map<String, Object> getHabitEventMap() {
         Map<String, Object> habitEvent = new HashMap<>();
         habitEvent.put("isCompleted", this.isCompleted);
-        habitEvent.put("imageUri", this.imageUri);
+        habitEvent.put("imageStorageNamePrefix", this.imageStorageNamePrefix);
         habitEvent.put("location", this.location);
         habitEvent.put("comment", this.comment);
-        Date legacyDate = Date.from(this.createDate.toInstant(ZoneOffset.UTC));
+        Date legacyDate = Date.from(this.createDate.atStartOfDay().toInstant(ZoneOffset.UTC));
         habitEvent.put("createdDate", legacyDate);
         Date legacyDate2 = Date.from(this.completedDate.atStartOfDay().toInstant(ZoneOffset.UTC));
         habitEvent.put("completedDate", legacyDate2);
@@ -85,12 +86,12 @@ public class HabitEvent implements Serializable {
         isCompleted = completed;
     }
 
-    public String getImageUri() {
-        return imageUri;
+    public String getImageStorageNamePrefix() {
+        return imageStorageNamePrefix;
     }
 
-    public void setBitmap(String imageUri) {
-        this.imageUri = imageUri;
+    public void setImageStorageNamePrefix(String imageStorageNamePrefix) {
+        this.imageStorageNamePrefix = imageStorageNamePrefix;
     }
 
     public String getLocation() {
@@ -109,11 +110,11 @@ public class HabitEvent implements Serializable {
         this.comment = comment;
     }
 
-    public LocalDateTime getCreateDate() {
+    public LocalDate getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(LocalDateTime createDate) {
+    public void setCreateDate(LocalDate createDate) {
         this.createDate = createDate;
     }
 
@@ -123,5 +124,13 @@ public class HabitEvent implements Serializable {
 
     public void setCompletedDate(LocalDate completedDate) {
         this.completedDate = completedDate;
+    }
+
+    public String getDocId() {
+        return docId;
+    }
+
+    public void setDocId(String docId) {
+        this.docId = docId;
     }
 }
