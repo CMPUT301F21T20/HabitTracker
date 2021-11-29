@@ -27,6 +27,9 @@ public class LoginActivity extends AppCompatActivity {
     TextView RegisterPageBtn;
     FirebaseAuth fAuth;
 
+    /**
+     * Handles functionality when acticity is created
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
