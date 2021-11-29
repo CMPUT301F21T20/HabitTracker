@@ -31,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth fAuth;
     private User user;
 
+    /**
+     * Handles functionality when activity is created
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Initialize all controllers because they follow singleton pattern
         CurrentUserController.getInstance().connect();
         SocialController.getInstance().connect();
         HabitListController.getInstance().connect();
