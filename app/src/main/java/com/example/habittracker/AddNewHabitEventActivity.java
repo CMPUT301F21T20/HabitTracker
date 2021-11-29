@@ -39,6 +39,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.habittracker.controllers.HabitListController;
 import com.example.habittracker.models.Habit;
 import com.example.habittracker.models.HabitEvent;
 import com.example.habittracker.controllers.HabitEventsController;
@@ -89,8 +90,9 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
     private ImageButton addLocationBtn;
     private EditText addLocation_editText;
     private String storageImagePath = "";
-
-    TextView activeDaysText;
+    private LocalDate currentDate;
+    private TextView activeDaysText;
+    //private ZoneId defaultZoneId = ZoneId.systemDefault();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -268,10 +270,29 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
                 updatedDate
         );
 
+        //habit.setLastUpdated(updatedDate);
+
+        //currentDate = LocalDate.now();
+        //Date currdate = Date.from(currentDate.atStartOfDay(defaultZoneId).toInstant());
+
+        /*System.out.println(currdate.compareTo(habit.getDateCreated()));
+        if (currdate.compareTo(habit.getDateCreated()) > 0) {
+
+            habit.setStreak(habit.getStreak() + 1);
+        }
+        else {
+            habit.setStreak(0);
+        }*/
+
+        habit.setStreak(habit.getStreak() + 1);
+        HabitListController.getInstance().saveHabit(habit);
+
         HabitEventsController.getInstance().saveHabitEvent(habitEvent);
 
-        onSupportNavigateUp();
-    }
+        //Navigate back to main activity without changing it's state
+        Intent gotoScreenVar = new Intent(this, MainActivity.class);
+        gotoScreenVar.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(gotoScreenVar);    }
 
     /**
      * Get the date in string format of yyyy-dd-mm

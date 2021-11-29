@@ -1,6 +1,8 @@
 package com.example.habittracker.models;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -17,6 +19,12 @@ public class Habit implements Serializable {
     private Date dateCreated;
     private ArrayList<Integer> frequency;  // Frequency represent which day of a week is required to do the habit
     private boolean canShare;  // Accessibility for other users
+    private int streak;
+    private int highestStreak;
+    private LocalDate lastUpdated;
+    private ZoneId defaultZoneId = ZoneId.systemDefault();
+
+
 
     /**
      *
@@ -29,7 +37,7 @@ public class Habit implements Serializable {
      * @param canShare      Accessibility for other users
      */
     public Habit(String habitId, String userId, String title, String reason,
-                 Date dateCreated, ArrayList<Integer> frequency, boolean canShare) {
+                 Date dateCreated, ArrayList<Integer> frequency, boolean canShare, int streak, int highestStreak) {
         this.habitId = habitId;
         this.userId = userId;
         this.title = title;
@@ -37,9 +45,14 @@ public class Habit implements Serializable {
         this.dateCreated = dateCreated;
         this.frequency = frequency;
         this.canShare = canShare;
+        this.streak = streak;
+        this.highestStreak = highestStreak;
+        this.lastUpdated = null;
     }
 
     public Habit() {}
+
+
 
     /**
      * Return a Map of the habit class, useful for firestore methods.
@@ -54,6 +67,15 @@ public class Habit implements Serializable {
         habit.put("dateCreated", this.dateCreated);
         habit.put("frequency", this.frequency);
         habit.put("canShare", this.canShare);
+        habit.put("streak", this.streak);
+        habit.put("highestStreak", this.highestStreak);
+        if (this.lastUpdated == null){
+        habit.put("lastUpdated", this.lastUpdated);
+        }
+        else {
+            Date date = Date.from(this.lastUpdated.atStartOfDay(defaultZoneId).toInstant());
+            habit.put("lastUpdated", date);
+        }
         return habit;
     }
 
@@ -117,4 +139,29 @@ public class Habit implements Serializable {
     public void setCanShare(boolean canShare) {
         this.canShare = canShare;
     }
+
+    public int getStreak() {
+        return streak;
+    }
+
+    public void setStreak(int streak) {
+        this.streak = streak;
+    }
+
+    public int getHighestStreak() {
+        return highestStreak;
+    }
+
+    public void setHighestStreak(int highestStreak) {
+        this.highestStreak = highestStreak;
+    }
+
+    public LocalDate getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(LocalDate lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
+
 }
