@@ -16,12 +16,12 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="350dp">
+            android:layout_height="400dp">
 
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="300dp"
                 android:background="@drawable/profile_bg"
                 android:orientation="vertical">
 
@@ -30,7 +30,7 @@
                     android:layout_height="100dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="45dp"
-                    android:src="@drawable/common_google_signin_btn_icon_dark" />
+                    android:src="@drawable/ic_profile_black_24dp" />
 
                 <TextView
                     android:id="@+id/profileName"
@@ -39,14 +39,26 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="10dp"
                     android:textColor="#fff"
-                    android:textSize="21sp"
+                    android:textSize="30sp"
                     android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/profile_email"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#fff"
+                    android:textSize="20sp"
+                    android:text="Wiliam@gmail.com"
+                    android:gravity="center"/>
+
+
             </LinearLayout>
             <androidx.cardview.widget.CardView
                 android:layout_width="400dp"
                 android:layout_height="80dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="210dp"
+                android:layout_marginTop="260dp"
                 android:background="@color/grayProfile">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -130,17 +142,18 @@
             </androidx.cardview.widget.CardView>
         </RelativeLayout>
 
-        <LinearLayout
+        <!--LinearLayout
             android:layout_width="360dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_gravity="center"
             android:layout_marginTop="45dp">
+
             <LinearLayout
                 android:orientation="horizontal"
-                android:paddingLeft="25dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:gravity="center">
                 <ImageView
                     android:layout_width="36dp"
                     android:layout_height="36dp"
@@ -152,29 +165,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="20dp"
-                    android:text="Wiliam@gmail.com"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_marginTop="25dp"
-                android:orientation="horizontal"
-                android:paddingLeft="25dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <ImageView
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:src="@drawable/ic_baseline_phone_24"/>
-                <TextView
-                    android:textStyle="bold"
-
-                    android:layout_gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="20dp"
-                    android:text="+266 225 225"/>
+                    android:text="Wiliam@gmail.com"
+                    android:gravity="center"/>
             </LinearLayout>
 
-        </LinearLayout>
+        </LinearLayout-->
 
     <Button
         android:id="@+id/logOutButton"
@@ -182,7 +177,7 @@
         android:layout_height="wrap_content"
         android:onClick="logout"
         android:text="Log Out"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="0dp"
         android:layout_gravity="center_horizontal" />
 
 

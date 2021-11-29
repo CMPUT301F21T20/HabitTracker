@@ -28,6 +28,7 @@
                 android:layout_width="287dp"
                 android:layout_height="wrap_content"
                 android:hint="Enter username"
+                android:maxLines="1"
                 android:textSize="24dp">
 
             </EditText>
@@ -47,24 +48,30 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Quick Suggestions"
-            android:textSize="24dp"
+            android:textSize="18dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
             android:textStyle="bold"
-            android:textColor="@color/black"
-            android:layout_marginTop="10dp">
-
+            android:textColor="@color/colorPrimary"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp">
         </TextView>
 
         <View
             android:id="@+id/divider"
-
             android:layout_width="match_parent"
-            android:layout_height="2dp"
+            android:layout_height="1dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
             android:background="@android:color/darker_gray"/>
 
         <ListView
             android:id="@+id/users_listview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginBottom="30dp"
             android:layout_weight="7"
             android:layout_marginTop="6dp">
         </ListView>

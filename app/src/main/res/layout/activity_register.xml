@@ -14,9 +14,9 @@
         android:textColor="@color/colorPrimary"
         android:textSize="48dp"
         android:textStyle="bold"
-        android:layout_marginLeft="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.13999999" />
 
@@ -27,7 +27,7 @@
         android:layout_marginTop="8dp"
         android:text=" Create Account"
         android:textStyle="italic"
-        android:layout_marginLeft="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
