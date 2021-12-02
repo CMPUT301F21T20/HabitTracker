@@ -56,6 +56,18 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
+        <TextView
+            android:id="@+id/UserProfileNoFollower_textView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="72dp"
+            android:gravity="center"
+            android:text="No Follower"
+            android:textStyle="bold"
+            android:textSize="18dp"
+            android:visibility="gone">
+        </TextView>
+
         <ListView
             android:id="@+id/followers_list"
             android:layout_width="match_parent"

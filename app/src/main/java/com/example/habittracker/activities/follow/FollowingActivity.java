@@ -3,9 +3,11 @@ package com.example.habittracker.activities.follow;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -26,6 +28,7 @@ import java.util.ArrayList;
 public class FollowingActivity extends AppCompatActivity {
 
     private ImageView back_icon;
+    private TextView UserProfileNoFollowing_textView;
     private FirebaseFirestore db;
     private User user;
     private ArrayAdapter<Follow> followListAdapter;
@@ -39,6 +42,7 @@ public class FollowingActivity extends AppCompatActivity {
         back_icon = findViewById(R.id.viewHabit_back_icon);
         usersList = new UsersList();
         final ListView followerListView = findViewById(R.id.following_list);
+        UserProfileNoFollowing_textView = findViewById(R.id.UserProfileNoFollowing_textView);
 
         Intent intent = getIntent();
         User intentUser = (User) intent.getSerializableExtra("User");
@@ -69,6 +73,9 @@ public class FollowingActivity extends AppCompatActivity {
                                     Log.d("Firestore", "Error getting documents: ", task.getException());
                                 }
                             });
+                    UserProfileNoFollowing_textView.setVisibility(View.GONE);
+                }else{
+                    UserProfileNoFollowing_textView.setVisibility(View.VISIBLE);
                 }
             });
         }
