@@ -20,7 +20,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 public class HomeFragment extends Fragment {
     private ViewPager2 habits_ViewPager2;
     private TabLayout habits_TabLayout;
-    private String[] tabs = {"TOTAL", "TODAY", "UNBROKEN"};
+    private final String[] tabs = {"All", "TODAY"};
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
