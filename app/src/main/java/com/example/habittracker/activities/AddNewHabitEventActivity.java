@@ -308,8 +308,14 @@ public class AddNewHabitEventActivity extends AppCompatActivity {
      */
     public String getDateText(Date date) {
         // Add 1900 to year, as the getYear function returns year - 1900
-        return (date.getYear() + 1900) + "-" +
-                (date.getMonth() + 1) + "-" + date.getDate();
+        if (date.getDate() < 10) {
+            return (date.getYear() + 1900) + "-" +
+                    (date.getMonth() + 1) + "-0" + date.getDate();
+        }
+        else {
+            return (date.getYear() + 1900) + "-" +
+                    (date.getMonth() + 1) + "-" + date.getDate();
+        }
     }
 
     /**
