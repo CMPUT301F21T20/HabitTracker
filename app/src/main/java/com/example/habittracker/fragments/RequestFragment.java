@@ -1,6 +1,5 @@
 package com.example.habittracker.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+
 import androidx.fragment.app.Fragment;
 
 import com.example.habittracker.R;
@@ -23,6 +24,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class RequestFragment extends Fragment {
 
     private ListView RequestListView;
+    private TextView NoRequest_textView;
     private RequestMap requestMap;
     private ArrayAdapter<Request> requestListAdapter;
 
@@ -45,6 +47,7 @@ public class RequestFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_request, container, false);
 
         RequestListView = root.findViewById(R.id.request_listview);
+        NoRequest_textView = root.findViewById(R.id.NoRequest_textView);
 
         requestMap = new RequestMap();
         try {
@@ -75,8 +78,10 @@ public class RequestFragment extends Fragment {
                     }
                 }
                 Log.d(">>>>>>>>>>>>>>>>>>>>>>>>>", requestMap.getRequest("incoming", 0).getStatus());
+                NoRequest_textView.setVisibility(View.GONE);
             } catch (Exception exception) {
                 exception.printStackTrace();
+                NoRequest_textView.setVisibility(View.VISIBLE);
             }
             requestListAdapter.notifyDataSetChanged();
         });

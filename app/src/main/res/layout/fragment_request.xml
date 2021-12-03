@@ -18,6 +18,18 @@
         android:layout_marginBottom="0dp"
         android:weightSum="10">
 
+        <TextView
+            android:id="@+id/NoRequest_textView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="72dp"
+            android:gravity="center"
+            android:text="No Request"
+            android:textStyle="bold"
+            android:textSize="18dp"
+            android:visibility="gone">
+        </TextView>
+
         <ListView
             android:id="@+id/request_listview"
             android:layout_width="match_parent"
