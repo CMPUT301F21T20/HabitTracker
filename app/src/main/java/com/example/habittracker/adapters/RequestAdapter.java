@@ -50,9 +50,9 @@ public class RequestAdapter extends ArrayAdapter<Request> {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                acceptRequestButton.setVisibility(View.GONE);
-                refuseRequestButton.setVisibility(View.GONE);
-                requestInfo_textView.setVisibility(View.VISIBLE);
+//                acceptRequestButton.setVisibility(View.GONE);
+//                refuseRequestButton.setVisibility(View.GONE);
+//                requestInfo_textView.setVisibility(View.VISIBLE);
             });
 
             refuseRequestButton.setOnClickListener(v -> {
@@ -63,10 +63,10 @@ public class RequestAdapter extends ArrayAdapter<Request> {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                acceptRequestButton.setVisibility(View.GONE);
-                refuseRequestButton.setVisibility(View.GONE);
-                requestInfo_textView.setText("REFUSED");
-                requestInfo_textView.setVisibility(View.VISIBLE);
+//                acceptRequestButton.setVisibility(View.GONE);
+//                refuseRequestButton.setVisibility(View.GONE);
+//                requestInfo_textView.setText("REFUSED");
+//                requestInfo_textView.setVisibility(View.VISIBLE);
             });
         } catch (Exception e) {
             e.printStackTrace();
